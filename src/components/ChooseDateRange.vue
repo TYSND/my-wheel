@@ -282,6 +282,7 @@ export default {
       }
     },
     preNotChoose (year, month, day) {
+      console.log(year, month, day)
       this.preChooseDateStr = ''
     },
     judgeInPreRange (year, month, day) {
@@ -403,6 +404,7 @@ export default {
 
 <style lang="less" scoped>
 .choose-date-range-components {
+  width: 100%;
   color: #000000;
   display: flex;
   flex-direction: column;
