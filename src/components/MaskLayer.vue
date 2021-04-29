@@ -1,6 +1,8 @@
 <template>
   <div class="mask-layer" @click.self="cancel">
-    <slot></slot>
+    <div class="slot-outer">
+      <slot></slot>
+    </div>
   </div>
 </template>
 
@@ -26,5 +28,8 @@ export default {
   /*要显示在wrap的上面 */
   z-index: 999;
   position: fixed;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 </style>
