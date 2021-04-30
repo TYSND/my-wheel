@@ -17,6 +17,10 @@ export default {
         {
           title: '遮罩层',
           route: '/test-layer'
+        },
+        {
+          title: '城市',
+          route: '/test-city'
         }
       ]
     }

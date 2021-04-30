@@ -4,6 +4,7 @@ import VueRouter from 'vue-router'
 // import userApi from '@/api/user.js'
 const HomeIndex = () => import('@/view/HomeIndex.vue')
 const TestLayer = () => import('@/view/TestLayer.vue')
+const TestCity = () => import('@/view/TestCity.vue')
 
 Vue.use(VueRouter)
 
@@ -19,6 +20,10 @@ const routes = [
     {
         path: '/test-layer',
         component: TestLayer,
+    },
+    {
+        path: '/test-city',
+        component: TestCity,
     },
 ]
 
