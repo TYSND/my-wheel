@@ -25,6 +25,14 @@ export default {
         {
           title: '2048',
           route: '/2048'
+        },
+        {
+          title: '日期和多级选择',
+          route: '/date-multi'
+        },
+        {
+          title: '加载动画',
+          route: '/load-animation'
         }
       ]
     }
