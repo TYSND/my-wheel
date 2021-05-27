@@ -21,6 +21,10 @@ export default {
         {
           title: '城市',
           route: '/test-city'
+        },
+        {
+          title: '2048',
+          route: '/2048'
         }
       ]
     }

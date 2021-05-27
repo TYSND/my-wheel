@@ -137,7 +137,8 @@ export default {
 .choose-city {
   width: 300px;
   height: 500px;
-  box-shadow: 14px -2px 11px -2px rgba(0, 0, 0, 0.05);
+  //box-shadow: 0 2px 12px 0 rgb(0 0 0 / 10%);
+  border: 1px solid #dddddd;
   border-radius: 2px;
   position: relative;
   padding: 10px;

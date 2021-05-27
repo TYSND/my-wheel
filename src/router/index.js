@@ -5,6 +5,7 @@ import VueRouter from 'vue-router'
 const HomeIndex = () => import('@/view/HomeIndex.vue')
 const TestLayer = () => import('@/view/TestLayer.vue')
 const TestCity = () => import('@/view/TestCity.vue')
+const TwoZeroFourEight = () => import('@/view/TwoZeroFourEight.vue')
 
 Vue.use(VueRouter)
 
@@ -24,6 +25,10 @@ const routes = [
     {
         path: '/test-city',
         component: TestCity,
+    },
+    {
+        path: '/2048',
+        component: TwoZeroFourEight,
     },
 ]
 
