@@ -111,6 +111,7 @@ export default {
       }
     },
     randomInt (m, n) {
+      // 左右闭区间
       let aNumber = (n+1- m) * Math.random() + m
       return Math.floor(aNumber)
     },
@@ -140,7 +141,10 @@ export default {
         tmp = tmp ? 2 : 4
         tmp1 = tmp1 ? 2 : 4
         this.matrix[emptyList[pos1].rowIdx][emptyList[pos1].colIdx] = tmp
-        this.matrix[emptyList[pos2].rowIdx][emptyList[pos2].colIdx] = tmp1
+        let needTwo = this.randomInt(0, 1)
+        if (needTwo) {
+          this.matrix[emptyList[pos2].rowIdx][emptyList[pos2].colIdx] = tmp1
+        }
       }
       this.$forceUpdate()
     },
@@ -582,6 +586,10 @@ export default {
       position: absolute;
       top: 0;
       left: 0;
+      line-height: 450px;
+      text-align: center;
+      font-size: 50px;
+      font-weight: bold;
     }
     .grid-row {
       width: 100%;
