@@ -33,6 +33,10 @@ export default {
         {
           title: '加载动画',
           route: '/load-animation'
+        },
+        {
+          title: '画布',
+          route: '/canvas'
         }
       ]
     }

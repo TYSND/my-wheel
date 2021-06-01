@@ -8,6 +8,7 @@ const TestLayer = () => import('@/view/TestLayer.vue')
 const TestCity = () => import('@/view/TestCity.vue')
 const TwoZeroFourEight = () => import('@/view/TwoZeroFourEight.vue')
 const LoadAnimation = () => import('@/view/LoadAnimation.vue')
+const TestCanvas = () => import('@/view/Canvas.vue')
 
 Vue.use(VueRouter)
 
@@ -39,6 +40,10 @@ const routes = [
     {
         path: '/load-animation',
         component: LoadAnimation,
+    },
+    {
+        path: '/canvas',
+        component: TestCanvas,
     },
 ]
 
