@@ -9,6 +9,7 @@ const TestCity = () => import('@/view/TestCity.vue')
 const TwoZeroFourEight = () => import('@/view/TwoZeroFourEight.vue')
 const LoadAnimation = () => import('@/view/LoadAnimation.vue')
 const TestCanvas = () => import('@/view/Canvas.vue')
+const GlBoom = () => import('@/view/GlBoom.vue')
 
 Vue.use(VueRouter)
 
@@ -44,6 +45,10 @@ const routes = [
     {
         path: '/canvas',
         component: TestCanvas,
+    },
+    {
+        path: '/gl-boom',
+        component: GlBoom,
     },
 ]
 

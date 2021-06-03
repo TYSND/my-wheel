@@ -37,7 +37,11 @@ export default {
         {
           title: '画布',
           route: '/canvas'
-        }
+        },
+        {
+          title: 'webGL',
+          route: '/gl-boom'
+        },
       ]
     }
   }
