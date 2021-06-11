@@ -25,6 +25,9 @@ export default {
   color: #2c3e50;
   /*margin-top: 60px;*/
 }
+body {
+  margin: 0;
+}
 * {
   box-sizing: border-box;
   font-family: Microsoft YaHei, Arial, Georgia, Serif, sans-serif;

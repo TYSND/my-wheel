@@ -46,6 +46,10 @@ export default {
           title: 'three.js',
           route: '/three'
         },
+        {
+          title: 'Cyberpunk',
+          route: '/cyber-punk'
+        },
       ]
     }
   }

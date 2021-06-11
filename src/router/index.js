@@ -11,6 +11,7 @@ const LoadAnimation = () => import('@/view/LoadAnimation.vue')
 const TestCanvas = () => import('@/view/Canvas.vue')
 const GlBoom = () => import('@/view/GlBoom.vue')
 const Three = () => import('@/view/Three.vue')
+const CyberPunk = () => import('@/view/CyberPunk.vue')
 
 Vue.use(VueRouter)
 
@@ -54,6 +55,10 @@ const routes = [
     {
         path: '/three',
         component: Three
+    },
+    {
+        path: '/cyber-punk',
+        component: CyberPunk
     }
 ]
 
