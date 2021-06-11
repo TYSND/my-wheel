@@ -10,6 +10,7 @@ const TwoZeroFourEight = () => import('@/view/TwoZeroFourEight.vue')
 const LoadAnimation = () => import('@/view/LoadAnimation.vue')
 const TestCanvas = () => import('@/view/Canvas.vue')
 const GlBoom = () => import('@/view/GlBoom.vue')
+const Three = () => import('@/view/Three.vue')
 
 Vue.use(VueRouter)
 
@@ -50,6 +51,10 @@ const routes = [
         path: '/gl-boom',
         component: GlBoom,
     },
+    {
+        path: '/three',
+        component: Three
+    }
 ]
 
 const router = new VueRouter({

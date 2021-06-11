@@ -42,6 +42,10 @@ export default {
           title: 'webGL',
           route: '/gl-boom'
         },
+        {
+          title: 'three.js',
+          route: '/three'
+        },
       ]
     }
   }

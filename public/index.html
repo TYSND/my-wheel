@@ -6,6 +6,11 @@
     <meta name="viewport" content="width=device-width,initial-scale=1.0">
     <link rel="icon" href="<%= BASE_URL %>favicon.ico">
     <title><%= htmlWebpackPlugin.options.title %></title>
+
+    <link rel='stylesheet' href='https://cdn.jsdelivr.net/gh/alphardex/aqua.css/dist/aqua.min.css'>
+    <link rel="shortcut icon" type="image/x-icon" href="https://cpwebassets.codepen.io/assets/favicon/favicon-aec34940fbc1a6e787974dcd360f2c6b63348d4b1f4e06c77743096d55480f33.ico" />
+    <link rel="mask-icon" type="" href="https://cpwebassets.codepen.io/assets/favicon/logo-pin-8f3771b1072e3c38bd662872f6b673a722f4b3ca2421637d5596661b4e2132cc.svg" color="#111" />
+    <link rel="apple-touch-icon" type="image/png" href="https://cpwebassets.codepen.io/assets/favicon/apple-touch-icon-5ae1a0698dcc2402e9712f7d01ed509a57814f994c660df9f7a952f3060705ee.png" />
   </head>
   <body>
     <noscript>
@@ -13,5 +18,33 @@
     </noscript>
     <div id="app"></div>
     <!-- built files will be auto injected -->
+    <script id="rendered-js" type="module">
+        import * as THREE from "https://cdn.skypack.dev/three@0.124.0";
+        import kyouka from "https://cdn.skypack.dev/kyouka@1.2.2";
+        import { OrbitControls } from "https://cdn.skypack.dev/three@0.124.0/examples/jsm/controls/OrbitControls";
+        import { GLTFLoader } from "https://cdn.skypack.dev/three@0.124.0/examples/jsm/loaders/GLTFLoader";
+        import { FBXLoader } from "https://cdn.skypack.dev/three@0.124.0/examples/jsm/loaders/FBXLoader";
+        import { EffectComposer } from "https://cdn.skypack.dev/three@0.124.0/examples/jsm/postprocessing/EffectComposer";
+        import Stats from "https://cdn.skypack.dev/three@0.124.0/examples/jsm/libs/stats.module";
+        import * as dat from "https://cdn.skypack.dev/dat.gui@0.7.7";
+        import imagesLoaded from "https://cdn.skypack.dev/imagesloaded@4.1.4";
+        import { RenderPass } from "https://cdn.skypack.dev/three@0.124.0/examples/jsm/postprocessing/RenderPass.js";
+        import { UnrealBloomPass } from "https://cdn.skypack.dev/three@0.124.0/examples/jsm/postprocessing/UnrealBloomPass.js";
+        import gsap from "https://cdn.skypack.dev/gsap@3.6.0";
+
+        // console.log(ky)
+        window.THREE = THREE
+        window.kyouka = kyouka
+        window.OrbitControls = OrbitControls
+        window.GLTFLoader = GLTFLoader
+        window.FBXLoader = FBXLoader
+        window.EffectComposer = EffectComposer
+        window.Stats = Stats
+        window.dat = dat
+        window.imagesLoaded = imagesLoaded
+        window.RenderPass = RenderPass
+        window.UnrealBloomPass = UnrealBloomPass
+        window.gsap = gsap
+    </script>
   </body>
 </html>
