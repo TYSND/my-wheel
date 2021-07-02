@@ -12,6 +12,8 @@ const TestCanvas = () => import('@/view/Canvas.vue')
 const GlBoom = () => import('@/view/GlBoom.vue')
 const Three = () => import('@/view/Three.vue')
 const CyberPunk = () => import('@/view/CyberPunk.vue')
+const AboutUs = () => import('@/view/AboutUs.vue')
+const TestSome = () => import('@/view/TestSome.vue')
 
 Vue.use(VueRouter)
 
@@ -59,6 +61,14 @@ const routes = [
     {
         path: '/cyber-punk',
         component: CyberPunk
+    },
+    {
+        path: '/about-us',
+        component: AboutUs
+    },
+    {
+        path: '/test-some',
+        component: TestSome
     }
 ]
 

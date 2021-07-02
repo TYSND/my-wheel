@@ -35,6 +35,10 @@ export default {
           route: '/load-animation'
         },
         {
+          title: '随便测试',
+          route: '/test-some'
+        },
+        {
           title: '画布',
           route: '/canvas'
         },
@@ -49,6 +53,10 @@ export default {
         {
           title: 'Cyberpunk',
           route: '/cyber-punk'
+        },
+        {
+          title: 'AboutUs',
+          route: '/about-us'
         },
       ]
     }

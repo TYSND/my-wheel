@@ -56,17 +56,18 @@ export default {
     color: rgb(255, 251, 251);
     //background: linear-gradient(30deg,rgb(255, 16, 50) 5%,rgb(255, 141, 255) 5% 95%,  rgb(0, 255, 149) 95%);
     background: linear-gradient(30deg,rgb(248, 240, 5) 10%,rgb(255, 141, 255) 10% 95%,  rgb(0, 255, 149) 95%);
-    box-shadow: 5px 0 0 rgb(0, 204, 255),
-                0 0 5px rgb(255, 141, 255),
-                0 0 25px rgb(255, 141, 255),
-                0 0 50px rgb(255, 141, 255),
-                0 0 200px rgb(255, 141, 255);
+    //box-shadow: 5px 0 0 rgb(0, 204, 255),
+    //            0 0 5px rgb(255, 141, 255),
+    //            0 0 25px rgb(255, 141, 255),
+    //            0 0 50px rgb(255, 141, 255),
+    //            0 0 200px rgb(255, 141, 255);
+    box-shadow: 5px 0 0 rgb(0, 204, 255);
     cursor: pointer;
     position: relative;
 
   }
   .anniu::after{
-    content: 'Aurora Borealis night';
+    content: 'TYSND';
     position: absolute;
     top: 0;
     left: 0;
@@ -74,13 +75,87 @@ export default {
     5px 2px 0 rgb(0, 255, 115) ;
     visibility: hidden;
   }
-  .anniu::after{
+  //.anniu::after{
+  //  animation: san 1s ;
+  //  animation-timing-function: steps(1, end);
+  //}
+  .anniu:hover::after{
     animation: san 1s ;
     animation-timing-function: steps(1, end);
   }
   @keyframes flash {
     0% {
-
+      text-shadow: 0 0 0;
+      //box-shadow: 5px 0 0 rgb(0, 204, 255);
+      background: black;
+    }
+    20% {
+      text-shadow: 0 0 0;
+      box-shadow: 5px 0 0 rgb(0, 204, 255),
+      0 0 5px rgb(255, 141, 255),
+      0 0 25px rgb(255, 141, 255),
+      0 0 50px rgb(255, 141, 255),
+      0 0 200px rgb(255, 141, 255);
+      background: linear-gradient(30deg,rgb(248, 240, 5) 10%,rgb(255, 141, 255) 10% 95%,  rgb(0, 255, 149) 95%);
+    }
+    30% {
+      text-shadow: 0 0 0;
+      //box-shadow: 5px 0 0 rgb(0, 204, 255);
+      background: black;
+    }
+    50% {
+      box-shadow: 5px 0 0 rgb(0, 204, 255),
+      0 0 5px rgb(255, 141, 255),
+      0 0 25px rgb(255, 141, 255),
+      0 0 50px rgb(255, 141, 255),
+      0 0 200px rgb(255, 141, 255);
+      background: linear-gradient(30deg,rgb(248, 240, 5) 10%,rgb(255, 141, 255) 10% 95%,  rgb(0, 255, 149) 95%);
+    }
+    55% {
+      text-shadow: 0 0 0;
+      //box-shadow: 5px 0 0 rgb(0, 204, 255);
+      background: black;
+    }
+    60% {
+      box-shadow: 5px 0 0 rgb(0, 204, 255),
+      0 0 5px rgb(255, 141, 255),
+      0 0 25px rgb(255, 141, 255),
+      0 0 50px rgb(255, 141, 255),
+      0 0 200px rgb(255, 141, 255);
+      background: linear-gradient(30deg,rgb(248, 240, 5) 10%,rgb(255, 141, 255) 10% 95%,  rgb(0, 255, 149) 95%);
+    }
+    65% {
+      text-shadow: 0 0 0;
+      box-shadow: 5px 0 0 rgb(0, 204, 255);
+      background: black;
+    }
+    70% {
+      box-shadow: 5px 0 0 rgb(0, 204, 255),
+      0 0 5px rgb(255, 141, 255),
+      0 0 25px rgb(255, 141, 255),
+      0 0 50px rgb(255, 141, 255),
+      0 0 200px rgb(255, 141, 255);
+      background: linear-gradient(30deg,rgb(248, 240, 5) 10%,rgb(255, 141, 255) 10% 95%,  rgb(0, 255, 149) 95%);
+    }
+    92% {
+      box-shadow: 5px 0 0 rgb(0, 204, 255);
+      background: black;
+    }
+    95% {
+      box-shadow: 5px 0 0 rgb(0, 204, 255),
+      0 0 5px rgb(255, 141, 255),
+      0 0 25px rgb(255, 141, 255),
+      0 0 50px rgb(255, 141, 255),
+      0 0 200px rgb(255, 141, 255);
+      background: linear-gradient(30deg,rgb(248, 240, 5) 10%,rgb(255, 141, 255) 10% 95%,  rgb(0, 255, 149) 95%);
+    }
+    100% {
+      box-shadow: 5px 0 0 rgb(0, 204, 255),
+      0 0 5px rgb(255, 141, 255),
+      0 0 25px rgb(255, 141, 255),
+      0 0 50px rgb(255, 141, 255),
+      0 0 200px rgb(255, 141, 255);
+      background: linear-gradient(30deg,rgb(248, 240, 5) 10%,rgb(255, 141, 255) 10% 95%,  rgb(0, 255, 149) 95%);
     }
   }
   @keyframes san{
