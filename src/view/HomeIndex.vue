@@ -58,6 +58,14 @@ export default {
           title: 'AboutUs',
           route: '/about-us'
         },
+        {
+          title: 'FbxModel',
+          route: '/fbx-model'
+        },
+        {
+          title: '跳一跳',
+          route: '/wx-jump'
+        },
       ]
     }
   }

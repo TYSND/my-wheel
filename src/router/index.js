@@ -14,6 +14,8 @@ const Three = () => import('@/view/Three.vue')
 const CyberPunk = () => import('@/view/CyberPunk.vue')
 const AboutUs = () => import('@/view/AboutUs.vue')
 const TestSome = () => import('@/view/TestSome.vue')
+const FbxModel = () => import('@/view/FbxModel.vue')
+const WxJump = () => import('@/view/WxJump.vue')
 
 Vue.use(VueRouter)
 
@@ -69,6 +71,14 @@ const routes = [
     {
         path: '/test-some',
         component: TestSome
+    },
+    {
+        path: '/fbx-model',
+        component: FbxModel
+    },
+    {
+        path: '/wx-jump',
+        component: WxJump
     }
 ]
 
