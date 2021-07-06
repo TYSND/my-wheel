@@ -1,11 +1,13 @@
 <template>
   <div class="wx-jump">
-    <div id="canvas-frame"></div>
+    <canvas id="jump-world-canvas"></canvas>
+<!--    <div id="canvas-frame"></div>-->
   </div>
 </template>
 
 <script>
 import * as THREE from "three";
+import JumpGameWorld from './jump/JumpGameWorld.js'
 export default {
   name: "WxJump",
   data () {
@@ -147,19 +149,33 @@ export default {
     }
   },
   mounted() {
-    this.start()
+    // this.start()
+    console.log('world',JumpGameWorld)
+    let jgw = new JumpGameWorld({
+      container: document.querySelector('.wx-jump'),
+      canvas: document.querySelector('#jump-world-canvas'),
+      axesHelper: true
+    })
+    jgw.init()
   }
 }
 </script>
 
 <style lang="less" scoped>
 .wx-jump {
-  #canvas-frame {
-    border: none;
-    cursor: pointer;
+  width: 375px;
+  height: 667px;
+  margin: auto;
+  canvas {
     width: 100%;
-    height: 800px;
-    background-color: #EEEEEE;
+    height: 100%;
   }
+  //#canvas-frame {
+  //  border: none;
+  //  cursor: pointer;
+  //  width: 100%;
+  //  height: 800px;
+  //  background-color: #EEEEEE;
+  //}
 }
 </style>
