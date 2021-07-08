@@ -2,6 +2,7 @@ import { computeCameraInitalPosition } from './utils.js'
 import Prop from './Prop.js'
 import PropCreator from './PropCreator.js'
 import Stage from './Stage.js'
+import LittleMan from "@/view/jump/LittleMan"
 
 // eslint-disable-next-line no-unused-vars
 class JumpGameWorld {
@@ -67,6 +68,16 @@ class JumpGameWorld {
             propSizeRange,
             needDefaultCreator
         })
+    }
+    // 初始化小人
+    initLittleMan () {
+        const { stage, propHeight, G } = this
+        const littleMan = this.littleMan = new LittleMan({
+            world: this,
+            color: 0x386899,
+            G
+        })
+        littleMan.enterStage(stage, { x: 0, y: propHeight + 80, z: 0 })
     }
 
     // 对外的新增生成器的接口
@@ -143,6 +154,8 @@ class JumpGameWorld {
         this.createProp(0)
         // 第二个道具
         this.createProp(0)
+
+        this.initLittleMan()
 
     }
 }

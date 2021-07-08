@@ -16,6 +16,7 @@ const AboutUs = () => import('@/view/AboutUs.vue')
 const TestSome = () => import('@/view/TestSome.vue')
 const FbxModel = () => import('@/view/FbxModel.vue')
 const WxJump = () => import('@/view/WxJump.vue')
+const CssPaint = () => import('@/view/CssPaint.vue')
 
 Vue.use(VueRouter)
 
@@ -79,6 +80,10 @@ const routes = [
     {
         path: '/wx-jump',
         component: WxJump
+    },
+    {
+        path: '/css-paint',
+        component: CssPaint
     }
 ]
 

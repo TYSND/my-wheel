@@ -66,6 +66,10 @@ export default {
           title: '跳一跳',
           route: '/wx-jump'
         },
+        {
+          title: 'css paint',
+          route: '/css-paint'
+        },
       ]
     }
   }

@@ -6,16 +6,17 @@
     <div class="color-border-outer">
       <div class="color-border"></div>
     </div>
-    <div class="mac-menu">
-      <div class="item-list">
-        <div class="item" ref="item0" @mousemove="overItem($event, 0)" @mouseleave="leaveItem"></div>
-        <div class="item" ref="item1" @mousemove="overItem($event, 1)" @mouseleave="leaveItem"></div>
-        <div class="item" ref="item2" @mousemove="overItem($event, 2)" @mouseleave="leaveItem"></div>
-        <div class="item" ref="item3" @mousemove="overItem($event, 3)" @mouseleave="leaveItem"></div>
-        <div class="item" ref="item4" @mousemove="overItem($event, 4)" @mouseleave="leaveItem"></div>
-        <div class="item" ref="item5" @mousemove="overItem($event, 5)" @mouseleave="leaveItem"></div>
-      </div>
-    </div>
+<!--    <div class="mac-menu">-->
+<!--      <div class="item-list">-->
+<!--        <div class="item" ref="item0" @mousemove="overItem($event, 0)" @mouseleave="leaveItem"></div>-->
+<!--        <div class="item" ref="item1" @mousemove="overItem($event, 1)" @mouseleave="leaveItem"></div>-->
+<!--        <div class="item" ref="item2" @mousemove="overItem($event, 2)" @mouseleave="leaveItem"></div>-->
+<!--        <div class="item" ref="item3" @mousemove="overItem($event, 3)" @mouseleave="leaveItem"></div>-->
+<!--        <div class="item" ref="item4" @mousemove="overItem($event, 4)" @mouseleave="leaveItem"></div>-->
+<!--        <div class="item" ref="item5" @mousemove="overItem($event, 5)" @mouseleave="leaveItem"></div>-->
+<!--      </div>-->
+<!--    </div>-->
+
   </div>
 </template>
 

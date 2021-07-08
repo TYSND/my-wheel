@@ -3,7 +3,14 @@
     <div class="buddyoj-loading">
       <div class="buddy">
         <div class="txt-outer">
-          <div class="txt">Buddy</div>
+          <div class="txt">
+<!--            Buddy-->
+            <span class="letter1">B</span>
+            <span class="letter2">u</span>
+            <span class="letter3">d</span>
+            <span class="letter4">d</span>
+            <span class="letter5">y</span>
+          </div>
         </div>
         <div class="occlude"></div>
         <div class="lines">
@@ -27,6 +34,18 @@
       </div>
       <div class="online-judge">
         Online Judge
+<!--        <span class="letter6">O</span>-->
+<!--        <span class="letter7">n</span>-->
+<!--        <span class="letter8">l</span>-->
+<!--        <span class="letter9">i</span>-->
+<!--        <span class="letter10">n</span>-->
+<!--        <span class="letter11">e</span>-->
+
+<!--        <span class="letter12">J</span>-->
+<!--        <span class="letter13">u</span>-->
+<!--        <span class="letter14">d</span>-->
+<!--        <span class="letter15">g</span>-->
+<!--        <span class="letter16">e</span>-->
       </div>
     </div>
   </div>
@@ -179,6 +198,92 @@ export default {
       font-weight: 900;
       font-style:italic;
       font-family: Agency FB;
+    }
+
+    .letter1 {
+      //transform: translateY(-15px);
+      display: inline-block;
+      animation: 1.6s 0s infinite letter-jump;
+    }
+    .letter2 {
+      //transform: translateY(-15px);
+      display: inline-block;
+      animation: 1.6s 0.1s infinite letter-jump;
+    }
+    .letter3 {
+      //transform: translateY(-15px);
+      display: inline-block;
+      animation: 1.6s 0.2s infinite letter-jump;
+    }
+    .letter4 {
+      //transform: translateY(-15px);
+      display: inline-block;
+      animation: 1.6s 0.3s infinite letter-jump;
+    }
+    .letter5 {
+      //transform: translateY(-15px);
+      display: inline-block;
+      animation: 1.6s 0.4s infinite letter-jump;
+    }
+    .letter6 {
+      //transform: translateY(-15px);
+      display: inline-block;
+      animation: 1.6s 0.5s infinite letter-jump;
+    }
+    .letter7 {
+      //transform: translateY(-15px);
+      display: inline-block;
+      animation: 1.6s 0.6s infinite letter-jump;
+    }
+    .letter8 {
+      //transform: translateY(-15px);
+      display: inline-block;
+      animation: 1.6s 0.7s infinite letter-jump;
+    }
+    .letter9 {
+      //transform: translateY(-15px);
+      display: inline-block;
+      animation: 1.6s 0.8s infinite letter-jump;
+    }
+    .letter10 {
+      //transform: translateY(-15px);
+      display: inline-block;
+      animation: 1.6s 0.9s infinite letter-jump;
+    }
+    .letter11 {
+      //transform: translateY(-15px);
+      display: inline-block;
+      animation: 1.6s 1s infinite letter-jump;
+    }
+    .letter12 {
+      //transform: translateY(-15px);
+      display: inline-block;
+      animation: 1.6s 1.1s infinite letter-jump;
+    }
+    .letter13 {
+      //transform: translateY(-15px);
+      display: inline-block;
+      animation: 1.6s 1.2s infinite letter-jump;
+    }
+    .letter14 {
+      //transform: translateY(-15px);
+      display: inline-block;
+      animation: 1.6s 1.3s infinite letter-jump;
+    }
+    .letter15 {
+      //transform: translateY(-15px);
+      display: inline-block;
+      animation: 1.6s 1.4s infinite letter-jump;
+    }
+    .letter16 {
+      //transform: translateY(-15px);
+      display: inline-block;
+      animation: 1.6s 1.5s infinite letter-jump;
+    }
+    @keyframes letter-jump {
+      50% {
+        transform: translateY(-8px);
+      }
     }
   }
 }
