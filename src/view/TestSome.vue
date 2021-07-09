@@ -202,14 +202,15 @@ export default {
     //rgb(253,236,192)
     .face1 {
       width: 100px;
-      height: 50px;
+      height: 70px;
       background: rgb(253,236,192);
-      transform: rotate(-5deg);
+      transform: rotate(-4deg);
+      //border: 1px solid red;
       border-left: 1px solid rgba(0, 0, 0, 0.2);
 
       position: absolute;
-      top: 63px;
-      left: 7px;
+      top: 45px;
+      left: 8px;
     }
     .face2 {
       width: 50px;

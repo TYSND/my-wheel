@@ -1,6 +1,6 @@
 <template>
   <div class="css-paint">
-    <div class="test">
+    <div class="hair-outer1">
       <div class="hair hair1"></div>
       <div class="hair hair2"></div>
       <div class="hair bg-hair hair3"></div>
@@ -70,15 +70,20 @@ export default {
   display: flex;
   justify-content: center;
   align-items: center;
-  .test {
-    width: 160px;
-    height: 166px;
+  position: relative;
+  .hair-outer1 {
+    width: 80px;
+    height: 106px;
     //border: 1px solid red;
     //border-radius: 0% 97% 97% 0% e('/') 0% 50% 50% 0%;
     //border-radius: 0% 97% 10% 0% e('/') 0% 60% 40% 0%;
     border-radius: 0% 97% 5% 0% e('/') 0% 60% 40% 0%;
-    position: relative;
+    position: absolute;
+    top: 200px;
+    left: 500px;
     overflow: hidden;
+    transform: rotateY(180deg);
+    z-index: 1;
     .hair {
       position: absolute;
       top: -1%;
@@ -92,6 +97,10 @@ export default {
       // 黑色
       border: 2px double rgba(0, 0, 0, 0.16);
       box-shadow: 0 3px 4px 1px rgb(50, 50, 50), inset 0 0 2px 1px rgb(50, 50, 50);
+
+      // 金色
+      //border: 2px double rgba(138,116,29,0.16);
+      //box-shadow: 0 3px 4px 1px #95835d, inset 0 0 2px 1px #ab9c7a;
     }
     .bg-hair {
       // 茶色
@@ -100,7 +109,12 @@ export default {
 
       // 黑色
       background-color: #202020;
-      background-image: linear-gradient(to bottom, #272727 1%, #303030 25%, #302723 46%, #252525 61%);
+      //background-image: linear-gradient(to bottom, #272727 1%, #303030 25%, #302723 46%, #252525 61%);
+      background-image: linear-gradient(to bottom, #696969 1%, #303030 25%, #696969 46%, #353535 61%);
+
+      // 金色
+      //background-color: #bfab87;
+      //background-image: linear-gradient(to bottom, #d7d1c3 1%, #edece7 25%, #dcd8ce 46%, #c1b8a8 61%);
     }
     .hair1 {
       //border: 1px solid red;
