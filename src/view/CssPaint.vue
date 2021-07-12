@@ -53,6 +53,31 @@
       <div class="hair bg-hair hair50"></div>
       <div class="hair bg-hair hair51"></div>
     </div>
+    <div class="hair-thread">
+      <div class="hair bg-hair hair1"></div>
+      <div class="hair bg-hair hair2"></div>
+      <div class="hair bg-hair hair3"></div>
+      <div class="hair bg-hair hair4"></div>
+      <div class="hair bg-hair hair5"></div>
+      <div class="hair bg-hair hair6"></div>
+      <div class="hair bg-hair hair7"></div>
+      <div class="hair bg-hair hair8"></div>
+      <div class="hair bg-hair hair9"></div>
+      <div class="hair bg-hair hair10"></div>
+    </div>
+    <div class="hair-cycle">
+      <div class="inner-cycle"></div>
+      <div class="hair bg-hair hair1"></div>
+      <div class="hair bg-hair hair2"></div>
+      <div class="hair bg-hair hair3"></div>
+      <div class="hair bg-hair hair4"></div>
+      <div class="hair bg-hair hair5"></div>
+      <div class="hair bg-hair hair6"></div>
+      <div class="hair bg-hair hair7"></div>
+      <div class="hair bg-hair hair8"></div>
+      <div class="hair bg-hair hair9"></div>
+      <div class="hair bg-hair hair10"></div>
+    </div>
   </div>
 </template>
 
@@ -362,6 +387,230 @@ export default {
       right: 98%;
       height: 103%;
       width: 103%;
+    }
+  }
+  .hair-thread {
+    //border: 1px solid red;
+    border-radius: 0% 30% 30% 0% e('/') 0% 60% 40% 0%;
+    width: 20px;
+    height: 60px;
+    position: absolute;
+    top: 200px;
+    left: 900px;
+    overflow: hidden;
+    //transform: rotate(-20deg);
+    //transform: rotateY(180deg);
+    z-index: 1;
+    .hair {
+      position: absolute;
+      top: -1%;
+      border-radius: inherit;
+      margin: auto;
+      opacity: .5;
+      // 茶色
+      //border: 2px double rgba(231, 101, 8, 0.16);
+      //box-shadow: 0 3px 4px 1px rgb(211, 101, 8), inset 0 0 2px 1px rgb(211, 101, 8);
+
+      // 黑色
+      //border: 2px double rgba(0, 0, 0, 0.16);
+      //box-shadow: 0 3px 4px 1px rgb(50, 50, 50), inset 0 0 2px 1px rgb(50, 50, 50);
+
+      // 金色
+      border: 2px double rgba(138,116,29,0.16);
+      box-shadow: 0 3px 4px 1px #95835d, inset 0 0 2px 1px #ab9c7a;
+    }
+    .bg-hair {
+      // 茶色
+      //background-color: #D2691E;
+      //background-image: linear-gradient(to bottom, #F4A460 1%, #FFDAB9 25%, #EFA468 46%, #CD853F 61%);
+
+      // 黑色
+      //background-color: #202020;
+      //background-image: linear-gradient(to bottom, #696969 1%, #303030 25%, #696969 46%, #353535 61%);
+      //background-image: linear-gradient(to bottom, #272727 1%, #303030 25%, #302723 46%, #252525 61%);
+
+      // 金色
+      background-color: #bfab87;
+      background-image: linear-gradient(to bottom, #d7d1c3 1%, #edece7 25%, #dcd8ce 46%, #c1b8a8 61%);
+    }
+    .hair1 {
+      //border: 1px solid red;
+      right: 0;
+      height: 103%;
+      width: 103%;
+      //background: none;
+      //box-shadow: inset 1px 1px 2px rgb(113, 59, 18), inset 1px -1px 2px rgb(113, 59, 18);
+    }
+    .hair2 {
+      right: 10%;
+      height: 124%;
+      width: 106%;
+      background: none;
+    }
+    .hair3 {
+      right: 20%;
+      height: 104%;
+      width: 103%;
+      //background: none;
+    }
+    .hair4 {
+      right: 30%;
+      height: 106%;
+      width: 116%;
+      //background-image: linear-gradient(to bottom, #F4A460 1%, #FFDAB9 25%, #EFA468 46%, #CD853F 61%);
+      //background-image: linear-gradient(to bottom, #FFA07A 1%, #FFDDCF 25%, #FAA07F 46%, #FF6347 61% );
+    }
+    .hair5 {
+      right: 40%;
+      height: 108%;
+      width: 108%;
+    }
+    .hair6 {
+      right: 50%;
+      height: 110%;
+      width: 153%;
+    }
+    .hair7 {
+      right: 60%;
+      height: 120%;
+      width: 130%;
+    }
+    .hair8 {
+      right: 70%;
+      height: 114%;
+      width: 114%;
+    }
+    .hair9 {
+      right: 80%;
+      height: 116%;
+      width: 106%;
+    }
+    .hair10 {
+      right: 90%;
+      height: 118%;
+      width: 158%;
+    }
+  }
+  .hair-cycle {
+    //border: 1px solid red;
+    border-radius: 50% 50% 40% 40% e('/') 70% 70% 30% 30%;
+    width: 60px;
+    height: 130px;
+    position: absolute;
+    top: 400px;
+    left: 500px;
+    overflow: hidden;
+    //transform: rotate(-20deg);
+    //transform: rotateY(180deg);
+    .inner-cycle {
+      width: 20px;
+      height: 90px;
+      position: absolute;
+      top: 2px;
+      right: 20px;
+      background: #FFFFFF;
+      z-index: 2;
+      border-radius: inherit;
+    }
+    z-index: 1;
+    .hair {
+      position: absolute;
+      top: -1%;
+      border-radius: inherit;
+      margin: auto;
+      opacity: .5;
+      // 茶色
+      //border: 2px double rgba(231, 101, 8, 0.16);
+      //box-shadow: 0 3px 4px 1px rgb(211, 101, 8), inset 0 0 2px 1px rgb(211, 101, 8);
+
+      // 黑色
+      border: 2px double rgba(0, 0, 0, 0.16);
+      box-shadow: 0 3px 4px 1px rgb(50, 50, 50), inset 0 0 2px 1px rgb(50, 50, 50);
+
+      // 金色
+      //border: 2px double rgba(138,116,29,0.16);
+      //box-shadow: 0 3px 4px 1px #95835d, inset 0 0 2px 1px #ab9c7a;
+    }
+    .bg-hair {
+      // 茶色
+      //background-color: #D2691E;
+      //background-image: linear-gradient(to bottom, #F4A460 1%, #FFDAB9 25%, #EFA468 46%, #CD853F 61%);
+
+      // 黑色
+      background-color: #202020;
+      background-image: linear-gradient(to bottom, #696969 1%, #303030 25%, #696969 46%, #353535 61%);
+      //background-image: linear-gradient(to bottom, #272727 1%, #303030 25%, #302723 46%, #252525 61%);
+
+      // 金色
+      //background-color: #bfab87;
+      //background-image: linear-gradient(to bottom, #d7d1c3 1%, #edece7 25%, #dcd8ce 46%, #c1b8a8 61%);
+    }
+    .hair1 {
+      //border: 1px solid red;
+      top: 0;
+      right: 0;
+      height: 100%;
+      width: 100%;
+      //background: none;
+      //box-shadow: inset 1px 1px 2px rgb(113, 59, 18), inset 1px -1px 2px rgb(113, 59, 18);
+    }
+    .hair2 {
+      //top: calc(1 * 2px);
+      right: calc(1 * 2px);
+      height: calc(100% - 1 * 4px);
+      width: calc(100% - 1 * 4px);
+      //background: none;
+    }
+    .hair3 {
+      //top: calc(2 * 2px);
+      right: calc(2 * 2px);
+      height: calc(100% - 2 * 4px);
+      width: calc(100% - 2 * 4px);
+      //background: none;
+    }
+    .hair4 {
+      //top: calc(3 * 2px);
+      right: calc(3 * 2px);
+      height: calc(100% - 3 * 4px);
+      width: calc(100% - 3 * 4px);
+      //background-image: linear-gradient(to bottom, #F4A460 1%, #FFDAB9 25%, #EFA468 46%, #CD853F 61%);
+      //background-image: linear-gradient(to bottom, #FFA07A 1%, #FFDDCF 25%, #FAA07F 46%, #FF6347 61% );
+    }
+    .hair5 {
+      //top: calc(4 * 2px);
+      right: calc(4 * 2px);
+      height: calc(100% - 4 * 4px);
+      width: calc(100% - 4 * 4px);
+    }
+    .hair6 {
+      //top: calc(5 * 2px);
+      right: calc(5 * 2px);
+      height: calc(100% - 5 * 4px);
+      width: calc(100% - 5 * 4px);
+    }
+    .hair7 {
+      //top: calc(6 * 2px);
+      right: calc(6 * 2px);
+      height: calc(100% - 6 * 4px);
+      width: calc(100% - 6 * 4px);
+    }
+    .hair8 {
+      //top: calc(7 * 2px);
+      right: calc(7 * 2px);
+      height: calc(100% - 7 * 4px);
+      width: calc(100% - 7 * 4px);
+    }
+    .hair9 {
+      //top: calc(8 * 2px);
+      right: calc(8 * 2px);
+      height: calc(100% - 8 * 4px);
+      width: calc(100% - 8 * 4px);
+    }
+    .hair10 {
+      //top: calc(9 * 2px);
+      right: calc(9 * 2px);
+      height: calc(100% - 9 * 4px);
+      width: calc(100% - 9 * 4px);
     }
   }
 }
