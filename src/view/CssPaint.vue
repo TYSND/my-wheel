@@ -78,6 +78,19 @@
       <div class="hair bg-hair hair9"></div>
       <div class="hair bg-hair hair10"></div>
     </div>
+    <div class="hair-thread2">
+      <div class="inner-cover"></div>
+      <div class="hair bg-hair hair1"></div>
+      <div class="hair bg-hair hair2"></div>
+      <div class="hair bg-hair hair3"></div>
+      <div class="hair bg-hair hair4"></div>
+      <div class="hair bg-hair hair5"></div>
+      <div class="hair bg-hair hair6"></div>
+      <div class="hair bg-hair hair7"></div>
+      <div class="hair bg-hair hair8"></div>
+      <div class="hair bg-hair hair9"></div>
+      <div class="hair bg-hair hair10"></div>
+    </div>
   </div>
 </template>
 
@@ -611,6 +624,129 @@ export default {
       right: calc(9 * 2px);
       height: calc(100% - 9 * 4px);
       width: calc(100% - 9 * 4px);
+    }
+  }
+  .hair-thread2 {
+    //border: 1px solid red;
+    border-radius: 0% 30% 30% 0% e('/') 0% 60% 40% 0%;
+    width: 20px;
+    height: 60px;
+    position: absolute;
+    top: 400px;
+    left: 900px;
+    overflow: hidden;
+    //transform: rotate(-20deg);
+    //transform: rotateY(180deg);
+    z-index: 1;
+    .inner-cover {
+      //border: 1px solid red;
+      border-radius: inherit;
+      position: absolute;
+      z-index: 3;
+      top: 1%;
+      right: 30%;
+      height: 120%;
+      width: 106%;
+      transform: rotate(-15deg);
+      background: white;
+    }
+    .hair {
+      position: absolute;
+      top: -1%;
+      border-radius: inherit;
+      margin: auto;
+      opacity: .5;
+      // 茶色
+      //border: 2px double rgba(231, 101, 8, 0.16);
+      //box-shadow: 0 3px 4px 1px rgb(211, 101, 8), inset 0 0 2px 1px rgb(211, 101, 8);
+
+      // 黑色
+      border: 2px double rgba(0, 0, 0, 0.16);
+      box-shadow: 0 3px 4px 1px rgb(50, 50, 50), inset 0 0 2px 1px rgb(50, 50, 50);
+
+      // 金色
+      //border: 2px double rgba(138,116,29,0.16);
+      //box-shadow: 0 3px 4px 1px #95835d, inset 0 0 2px 1px #ab9c7a;
+    }
+    .bg-hair {
+      // 茶色
+      //background-color: #D2691E;
+      //background-image: linear-gradient(to bottom, #F4A460 1%, #FFDAB9 25%, #EFA468 46%, #CD853F 61%);
+
+      // 黑色
+      background-color: #202020;
+      background-image: linear-gradient(to bottom, #696969 1%, #303030 25%, #696969 46%, #353535 61%);
+      //background-image: linear-gradient(to bottom, #272727 1%, #303030 25%, #302723 46%, #252525 61%);
+
+      // 金色
+      //background-color: #bfab87;
+      //background-image: linear-gradient(to bottom, #d7d1c3 1%, #edece7 25%, #dcd8ce 46%, #c1b8a8 61%);
+    }
+    .hair1 {
+      //border: 1px solid red;
+      right: 0;
+      height: 103%;
+      width: 103%;
+      //background: none;
+      //box-shadow: inset 1px 1px 2px rgb(113, 59, 18), inset 1px -1px 2px rgb(113, 59, 18);
+    }
+    .hair2 {
+      right: 10%;
+      height: 124%;
+      width: 106%;
+      transform: rotate(-5deg);
+      //background: none;
+    }
+    .hair3 {
+      right: 20%;
+      height: 104%;
+      width: 103%;
+      transform: rotate(-10deg);
+      //background: none;
+    }
+    .hair4 {
+      right: 30%;
+      height: 106%;
+      width: 116%;
+      transform: rotate(-10deg);
+      //background-image: linear-gradient(to bottom, #F4A460 1%, #FFDAB9 25%, #EFA468 46%, #CD853F 61%);
+      //background-image: linear-gradient(to bottom, #FFA07A 1%, #FFDDCF 25%, #FAA07F 46%, #FF6347 61% );
+    }
+    .hair5 {
+      right: 35%;
+      height: 108%;
+      width: 108%;
+      transform: rotate(-5deg);
+    }
+    .hair6 {
+      right: 0%;
+      height: 110%;
+      width: 153%;
+      transform: rotate(-5deg);
+    }
+    .hair7 {
+      right: 5%;
+      height: 120%;
+      width: 130%;
+      transform: rotate(-10deg);
+    }
+    .hair8 {
+      right: 10%;
+      height: 114%;
+      width: 114%;
+      transform: rotate(-15deg);
+    }
+    .hair9 {
+      right: 8%;
+      height: 116%;
+      width: 106%;
+      transform: rotate(-1deg);
+    }
+    .hair10 {
+      right: 10%;
+      height: 118%;
+      width: 158%;
+      transform: rotate(-15deg);
     }
   }
 }

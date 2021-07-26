@@ -70,6 +70,10 @@ export default {
           title: 'css paint',
           route: '/css-paint'
         },
+        {
+          title: '麻将',
+          route: '/go-mah-jong'
+        },
       ]
     }
   }
