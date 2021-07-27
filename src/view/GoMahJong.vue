@@ -19,6 +19,31 @@
               'bing7': card.type === 'bing' && card.num === 7,
               'bing8': card.type === 'bing' && card.num === 8,
               'bing9': card.type === 'bing' && card.num === 9,
+              'tiao1': card.type === 'tiao' && card.num === 1,
+              'tiao2': card.type === 'tiao' && card.num === 2,
+              'tiao3': card.type === 'tiao' && card.num === 3,
+              'tiao4': card.type === 'tiao' && card.num === 4,
+              'tiao5': card.type === 'tiao' && card.num === 5,
+              'tiao6': card.type === 'tiao' && card.num === 6,
+              'tiao7': card.type === 'tiao' && card.num === 7,
+              'tiao8': card.type === 'tiao' && card.num === 8,
+              'tiao9': card.type === 'tiao' && card.num === 9,
+              'wan1': card.type === 'wan' && card.num === 1,
+              'wan2': card.type === 'wan' && card.num === 2,
+              'wan3': card.type === 'wan' && card.num === 3,
+              'wan4': card.type === 'wan' && card.num === 4,
+              'wan5': card.type === 'wan' && card.num === 5,
+              'wan6': card.type === 'wan' && card.num === 6,
+              'wan7': card.type === 'wan' && card.num === 7,
+              'wan8': card.type === 'wan' && card.num === 8,
+              'wan9': card.type === 'wan' && card.num === 9,
+              'feng1': card.type === 'afeng' && card.num === 1,
+              'feng2': card.type === 'afeng' && card.num === 2,
+              'feng3': card.type === 'afeng' && card.num === 3,
+              'feng4': card.type === 'afeng' && card.num === 4,
+              'bai': card.type === 'abai',
+              'cai': card.type === 'acai',
+              'zhong': card.type === 'azhong'
             }"></div>
           </div>
           <div class="empty-card"></div>
@@ -82,26 +107,26 @@ export default {
       for (let i = 1; i <= 4; i++) {
         for (let j = 0; j < 4; j++) {
           card.push({
-            type: 'feng',
+            type: 'afeng',
             num: i
           })
         }
       }
       for (let j = 0; j < 4; j++) {
         card.push({
-          type: 'bai',
+          type: 'abai',
           num: 1
         })
       }
       for (let j = 0; j < 4; j++) {
         card.push({
-          type: 'cai',
+          type: 'acai',
           num: 1
         })
       }
       for (let j = 0; j < 4; j++) {
         card.push({
-          type: 'zhong',
+          type: 'azhong',
           num: 1
         })
       }
@@ -294,6 +319,565 @@ export default {
             box-shadow: -15px -20px #1a86cb, -15px 0px #1a86cb, -15px 20px #1a86cb, 0px -20px #1a86cb, 0px 20px #1a86cb, 15px -20px #1a86cb, 15px 0px #1a86cb, 15px 20px #1a86cb,;
             z-index: 2;
           }
+
+          .tiao1:before {
+            content: "";
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 10px;
+            height: 30px;
+            background: #01d025;
+            border-radius: 4px;
+            box-shadow: 0 0 #01d025;
+            z-index: 2;
+          }
+          .tiao2:before {
+            content: "";
+            position: absolute;
+            top: calc(50% - 15px);
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 10px;
+            height: 20px;
+            background: #01d025;
+            border-radius: 4px;
+            box-shadow: 0 30px #01d025;
+            z-index: 2;
+          }
+          .tiao3:before {
+            content: "";
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 10px;
+            height: 15px;
+            background: #01d025;
+            border-radius: 4px;
+            box-shadow: 0 -20px #01d025, 0 20px #01d025;
+            z-index: 2;
+          }
+          .tiao4:before {
+            content: "";
+            position: absolute;
+            top: calc(50% - 15px);
+            left: calc(50% - 10px);
+            transform: translate(-50%, -50%);
+            width: 10px;
+            height: 20px;
+            background: #01d025;
+            border-radius: 4px;
+            box-shadow: 0px 30px #01d025, 20px 0px #01d025, 20px 30px #01d025;
+            z-index: 2;
+          }
+          .tiao5:before {
+            content: "";
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 10px;
+            height: 20px;
+            background: #01d025;
+            border-radius: 4px;
+            box-shadow: -15px -15px #01d025, -15px 15px #01d025, 15px -15px #01d025, 15px 15px #01d025;
+            z-index: 2;
+          }
+          .tiao6:before {
+            content: "";
+            position: absolute;
+            top: 50%;
+            left: calc(50% - 15px);
+            transform: translate(-50%, -50%);
+            width: 10px;
+            height: 15px;
+            background: #01d025;
+            border-radius: 4px;
+            box-shadow: 0px -20px #01d025, 0px 20px #01d025, 30px -20px #01d025, 30px 0px #01d025, 30px 20px #01d025;
+            z-index: 2;
+          }
+          .tiao7:before {
+            content: "";
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 10px;
+            height: 15px;
+            background: #01d025;
+            border-radius: 4px;
+            box-shadow: 0px -20px #01d025, -15px 0px #01d025, 15px 0px #01d025, -15px 20px #01d025, 0px 20px #01d025, 15px 20px #01d025;
+            z-index: 2;
+          }
+          .tiao8:before {
+            content: "M";
+            position: absolute;
+            top: 5%;
+            left: 5%;
+            width: 90%;
+            height: 40%;
+            font-size: 28px;
+            font-weight: 900;
+            text-align: center;
+            color: #01d025;
+            z-index: 2;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+          }
+          .tiao8:after {
+            content: "M";
+            position: absolute;
+            bottom: 5%;
+            left: 5%;
+            transform: rotate(180deg);
+            width: 90%;
+            height: 40%;
+            //line-height: 25px;
+            font-size: 28px;
+            font-weight: 900;
+            text-align: center;
+            color: #01d025;
+            z-index: 2;
+            //vertical-align: middle;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+          }
+          .tiao9:before {
+            content: "";
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 10px;
+            height: 15px;
+            background: #01d025;
+            border-radius: 4px;
+            box-shadow: -15px -20px #01d025, 0px -20px #01d025, 15px -20px #01d025, -15px 0px #01d025, 15px 0px #01d025, -15px 20px #01d025, 0px 20px #01d025, 15px 20px #01d025;
+            z-index: 2;
+          }
+
+          .wan1:before {
+            content: "一";
+            position: absolute;
+            top: 5%;
+            left: 5%;
+            width: 90%;
+            height: 40%;
+            font-size: 20px;
+            font-weight: 900;
+            text-align: center;
+            color: #101010;
+            z-index: 2;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+          }
+          .wan1:after {
+            content: "萬";
+            position: absolute;
+            bottom: 5%;
+            left: 5%;
+            width: 90%;
+            height: 40%;
+            //line-height: 25px;
+            font-size: 20px;
+            font-weight: 900;
+            text-align: center;
+            color: #d90c23;
+            z-index: 2;
+            //vertical-align: middle;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+          }
+          .wan2:before {
+            content: "二";
+            position: absolute;
+            top: 5%;
+            left: 5%;
+            width: 90%;
+            height: 40%;
+            font-size: 20px;
+            font-weight: 900;
+            text-align: center;
+            color: #101010;
+            z-index: 2;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+          }
+          .wan2:after {
+            content: "萬";
+            position: absolute;
+            bottom: 5%;
+            left: 5%;
+            width: 90%;
+            height: 40%;
+            //line-height: 25px;
+            font-size: 20px;
+            font-weight: 900;
+            text-align: center;
+            color: #d90c23;
+            z-index: 2;
+            //vertical-align: middle;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+          }
+          .wan3:before {
+            content: "三";
+            position: absolute;
+            top: 5%;
+            left: 5%;
+            width: 90%;
+            height: 40%;
+            font-size: 20px;
+            font-weight: 900;
+            text-align: center;
+            color: #101010;
+            z-index: 2;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+          }
+          .wan3:after {
+            content: "萬";
+            position: absolute;
+            bottom: 5%;
+            left: 5%;
+            width: 90%;
+            height: 40%;
+            //line-height: 25px;
+            font-size: 20px;
+            font-weight: 900;
+            text-align: center;
+            color: #d90c23;
+            z-index: 2;
+            //vertical-align: middle;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+          }
+          .wan4:before {
+            content: "四";
+            position: absolute;
+            top: 5%;
+            left: 5%;
+            width: 90%;
+            height: 40%;
+            font-size: 20px;
+            font-weight: 900;
+            text-align: center;
+            color: #101010;
+            z-index: 2;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+          }
+          .wan4:after {
+            content: "萬";
+            position: absolute;
+            bottom: 5%;
+            left: 5%;
+            width: 90%;
+            height: 40%;
+            //line-height: 25px;
+            font-size: 20px;
+            font-weight: 900;
+            text-align: center;
+            color: #d90c23;
+            z-index: 2;
+            //vertical-align: middle;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+          }
+          .wan5:before {
+            content: "伍";
+            position: absolute;
+            top: 5%;
+            left: 5%;
+            width: 90%;
+            height: 40%;
+            font-size: 20px;
+            font-weight: 900;
+            text-align: center;
+            color: #101010;
+            z-index: 2;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+          }
+          .wan5:after {
+            content: "萬";
+            position: absolute;
+            bottom: 5%;
+            left: 5%;
+            width: 90%;
+            height: 40%;
+            //line-height: 25px;
+            font-size: 20px;
+            font-weight: 900;
+            text-align: center;
+            color: #d90c23;
+            z-index: 2;
+            //vertical-align: middle;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+          }
+          .wan6:before {
+            content: "六";
+            position: absolute;
+            top: 5%;
+            left: 5%;
+            width: 90%;
+            height: 40%;
+            font-size: 20px;
+            font-weight: 900;
+            text-align: center;
+            color: #101010;
+            z-index: 2;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+          }
+          .wan6:after {
+            content: "萬";
+            position: absolute;
+            bottom: 5%;
+            left: 5%;
+            width: 90%;
+            height: 40%;
+            //line-height: 25px;
+            font-size: 20px;
+            font-weight: 900;
+            text-align: center;
+            color: #d90c23;
+            z-index: 2;
+            //vertical-align: middle;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+          }
+          .wan7:before {
+            content: "七";
+            position: absolute;
+            top: 5%;
+            left: 5%;
+            width: 90%;
+            height: 40%;
+            font-size: 20px;
+            font-weight: 900;
+            text-align: center;
+            color: #101010;
+            z-index: 2;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+          }
+          .wan7:after {
+            content: "萬";
+            position: absolute;
+            bottom: 5%;
+            left: 5%;
+            width: 90%;
+            height: 40%;
+            //line-height: 25px;
+            font-size: 20px;
+            font-weight: 900;
+            text-align: center;
+            color: #d90c23;
+            z-index: 2;
+            //vertical-align: middle;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+          }
+          .wan8:before {
+            content: "八";
+            position: absolute;
+            top: 5%;
+            left: 5%;
+            width: 90%;
+            height: 40%;
+            font-size: 20px;
+            font-weight: 900;
+            text-align: center;
+            color: #101010;
+            z-index: 2;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+          }
+          .wan8:after {
+            content: "萬";
+            position: absolute;
+            bottom: 5%;
+            left: 5%;
+            width: 90%;
+            height: 40%;
+            //line-height: 25px;
+            font-size: 20px;
+            font-weight: 900;
+            text-align: center;
+            color: #d90c23;
+            z-index: 2;
+            //vertical-align: middle;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+          }
+          .wan9:before {
+            content: "九";
+            position: absolute;
+            top: 5%;
+            left: 5%;
+            width: 90%;
+            height: 40%;
+            font-size: 20px;
+            font-weight: 900;
+            text-align: center;
+            color: #101010;
+            z-index: 2;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+          }
+          .wan9:after {
+            content: "萬";
+            position: absolute;
+            bottom: 5%;
+            left: 5%;
+            width: 90%;
+            height: 40%;
+            //line-height: 25px;
+            font-size: 20px;
+            font-weight: 900;
+            text-align: center;
+            color: #d90c23;
+            z-index: 2;
+            //vertical-align: middle;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+          }
+
+          .feng1:before {
+            content: "东";
+            position: absolute;
+            top: 10%;
+            left: 10%;
+            width: 80%;
+            height: 80%;
+            font-size: 25px;
+            font-weight: 900;
+            text-align: center;
+            color: #045879;
+            z-index: 2;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+          }
+          .feng2:before {
+            content: "西";
+            position: absolute;
+            top: 10%;
+            left: 10%;
+            width: 80%;
+            height: 80%;
+            font-size: 25px;
+            font-weight: 900;
+            text-align: center;
+            color: #045879;
+            z-index: 2;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+          }
+          .feng3:before {
+            content: "南";
+            position: absolute;
+            top: 10%;
+            left: 10%;
+            width: 80%;
+            height: 80%;
+            font-size: 25px;
+            font-weight: 900;
+            text-align: center;
+            color: #045879;
+            z-index: 2;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+          }
+          .feng4:before {
+            content: "北";
+            position: absolute;
+            top: 10%;
+            left: 10%;
+            width: 80%;
+            height: 80%;
+            font-size: 25px;
+            font-weight: 900;
+            text-align: center;
+            color: #045879;
+            z-index: 2;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+          }
+          .bai:before {
+            content: "";
+            position: absolute;
+            top: calc(20% - 5px);
+            left: calc(25% - 5px);
+            width: 50%;
+            height: 60%;
+            border: 5px solid #101010;
+            border-radius: 4px;
+            z-index: 2;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+          }
+          .cai:before {
+            content: "發";
+            position: absolute;
+            top: 10%;
+            left: 10%;
+            width: 80%;
+            height: 80%;
+            font-size: 25px;
+            font-weight: 900;
+            text-align: center;
+            color: #0d7d33;
+            z-index: 2;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+          }
+          .zhong:before {
+            content: "中";
+            position: absolute;
+            top: 10%;
+            left: 10%;
+            width: 80%;
+            height: 80%;
+            font-size: 25px;
+            font-weight: 900;
+            text-align: center;
+            color: #d70606;
+            z-index: 2;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+          }
+
         }
         .empty-card {
           width: 80px;
