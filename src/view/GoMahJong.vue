@@ -1,49 +1,50 @@
+<script src="../../../../Users/33389/Desktop/mj2.js"></script>
 <template>
   <div class="go-mah-jong">
     <div class="play-area-outer">
       <div :class="{
-      'play-area': true,
-      ['player' + (i-1)]: true
-    }" v-for="i in 4" :key="i">
+          'play-area': true,
+          ['player' + (i-1)]: true
+        }" v-for="i in 4" :key="i">
         <div class="card-list">
           <div class="card" v-for="(card, index) in playerCard[i - 1]" :key="index">
             {{card.type + card.num}}
             <div :class="{
               'card-pattern': true,
-              'bing1': card.type === 'bing' && card.num === 1,
-              'bing2': card.type === 'bing' && card.num === 2,
-              'bing3': card.type === 'bing' && card.num === 3,
-              'bing4': card.type === 'bing' && card.num === 4,
-              'bing5': card.type === 'bing' && card.num === 5,
-              'bing6': card.type === 'bing' && card.num === 6,
-              'bing7': card.type === 'bing' && card.num === 7,
-              'bing8': card.type === 'bing' && card.num === 8,
-              'bing9': card.type === 'bing' && card.num === 9,
-              'tiao1': card.type === 'tiao' && card.num === 1,
-              'tiao2': card.type === 'tiao' && card.num === 2,
-              'tiao3': card.type === 'tiao' && card.num === 3,
-              'tiao4': card.type === 'tiao' && card.num === 4,
-              'tiao5': card.type === 'tiao' && card.num === 5,
-              'tiao6': card.type === 'tiao' && card.num === 6,
-              'tiao7': card.type === 'tiao' && card.num === 7,
-              'tiao8': card.type === 'tiao' && card.num === 8,
-              'tiao9': card.type === 'tiao' && card.num === 9,
-              'wan1': card.type === 'wan' && card.num === 1,
-              'wan2': card.type === 'wan' && card.num === 2,
-              'wan3': card.type === 'wan' && card.num === 3,
-              'wan4': card.type === 'wan' && card.num === 4,
-              'wan5': card.type === 'wan' && card.num === 5,
-              'wan6': card.type === 'wan' && card.num === 6,
-              'wan7': card.type === 'wan' && card.num === 7,
-              'wan8': card.type === 'wan' && card.num === 8,
-              'wan9': card.type === 'wan' && card.num === 9,
-              'feng1': card.type === 'afeng' && card.num === 1,
-              'feng2': card.type === 'afeng' && card.num === 2,
-              'feng3': card.type === 'afeng' && card.num === 3,
-              'feng4': card.type === 'afeng' && card.num === 4,
-              'bai': card.type === 'abai',
-              'cai': card.type === 'acai',
-              'zhong': card.type === 'azhong'
+              // 'bing1': card.type === 'bing' && card.num === 1,
+              // 'bing2': card.type === 'bing' && card.num === 2,
+              // 'bing3': card.type === 'bing' && card.num === 3,
+              // 'bing4': card.type === 'bing' && card.num === 4,
+              // 'bing5': card.type === 'bing' && card.num === 5,
+              // 'bing6': card.type === 'bing' && card.num === 6,
+              // 'bing7': card.type === 'bing' && card.num === 7,
+              // 'bing8': card.type === 'bing' && card.num === 8,
+              // 'bing9': card.type === 'bing' && card.num === 9,
+              // 'tiao1': card.type === 'tiao' && card.num === 1,
+              // 'tiao2': card.type === 'tiao' && card.num === 2,
+              // 'tiao3': card.type === 'tiao' && card.num === 3,
+              // 'tiao4': card.type === 'tiao' && card.num === 4,
+              // 'tiao5': card.type === 'tiao' && card.num === 5,
+              // 'tiao6': card.type === 'tiao' && card.num === 6,
+              // 'tiao7': card.type === 'tiao' && card.num === 7,
+              // 'tiao8': card.type === 'tiao' && card.num === 8,
+              // 'tiao9': card.type === 'tiao' && card.num === 9,
+              // 'wan1': card.type === 'wan' && card.num === 1,
+              // 'wan2': card.type === 'wan' && card.num === 2,
+              // 'wan3': card.type === 'wan' && card.num === 3,
+              // 'wan4': card.type === 'wan' && card.num === 4,
+              // 'wan5': card.type === 'wan' && card.num === 5,
+              // 'wan6': card.type === 'wan' && card.num === 6,
+              // 'wan7': card.type === 'wan' && card.num === 7,
+              // 'wan8': card.type === 'wan' && card.num === 8,
+              // 'wan9': card.type === 'wan' && card.num === 9,
+              // 'feng1': card.type === 'afeng' && card.num === 1,
+              // 'feng2': card.type === 'afeng' && card.num === 2,
+              // 'feng3': card.type === 'afeng' && card.num === 3,
+              // 'feng4': card.type === 'afeng' && card.num === 4,
+              // 'bai': card.type === 'abai',
+              // 'cai': card.type === 'acai',
+              // 'zhong': card.type === 'azhong'
             }"></div>
           </div>
           <div class="empty-card"></div>
@@ -62,6 +63,17 @@
           <div class="empty-card"></div>
         </div>
       </div>
+      <div :class="{
+          'other-area': true,
+          ['other' + (i-1)]: true
+        }" v-for="i in 4" :key="'other' + i">
+      </div>
+      <div :class="{
+          'mark-area': true,
+          ['mark' + (i-1)]: true
+        }" v-for="i in 4" :key="'mark' + i">
+        <i class="el-icon-caret-bottom cur-turn" v-if="curTurn === i - 1"></i>
+      </div>
     </div>
   </div>
 </template>
@@ -79,58 +91,76 @@ export default {
   },
   methods: {
     generateCards () {
+      let cnt = 1
       let card = []
       for (let i = 1; i <= 9; i++) {
         for (let j = 0; j < 4; j++) {
           card.push({
+            id: cnt++,
             type: 'bing',
-            num: i
+            num: i,
+            show: false
           })
         }
       }
       for (let i = 1; i <= 9; i++) {
         for (let j = 0; j < 4; j++) {
           card.push({
+            id: cnt++,
             type: 'wan',
-            num: i
+            num: i,
+            show: false
           })
         }
       }
       for (let i = 1; i <= 9; i++) {
         for (let j = 0; j < 4; j++) {
           card.push({
+            id: cnt++,
             type: 'tiao',
-            num: i
+            num: i,
+            show: false
           })
         }
       }
       for (let i = 1; i <= 4; i++) {
         for (let j = 0; j < 4; j++) {
           card.push({
+            id: cnt++,
             type: 'afeng',
-            num: i
+            num: i,
+            show: false
           })
         }
       }
       for (let j = 0; j < 4; j++) {
         card.push({
+          id: cnt++,
           type: 'abai',
-          num: 1
+          num: 1,
+          show: false
         })
       }
       for (let j = 0; j < 4; j++) {
         card.push({
+          id: cnt++,
           type: 'acai',
-          num: 1
+          num: 1,
+          show: false
         })
       }
       for (let j = 0; j < 4; j++) {
         card.push({
+          id: cnt++,
           type: 'azhong',
-          num: 1
+          num: 1,
+          show: false
         })
       }
       card.sort(() => Math.random() - 0.5)
+      card.sort(() => Math.random() - 0.4)
+      card.sort(() => Math.random() - 0.3)
+      console.log('card num',card.length)
       return card
     },
     randomInteger (l, r) {
@@ -147,7 +177,7 @@ export default {
       }
       this.playerCard[this.curTurn].push(this.cardList[this.curCardPos++])
       this.playerCard[(this.curTurn + 1)%4].push(this.cardList[this.curCardPos++])
-      this.playerCard[this.curTurn].push(this.cardList[this.curCardPos++])
+      // this.playerCard[this.curTurn].push(this.cardList[this.curCardPos++])
       this.playerCard[(this.curTurn + 2)%4].push(this.cardList[this.curCardPos++])
       this.playerCard[(this.curTurn + 3)%4].push(this.cardList[this.curCardPos++])
       for (let i = 0; i < 4; i++) {
@@ -161,6 +191,36 @@ export default {
       }
       this.$forceUpdate()
       console.log(this.playerCard)
+    },
+    handOut () {
+      if (this.curCardPos >= this.cardList.length) {
+        this.curCardPos %= this.cardList.length
+      }
+      this.playerCard[this.curTurn].push(this.cardList[this.curCardPos++])
+    },
+    judgeBreak () {
+      // 判断吃、碰、杠、胡
+      return -1
+    },
+    judgeSelf () {
+      // 判断自己能否赢或杠
+    },
+    turnControl () {
+
+    },
+    aiTurn () {
+      this.handOut()
+      // 判断自己能否赢或杠
+      this.judgeSelf()
+      // 出牌
+    },
+    playerTurn () {
+      this.handOut()
+      // 判断自己能否赢或杠
+      this.judgeSelf()
+      // 出牌
+      // xxx
+      this.turnControl()
     }
   },
   created() {
@@ -169,6 +229,16 @@ export default {
     this.curTurn = this.randomInteger(0, 3)
     console.log(this.curTurn)
     this.initHandOut()
+  },
+  mounted() {
+    if (this.curTurn !== 0) {
+      setTimeout(() => {
+        // while (this.curTurn !== 0) {
+        //   this.aiTurn(this.curTurn)
+        //   this.turnControl()
+        // }
+      }, 1000)
+    }
   }
 }
 </script>
@@ -902,6 +972,68 @@ export default {
       transform-origin: bottom left;
       transform: rotate(90deg);
       left: 0;
+    }
+
+    .other-area {
+      width: 40%;
+      height: 15%;
+      border: 1px solid blue;
+      position: absolute;
+    }
+    .other0 {
+      bottom: 15%;
+      left: 30%;
+    }
+    .other1 {
+      transform-origin: bottom right;
+      transform: rotate(-90deg);
+      right: 15%;
+      top: 15%;
+    }
+    .other2 {
+      transform: rotate(180deg);
+      top: 15%;
+      left: 30%;
+    }
+    .other3 {
+      transform-origin: bottom left;
+      transform: rotate(90deg);
+      left: 15%;
+      top: 15%;
+    }
+
+    .mark-area {
+      width: 15%;
+      height: 15%;
+      border: 1px solid green;
+      position: absolute;
+      display: flex;
+      align-items: flex-end;
+      justify-content: center;
+      .cur-turn {
+        font-size: 50px;
+      }
+    }
+    .mark0 {
+      bottom: 15%;
+      right: 15%;
+    }
+    .mark1 {
+      transform-origin: bottom right;
+      transform: rotate(-90deg);
+      right: 15%;
+      top: 0;
+    }
+    .mark2 {
+      transform: rotate(180deg);
+      top: 15%;
+      left: 15%;
+    }
+    .mark3 {
+      transform-origin: bottom left;
+      transform: rotate(90deg);
+      left: 15%;
+      bottom: 30%;
     }
   }
 }
