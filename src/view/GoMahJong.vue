@@ -7,7 +7,10 @@
           ['player' + (i-1)]: true
         }" v-for="i in 4" :key="i">
         <div class="card-list">
-          <div class="card" v-for="(card, index) in playerCard[i - 1]" :key="index">
+          <div :class="{
+            'card': true,
+            'pre-out-card': i === 1 && curCardPos === card.id
+          }" v-for="(card, index) in playerCard[i - 1]" :key="index" @click="playerOutCard(card.id, index)">
             {{card.type + card.num}}
             <div :class="{
               'card-pattern': true,
@@ -87,6 +90,7 @@ export default {
       playerCard: [[], [], [], []],
       curTurn: 0,
       curCardPos: 0,
+      canOpt: false
     }
   },
   methods: {
@@ -194,9 +198,16 @@ export default {
     },
     handOut () {
       if (this.curCardPos >= this.cardList.length) {
-        this.curCardPos %= this.cardList.length
+        this.curCardPos = 0
       }
       this.playerCard[this.curTurn].push(this.cardList[this.curCardPos++])
+      this.playerCard[this.curTurn].sort(function (a, b) {
+        if (a.type === b.type) {
+          return a.num - b.num
+        } else {
+          return a.type > b.type ? 1 : -1
+        }
+      })
     },
     judgeBreak () {
       // 判断吃、碰、杠、胡
@@ -206,38 +217,414 @@ export default {
       // 判断自己能否赢或杠
     },
     turnControl () {
-
+      this.curTurn = (this.curTurn + 1) % 4
+      if (this.curTurn === 0) {
+        this.playerTurn()
+      } else {
+        this.aiTurn()
+      }
     },
     aiTurn () {
       this.handOut()
       // 判断自己能否赢或杠
       this.judgeSelf()
       // 出牌
+      // 首先将bing tiao wan 都映射到计数数组上
+      let bing3N = 0, bing3N2 = 0
+      let tiao3N = 0, tiao3N2 = 0
+      let wan3N = 0, wan3N2 = 0
+      let other3N = 0, other3N2 = 0
+      let bingArr = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+      let tiaoArr = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+      let wanArr = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+      let otherArr = [0, 0, 0, 0, 0, 0, 0, 0]
+      for (let i = 0; i < this.playerCard[this.curTurn]; i++) {
+        let tmp = this.playerCard[this.curTurn][i]
+        if (tmp.type === 'bing') {
+          bingArr[tmp.num]++
+        } else if (tmp.type === 'tiao') {
+          tiaoArr[tmp.num]++
+        } else if (tmp.type === 'wan') {
+          wanArr[tmp.num]++
+        } else if (tmp.type === 'afeng') {
+          otherArr[tmp.num]++
+        } else if (tmp.type === 'abai') {
+          otherArr[5]++
+        } else if (tmp.type === 'acai') {
+          otherArr[6]++
+        } else if (tmp.type === 'azhong') {
+          otherArr[7]++
+        }
+      }
+      let ma = 0, pos = 0
+      for (let i = 0; i < this.playerCard[this.curTurn]; i++) {
+        let tmp = this.playerCard[this.curTurn][i]
+        if (tmp.type === 'bing') {
+          bingArr[tmp.num]--
+        } else if (tmp.type === 'tiao') {
+          tiaoArr[tmp.num]--
+        } else if (tmp.type === 'wan') {
+          wanArr[tmp.num]--
+        } else if (tmp.type === 'afeng') {
+          otherArr[tmp.num]--
+        } else if (tmp.type === 'abai') {
+          otherArr[5]--
+        } else if (tmp.type === 'acai') {
+          otherArr[6]--
+        } else if (tmp.type === 'azhong') {
+          otherArr[7]--
+        }
+        bing3N = this.get3NChance(bingArr)
+        bing3N2 = this.get3N2Chance(bingArr)
+        tiao3N = this.get3NChance(tiaoArr)
+        tiao3N2 = this.get3N2Chance(tiaoArr)
+        wan3N = this.get3NChance(wanArr)
+        wan3N2 = this.get3N2Chance(wanArr)
+        other3N = this.getO3NChance(otherArr)
+        other3N2 = this.getO3N2Chance(otherArr)
+        let tmpMa = bing3N2 + tiao3N + wan3n + other3N
+        tmpMa = Math.max(tmpMa, (bing3N + tiao3N2 + wan3N + other3N))
+        tmpMa = Math.max(tmpMa, (bing3N + tiao3N + wan3N2 + other3N))
+        tmpMa = Math.max(tmpMa, (bing3N + tiao3N + wan3N + other3N2))
+
+        if (tmpMa > ma) {
+          ma = tmpMa
+          pos = i
+        }
+
+
+        if (tmp.type === 'bing') {
+          bingArr[tmp.num]++
+        } else if (tmp.type === 'tiao') {
+          tiaoArr[tmp.num]++
+        } else if (tmp.type === 'wan') {
+          wanArr[tmp.num]++
+        } else if (tmp.type === 'afeng') {
+          otherArr[tmp.num]++
+        } else if (tmp.type === 'abai') {
+          otherArr[5]++
+        } else if (tmp.type === 'acai') {
+          otherArr[6]++
+        } else if (tmp.type === 'azhong') {
+          otherArr[7]++
+        }
+      }
+      console.log('ai card', this.playerCard[this.curTurn][pos].type + this.playerCard[this.curTurn][pos].num)
+      this.playerCard[this.curTurn].splice(pos, 1)
+      this.turnControl()
     },
     playerTurn () {
+      console.log('player turn')
       this.handOut()
       // 判断自己能否赢或杠
       this.judgeSelf()
       // 出牌
-      // xxx
-      this.turnControl()
-    }
+      this.canOpt = true
+    },
+    playerOutCard (id, pos) {
+      if (this.curTurn === 0 && this.canOpt) {
+        if (this.curCardPos === id) {
+          // 出牌
+          this.playerCard[this.curTurn].splice(pos, 1)
+          this.curCardPos = 0
+          this.turnControl()
+        } else {
+          this.curCardPos = id
+        }
+        // this.$forceUpdate()
+      }
+    },
+    judge3N (arr) {
+      let i = 1
+      let tmp = []
+      arr.forEach(cur => {
+        tmp.push(cur)
+      })
+      while (i <= 9) {
+        // console.log(i)
+        if (tmp[i] === 0) {
+          i++
+        }
+        if (tmp[i] === 1 || tmp[i] === 2) {
+          if (i > 7) {
+            return false
+          }
+          tmp[i + 2] -= tmp[i]
+          tmp[i + 1] -= tmp[i]
+          tmp[i] = 0
+          if (tmp[i + 2] < 0 || tmp[i + 1] < 0) {
+            return false
+          }
+          i++
+        }
+        if (tmp[i] >= 3) {
+          tmp[i] -= 3
+          if (tmp[i] === 0) {
+            i++
+          }
+        }
+      }
+      return true
+    },
+    dfs3N (arr, depth, sum) {
+      // console.log(arr, depth, sum, chance)
+      if (depth === 9) {
+        // if (arr[1] === 1 && arr[2] === 4 && arr[3] === 1) {
+        // console.log('arr', arr)
+        // }
+        if (sum % 3 !== 0) {
+          return -1
+        }
+        // console.log('arr', arr)
+        if (this.judge3N(arr)) {
+          return 0
+        }
+        return -1
+      }
+      let res = 0
+      for (let m = 0; m <= 4 - arr[depth]; m++) {
+        if (sum + m > 12) {
+          continue
+        }
+        arr[depth] += m
+        let tmp = this.dfs3N(arr, depth + 1, sum + m)
+        if (tmp !== -1) {
+          res += m/(136 - sum)
+        }
+        arr[depth] -= m
+      }
+      return res
+    },
+    judge3N2 (arr) {
+      // arr = [0, 1, 4, 1, 0, 0, 0, 0, 0, 0]
+      // arr = [0, 1, 4, 1, 0, 0, 0, 0, 1, 0]
+      let i = 1
+      let tmp = []
+      arr.forEach(cur => {
+        tmp.push(cur)
+      })
+      while (i <= 9) {
+        // console.log(i)
+        if (tmp[i] === 0) {
+          i++
+        }
+        if (tmp[i] === 1) {
+          if (i === 9) {
+            return false
+          }
+          if (tmp[i + 1] === 0) {
+            return false
+          }
+          tmp[i + 1] -= 1
+          tmp[i] = 0
+          if (this.judge3N(tmp)) {
+            return true
+          }
+          tmp[i + 1] += 1
+          tmp[i] = 1
+          i++
+        } else if (tmp[i] >= 2) {
+          if (i < 9 && tmp[i + 1] > 0) {
+            tmp[i + 1] -= 1
+            tmp[i] -= 1
+            if (this.judge3N(tmp)) {
+              return true
+            }
+            tmp[i + 1] += 1
+            tmp[i] += 1
+          }
+          tmp[i] -= 2
+          if (this.judge3N(tmp)) {
+            return true
+          }
+          tmp[i] += 2
+          i++
+        }
+      }
+      return false
+    },
+    dfs3N2 (arr, depth, sum) {
+      // console.log(arr, depth, sum, chance)
+      if (depth === 9) {
+        // if (arr[1] === 1 && arr[2] === 4 && arr[3] === 1) {
+        // console.log('arr', arr)
+        // }
+        if ((sum - 2) % 3 !== 0) {
+          return -1
+        }
+        // console.log('arr', arr)
+        if (this.judge3N2(arr)) {
+          return 0
+        }
+        return -1
+      }
+      let res = 0
+      for (let m = 0; m <= 4 - arr[depth]; m++) {
+        if (sum + m > 14) {
+          continue
+        }
+        arr[depth] += m
+        let tmp = this.dfs3N2(arr, depth + 1, sum + m)
+        if (tmp !== -1) {
+          res += m/(136 - sum)
+        }
+        arr[depth] -= m
+      }
+      return res
+    },
+    judgeO3N (arr) {
+      let i = 1
+      let tmp = []
+      arr.forEach(cur => {
+        tmp.push(cur)
+      })
+      while (i <= 7) {
+        // console.log(i)
+        if (tmp[i] === 0) {
+          i++
+        }
+        if (i !== 3) {
+          return false
+        }
+        i++
+      }
+      return true
+    },
+    dfsO3N (arr, depth, sum) {
+      // console.log(arr, depth, sum, chance)
+      if (depth === 7) {
+        // if (arr[1] === 1 && arr[2] === 4 && arr[3] === 1) {
+        // console.log('arr', arr)
+        // }
+        if (sum % 3 !== 0) {
+          return -1
+        }
+        // console.log('arr', arr)
+        if (this.judgeO3N(arr)) {
+          return 0
+        }
+        return -1
+      }
+      let res = 0
+      for (let m = 0; m <= 4 - arr[depth]; m++) {
+        if (sum + m > 12) {
+          continue
+        }
+        arr[depth] += m
+        let tmp = this.dfsO3N(arr, depth + 1, sum + m)
+        if (tmp !== -1) {
+          res += m/(136 - sum)
+        }
+        arr[depth] -= m
+      }
+      return res
+    },
+    judgeO3N2 (arr) {
+      // arr = [0, 1, 4, 1, 0, 0, 0, 0, 0, 0]
+      // arr = [0, 1, 4, 1, 0, 0, 0, 0, 1, 0]
+      let i = 1
+      let tmp = []
+      arr.forEach(cur => {
+        tmp.push(cur)
+      })
+      while (i <= 7) {
+        // console.log(i)
+        if (tmp[i] === 0 || tmp[i] === 3) {
+          i++
+        } else if (tmp[i] === 2) {
+          tmp[i] = 0
+          return this.judgeO3N(tmp);
+        } else {
+          return false
+        }
+      }
+      return false
+    },
+    dfsO3N2 (arr, depth, sum) {
+      // console.log(arr, depth, sum, chance)
+      if (depth === 7) {
+        // if (arr[1] === 1 && arr[2] === 4 && arr[3] === 1) {
+        // console.log('arr', arr)
+        // }
+        if ((sum - 2) % 3 !== 0) {
+          return -1
+        }
+        // console.log('arr', arr)
+        if (this.judgeO3N2(arr)) {
+          return 0
+        }
+        return -1
+      }
+      let res = 0
+      for (let m = 0; m <= 4 - arr[depth]; m++) {
+        if (sum + m > 14) {
+          continue
+        }
+        arr[depth] += m
+        let tmp = this.dfsO3N2(arr, depth + 1, sum + m)
+        if (tmp !== -1) {
+          res += m/(136 - sum)
+        }
+        arr[depth] -= m
+      }
+      return res
+    },
+    get3NChance (arr) {
+      /*
+      给出数组arr，arr.length = 9
+      arr[i] = t的含义为：i的个数为t，即arr是一个计数用的数组
+      在满足0 <= arr[i] <= 4 && (arr[0] + arr[1] +...+ arr[8] <= 12)的前提下，arr[i]可以任意增加一个正整数m，求让arr形成3N局面的概率。
+      arr[i] + m的概率计算：m / (36 - sum(arr) - m)
+      3N局面：原数组中的所有数字可以每三个一组，一组可以是三个相同，或相连。
+      如arr = [1,2,1]，即原数组为[0,1,1,2]，则其中一个3N局面可以是：arr[1]+=2,则arr=[1,4,1]，原数组为[0,1,1,1,1,2]，可以分为[0,1,2]和[1,1,1]，形成3N局面
+      * */
+      let flag = true
+      for (let i = 0; i < arr.length; i++) {
+        if (arr[i]) {
+          flag = false
+          break
+        }
+      }
+      if (flag) {
+        return 1
+      }
+      return this.dfs3N(arr, 1, arr[1])
+    },
+    get3N2Chance (arr) {
+      return this.dfs3N2(arr, 1, arr[1])
+    },
+    getO3NChance (arr) {
+      let flag = true
+      for (let i = 0; i < arr.length; i++) {
+        if (arr[i]) {
+          flag = false
+          break
+        }
+      }
+      if (flag) {
+        return 1
+      }
+      return this.dfsO3N(arr, 1, arr[1])
+    },
+    getO3N2Chance (arr) {
+      return this.dfsO3N2(arr, 1, arr[1])
+    },
   },
   created() {
     // console.log('card', this.cardList())
     this.cardList = this.generateCards()
     this.curTurn = this.randomInteger(0, 3)
+    this.curTurn = 0
     console.log(this.curTurn)
     this.initHandOut()
   },
   mounted() {
     if (this.curTurn !== 0) {
       setTimeout(() => {
-        // while (this.curTurn !== 0) {
-        //   this.aiTurn(this.curTurn)
-        //   this.turnControl()
-        // }
+        this.aiTurn()
       }, 1000)
+    } else {
+      this.playerTurn()
     }
   }
 }
@@ -948,6 +1335,9 @@ export default {
             justify-content: center;
           }
 
+        }
+        .pre-out-card {
+          top: -10px;
         }
         .empty-card {
           width: 80px;
