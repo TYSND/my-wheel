@@ -9,7 +9,7 @@
         <div class="card-list">
           <div :class="{
             'card': true,
-            'pre-out-card': i === 1 && curCardPos === card.id
+            'pre-out-card': i === 1 && curSelectId === card.id
           }" v-for="(card, index) in playerCard[i - 1]" :key="index" @click="playerOutCard(card.id, index)">
             {{card.type + card.num}}
             <div :class="{
@@ -90,7 +90,8 @@ export default {
       playerCard: [[], [], [], []],
       curTurn: 0,
       curCardPos: 0,
-      canOpt: false
+      canOpt: false,
+      curSelectId: 0,
     }
   },
   methods: {
@@ -199,6 +200,9 @@ export default {
     handOut () {
       if (this.curCardPos >= this.cardList.length) {
         this.curCardPos = 0
+      }
+      if (this.curTurn === 0) {
+        console.log('当前摸牌', this.cardList[this.curCardPos].id + ' ' + this.cardList[this.curCardPos].type + ' ' + this.cardList[this.curCardPos].num )
       }
       this.playerCard[this.curTurn].push(this.cardList[this.curCardPos++])
       this.playerCard[this.curTurn].sort(function (a, b) {
@@ -323,13 +327,13 @@ export default {
     },
     playerOutCard (id, pos) {
       if (this.curTurn === 0 && this.canOpt) {
-        if (this.curCardPos === id) {
+        if (this.curSelectId === id) {
           // 出牌
           this.playerCard[this.curTurn].splice(pos, 1)
-          this.curCardPos = 0
+          this.curSelectId = 0
           this.turnControl()
         } else {
-          this.curCardPos = id
+          this.curSelectId = id
         }
         // this.$forceUpdate()
       }
@@ -1340,7 +1344,7 @@ export default {
           top: -10px;
         }
         .empty-card {
-          width: 80px;
+          width: 60px;
         }
       }
     }
