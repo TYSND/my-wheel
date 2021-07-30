@@ -10,7 +10,7 @@
           <div :class="{
             'card': true,
             'pre-out-card': i === 1 && curSelectId === card.id
-          }" v-for="(card, index) in playerCard[i - 1]" :key="index" @click="playerOutCard(card.id, index)">
+          }" v-for="(card, index) in playerCard[i - 1]" :key="index" @click="playerOutCard(card.id, index, i === 1)">
             {{card.type + card.num}}
             <div :class="{
               'card-pattern': true,
@@ -213,8 +213,40 @@ export default {
         }
       })
     },
+    judgeHu (arr) {
+      // 首先将bing tiao wan 都映射到计数数组上
+      let bing3N = false, bing3N2 = false
+      let tiao3N = false, tiao3N2 = false
+      let wan3N = false, wan3N2 = false
+      let other3N = false, other3N2 = false
+      let bingArr = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+      let tiaoArr = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+      let wanArr = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+      let otherArr = [0, 0, 0, 0, 0, 0, 0, 0]
+      for (let i = 0; i < arr.length; i++) {
+        let tmp = this.playerCard[this.curTurn][i]
+        if (tmp.type === 'bing') {
+          bingArr[tmp.num]++
+        } else if (tmp.type === 'tiao') {
+          tiaoArr[tmp.num]++
+        } else if (tmp.type === 'wan') {
+          wanArr[tmp.num]++
+        } else if (tmp.type === 'afeng') {
+          otherArr[tmp.num]++
+        } else if (tmp.type === 'abai') {
+          otherArr[5]++
+        } else if (tmp.type === 'acai') {
+          otherArr[6]++
+        } else if (tmp.type === 'azhong') {
+          otherArr[7]++
+        }
+      }
+
+
+    },
     judgeBreak () {
       // 判断吃、碰、杠、胡
+
       return -1
     },
     judgeSelf () {
@@ -222,11 +254,13 @@ export default {
     },
     turnControl () {
       this.curTurn = (this.curTurn + 1) % 4
-      if (this.curTurn === 0) {
-        this.playerTurn()
-      } else {
-        this.aiTurn()
-      }
+      setTimeout(() => {
+        if (this.curTurn === 0) {
+          this.playerTurn()
+        } else {
+          this.aiTurn()
+        }
+      }, 100)
     },
     aiTurn () {
       this.handOut()
@@ -242,7 +276,7 @@ export default {
       let tiaoArr = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
       let wanArr = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
       let otherArr = [0, 0, 0, 0, 0, 0, 0, 0]
-      for (let i = 0; i < this.playerCard[this.curTurn]; i++) {
+      for (let i = 0; i < this.playerCard[this.curTurn].length; i++) {
         let tmp = this.playerCard[this.curTurn][i]
         if (tmp.type === 'bing') {
           bingArr[tmp.num]++
@@ -261,7 +295,7 @@ export default {
         }
       }
       let ma = 0, pos = 0
-      for (let i = 0; i < this.playerCard[this.curTurn]; i++) {
+      for (let i = 0; i < this.playerCard[this.curTurn].length; i++) {
         let tmp = this.playerCard[this.curTurn][i]
         if (tmp.type === 'bing') {
           bingArr[tmp.num]--
@@ -286,7 +320,7 @@ export default {
         wan3N2 = this.get3N2Chance(wanArr)
         other3N = this.getO3NChance(otherArr)
         other3N2 = this.getO3N2Chance(otherArr)
-        let tmpMa = bing3N2 + tiao3N + wan3n + other3N
+        let tmpMa = bing3N2 + tiao3N + wan3N + other3N
         tmpMa = Math.max(tmpMa, (bing3N + tiao3N2 + wan3N + other3N))
         tmpMa = Math.max(tmpMa, (bing3N + tiao3N + wan3N2 + other3N))
         tmpMa = Math.max(tmpMa, (bing3N + tiao3N + wan3N + other3N2))
@@ -325,17 +359,22 @@ export default {
       // 出牌
       this.canOpt = true
     },
-    playerOutCard (id, pos) {
-      if (this.curTurn === 0 && this.canOpt) {
+    playerOutCard (id, pos, isPlayer) {
+      if (this.curTurn === 0 && this.canOpt && isPlayer) {
         if (this.curSelectId === id) {
           // 出牌
           this.playerCard[this.curTurn].splice(pos, 1)
           this.curSelectId = 0
-          this.turnControl()
+          // this.$forceUpdate()
+          this.$nextTick(() => {
+            this.turnControl()
+          })
+          // setTimeout(() => {
+          //
+          // }, 1000)
         } else {
           this.curSelectId = id
         }
-        // this.$forceUpdate()
       }
     },
     judge3N (arr) {
@@ -618,7 +657,7 @@ export default {
     // console.log('card', this.cardList())
     this.cardList = this.generateCards()
     this.curTurn = this.randomInteger(0, 3)
-    this.curTurn = 0
+    // this.curTurn = 0
     console.log(this.curTurn)
     this.initHandOut()
   },
