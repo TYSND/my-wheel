@@ -77,6 +77,46 @@
         }" v-for="i in 4" :key="'mark' + i">
         <i class="el-icon-caret-bottom cur-turn" v-if="curTurn === i - 1"></i>
       </div>
+      <div class="card">
+<!--        {{lastCard.type + lastCard.num}}-->
+        <div :class="{
+              'card-pattern': true,
+              // 'bing1': lastCard.type === 'bing' && lastCard.num === 1,
+              // 'bing2': lastCard.type === 'bing' && lastCard.num === 2,
+              // 'bing3': lastCard.type === 'bing' && lastCard.num === 3,
+              // 'bing4': lastCard.type === 'bing' && lastCard.num === 4,
+              // 'bing5': lastCard.type === 'bing' && lastCard.num === 5,
+              // 'bing6': lastCard.type === 'bing' && lastCard.num === 6,
+              // 'bing7': lastCard.type === 'bing' && lastCard.num === 7,
+              // 'bing8': lastCard.type === 'bing' && lastCard.num === 8,
+              // 'bing9': lastCard.type === 'bing' && lastCard.num === 9,
+              // 'tiao1': lastCard.type === 'tiao' && lastCard.num === 1,
+              // 'tiao2': lastCard.type === 'tiao' && lastCard.num === 2,
+              // 'tiao3': lastCard.type === 'tiao' && lastCard.num === 3,
+              // 'tiao4': lastCard.type === 'tiao' && lastCard.num === 4,
+              // 'tiao5': lastCard.type === 'tiao' && lastCard.num === 5,
+              // 'tiao6': lastCard.type === 'tiao' && lastCard.num === 6,
+              // 'tiao7': lastCard.type === 'tiao' && lastCard.num === 7,
+              // 'tiao8': lastCard.type === 'tiao' && lastCard.num === 8,
+              // 'tiao9': lastCard.type === 'tiao' && lastCard.num === 9,
+              // 'wan1': lastCard.type === 'wan' && lastCard.num === 1,
+              // 'wan2': lastCard.type === 'wan' && lastCard.num === 2,
+              // 'wan3': lastCard.type === 'wan' && lastCard.num === 3,
+              // 'wan4': lastCard.type === 'wan' && lastCard.num === 4,
+              // 'wan5': lastCard.type === 'wan' && lastCard.num === 5,
+              // 'wan6': lastCard.type === 'wan' && lastCard.num === 6,
+              // 'wan7': lastCard.type === 'wan' && lastCard.num === 7,
+              // 'wan8': lastCard.type === 'wan' && lastCard.num === 8,
+              // 'wan9': lastCard.type === 'wan' && lastCard.num === 9,
+              // 'feng1': lastCard.type === 'afeng' && lastCard.num === 1,
+              // 'feng2': lastCard.type === 'afeng' && lastCard.num === 2,
+              // 'feng3': lastCard.type === 'afeng' && lastCard.num === 3,
+              // 'feng4': lastCard.type === 'afeng' && lastCard.num === 4,
+              // 'bai': lastCard.type === 'abai',
+              // 'cai': lastCard.type === 'acai',
+              // 'zhong': lastCard.type === 'azhong'
+            }"></div>
+      </div>
     </div>
   </div>
 </template>
@@ -106,7 +146,8 @@ export default {
             id: cnt++,
             type: 'bing',
             num: i,
-            show: false
+            show: false,
+            canHandOut: true
           })
         }
       }
@@ -116,7 +157,8 @@ export default {
             id: cnt++,
             type: 'wan',
             num: i,
-            show: false
+            show: false,
+            canHandOut: true
           })
         }
       }
@@ -126,7 +168,8 @@ export default {
             id: cnt++,
             type: 'tiao',
             num: i,
-            show: false
+            show: false,
+            canHandOut: true
           })
         }
       }
@@ -136,7 +179,8 @@ export default {
             id: cnt++,
             type: 'afeng',
             num: i,
-            show: false
+            show: false,
+            canHandOut: true
           })
         }
       }
@@ -145,7 +189,8 @@ export default {
           id: cnt++,
           type: 'abai',
           num: 1,
-          show: false
+          show: false,
+          canHandOut: true
         })
       }
       for (let j = 0; j < 4; j++) {
@@ -153,7 +198,8 @@ export default {
           id: cnt++,
           type: 'acai',
           num: 1,
-          show: false
+          show: false,
+          canHandOut: true
         })
       }
       for (let j = 0; j < 4; j++) {
@@ -161,7 +207,8 @@ export default {
           id: cnt++,
           type: 'azhong',
           num: 1,
-          show: false
+          show: false,
+          canHandOut: true
         })
       }
       card.sort(() => Math.random() - 0.5)
@@ -201,11 +248,23 @@ export default {
     },
     handOut (turn = this.curTurn) {
       if (this.curCardPos >= this.cardList.length) {
+        console.log('一轮摸完/////////////////////////////////////////////////////////')
         this.curCardPos = 0
       }
-      if (turn === 0) {
-        console.log('当前摸牌', this.cardList[this.curCardPos].id + ' ' + this.cardList[this.curCardPos].type + ' ' + this.cardList[this.curCardPos].num )
+      while(this.cardList[this.curCardPos].canHandOut === false) {
+        this.curCardPos++
+        if (this.curCardPos >= this.cardList.length) {
+          console.log('一轮摸完////////////////////////////////////////////////////////////////////////')
+          this.curCardPos = 0
+        }
       }
+      console.log('当前摸牌位置', this.curCardPos)
+      if (turn === 0) {
+        console.log('player当前摸牌', this.cardList[this.curCardPos].id + ' ' + this.cardList[this.curCardPos].type + ' ' + this.cardList[this.curCardPos].num )
+      } else {
+        console.log('ai' + turn + '当前摸牌', this.cardList[this.curCardPos].id + ' ' + this.cardList[this.curCardPos].type + ' ' + this.cardList[this.curCardPos].num )
+      }
+      this.cardList[this.curCardPos].canHandOut = false
       this.playerCard[turn].push(this.cardList[this.curCardPos++])
       this.playerCard[turn].sort(function (a, b) {
         if (a.type === b.type) {
@@ -259,7 +318,7 @@ export default {
       }
       return false
     },
-    judgeBreak () {
+    async judgeBreak () {
       // 判断吃、碰、杠、胡
       /*
       首先判断胡
@@ -268,20 +327,23 @@ export default {
       * */
       // 判断胡
       for (let i = 1; i <= 3; i++) {
-        let tmp = []
-        this.playerCard[(this.curTurn + i) % 4].forEach(cur => {
+        let tmp = [], tmpTurn = (this.curTurn + i) % 4
+        this.playerCard[tmpTurn].forEach(cur => {
           tmp.push(cur)
         })
         tmp.push(this.lastCard)
         if (this.judgeHu(tmp)) {
+          alert(tmpTurn + 'win!')
           this.gameOver = true
-          return (this.curTurn + i) % 4
+          return tmpTurn
         }
       }
       console.log('判断胡结束')
       // 判断杠或碰
+      let orderList = []
       let tmpTurn = (this.curTurn + 1) % 4
       while(tmpTurn !== this.curTurn) {
+        console.log('检测碰或杠',tmpTurn)
         let tmpArr = this.playerCard[tmpTurn]
         // 首先将bing tiao wan 都映射到计数数组上
         let bingArr = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
@@ -306,43 +368,8 @@ export default {
             otherArr[7]++
           }
         }
-
-        // if (tmpTurn !== 0) {
-        //   // ai
-        //   // 偷个懒，能杠就杠
-        //
-        // } else {
-        //   // 玩家
-        //   // 先判断杠
-        //   // if ()
-        //   this.$msgbox({
-        //     title: '消息',
-        //     message: h('p', null, [
-        //       h('span', null, '内容可以是 '),
-        //       h('i', { style: 'color: teal' }, 'VNode')
-        //     ]),
-        //     showCancelButton: true,
-        //     confirmButtonText: '确定',
-        //     cancelButtonText: '取消',
-        //     beforeClose: (action, instance, done) => {
-        //       if (action === 'confirm') {
-        //         instance.confirmButtonLoading = true;
-        //         instance.confirmButtonText = '执行中...';
-        //         setTimeout(() => {
-        //           done();
-        //           setTimeout(() => {
-        //             instance.confirmButtonLoading = false;
-        //           }, 300);
-        //         }, 3000);
-        //       } else {
-        //         done();
-        //       }
-        //     }
-        //   }).then(() => {
-        //     tmpTurn = (tmpTurn + 1) % 4
-        //   });
-        // }
         if (this.lastCard.type === 'bing') {
+          console.log('检测bing')
           if (bingArr[this.lastCard.num] === 3) {
             if (tmpTurn !== 0) {
               // ai
@@ -354,11 +381,28 @@ export default {
               }
               this.handOut(tmpTurn)
               console.log('ai' + tmpTurn + ' 杠' + this.lastCard.type + this.lastCard.num)
-              this.curTurn = tmpTurn + 1
+              this.curTurn = (tmpTurn + 1) % 4
               return -2
             } else {
               // player
-
+              await this.$confirm('是否杠', '提示', {
+                confirmButtonText: '确定',
+                cancelButtonText: '取消',
+                type: 'warning'
+              }).then(() => {
+                let cnt = this.playerCard[tmpTurn].length - 1
+                while (cnt--) {
+                  if (this.playerCard[tmpTurn][cnt].type === this.lastCard.type && this.playerCard[tmpTurn][cnt].num === this.lastCard.num) {
+                    this.playerCard[tmpTurn].splice(cnt, 1)
+                  }
+                }
+                this.handOut(tmpTurn)
+                console.log('ai' + tmpTurn + ' 杠' + this.lastCard.type + this.lastCard.num)
+                this.curTurn = (tmpTurn + 1) % 4
+                return -2
+              }).catch(() => {
+                console.log('不杠')
+              });
             }
           } else if (bingArr[this.lastCard.num] === 2) {
             console.log('检测碰', this.lastCard.type + this.lastCard.num)
@@ -381,6 +425,7 @@ export default {
               preMa = Math.max(preMa, (bing3N + tiao3N2 + wan3N + other3N))
               preMa = Math.max(preMa, (bing3N + tiao3N + wan3N2 + other3N))
               preMa = Math.max(preMa, (bing3N + tiao3N + wan3N + other3N2))
+              console.log('检测得分preMa', preMa)
               //删除这两个
               let cnt = tmpArr.length - 1
               while (cnt--) {
@@ -399,6 +444,7 @@ export default {
               other3N = 0
               other3N2 = 0
               let ma = 0, pos = 0
+              console.log('开始计算删除后ma')
               for (let i = 0; i < tmpArr.length; i++) {
                 let tmp = tmpArr[i]
                 if (tmp.type === 'bing') {
@@ -451,27 +497,33 @@ export default {
                   otherArr[7]++
                 }
               }
+              console.log('计算ma完成',ma)
               if (preMa <= ma) {
                 console.log('ai' + tmpTurn + ' 碰' + this.lastCard.type + this.lastCard.num)
-                let cnt = this.playerCard[tmpTurn].length - 1
-                while (cnt--) {
-                  if (this.playerCard[tmpTurn][cnt].type === this.lastCard.type && this.playerCard[tmpTurn][cnt].num === this.lastCard.num) {
-                    this.playerCard[tmpTurn].splice(cnt, 1)
+                if (orderList.length > 0 && orderList[orderList.length - 1] === 0) {
+                  orderList.push(tmpTurn)
+                } else {
+                  let cnt = this.playerCard[tmpTurn].length - 1
+                  while (cnt--) {
+                    if (this.playerCard[tmpTurn][cnt].type === this.lastCard.type && this.playerCard[tmpTurn][cnt].num === this.lastCard.num) {
+                      this.playerCard[tmpTurn].splice(cnt, 1)
+                    }
                   }
+                  this.curTurn = tmpTurn
+                  return pos
                 }
-                // console.log('ai card', this.playerCard[tmpTurn][pos].type + this.playerCard[this.curTurn][pos].num)
-                this.curTurn = tmpTurn
-                return pos
                 // this.lastCard = this.playerCard[tmpTurn][pos]
                 // this.playerCard[tmpTurn].splice(pos, 1)
                 // return tmpTurn
               }
             } else {
               // player
+              orderList.push(tmpTurn)
             }
           }
 
         } else if (this.lastCard.type === 'tiao') {
+          console.log('检测tiao')
           if (tiaoArr[this.lastCard.num] === 3) {
             if (tmpTurn !== 0) {
               // ai
@@ -483,10 +535,28 @@ export default {
               }
               this.handOut(tmpTurn)
               console.log('ai' + tmpTurn + ' 杠' + this.lastCard.type + this.lastCard.num)
-              this.curTurn = tmpTurn + 1
+              this.curTurn = (tmpTurn + 1) % 4
               return -2
             } else {
               // player
+              await this.$confirm('是否杠', '提示', {
+                confirmButtonText: '确定',
+                cancelButtonText: '取消',
+                type: 'warning'
+              }).then(() => {
+                let cnt = this.playerCard[tmpTurn].length - 1
+                while (cnt--) {
+                  if (this.playerCard[tmpTurn][cnt].type === this.lastCard.type && this.playerCard[tmpTurn][cnt].num === this.lastCard.num) {
+                    this.playerCard[tmpTurn].splice(cnt, 1)
+                  }
+                }
+                this.handOut(tmpTurn)
+                console.log('ai' + tmpTurn + ' 杠' + this.lastCard.type + this.lastCard.num)
+                this.curTurn = (tmpTurn + 1) % 4
+                return -2
+              }).catch(() => {
+                console.log('不杠')
+              });
             }
           } else if (tiaoArr[this.lastCard.num] === 2) {
             if (tmpTurn !== 0) {
@@ -508,6 +578,7 @@ export default {
               preMa = Math.max(preMa, (bing3N + tiao3N2 + wan3N + other3N))
               preMa = Math.max(preMa, (bing3N + tiao3N + wan3N2 + other3N))
               preMa = Math.max(preMa, (bing3N + tiao3N + wan3N + other3N2))
+              console.log('检测得分preMa', preMa)
               //删除这两个
               let cnt = tmpArr.length - 1
               while (cnt--) {
@@ -526,6 +597,7 @@ export default {
               other3N = 0
               other3N2 = 0
               let ma = 0, pos = 0
+              console.log('开始计算删除后ma')
               for (let i = 0; i < tmpArr.length; i++) {
                 let tmp = tmpArr[i]
                 if (tmp.type === 'bing') {
@@ -578,26 +650,32 @@ export default {
                   otherArr[7]++
                 }
               }
+              console.log('计算ma完成',ma)
               if (preMa <= ma) {
                 console.log('ai' + tmpTurn + ' 碰' + this.lastCard.type + this.lastCard.num)
-                let cnt = this.playerCard[tmpTurn].length - 1
-                while (cnt--) {
-                  if (this.playerCard[tmpTurn][cnt].type === this.lastCard.type && this.playerCard[tmpTurn][cnt].num === this.lastCard.num) {
-                    this.playerCard[tmpTurn].splice(cnt, 1)
+                if (orderList.length > 0 && orderList[orderList.length - 1] === 0) {
+                  orderList.push(tmpTurn)
+                } else {
+                  let cnt = this.playerCard[tmpTurn].length - 1
+                  while (cnt--) {
+                    if (this.playerCard[tmpTurn][cnt].type === this.lastCard.type && this.playerCard[tmpTurn][cnt].num === this.lastCard.num) {
+                      this.playerCard[tmpTurn].splice(cnt, 1)
+                    }
                   }
+                  this.curTurn = tmpTurn
+                  return pos
                 }
-                // console.log('ai card', this.playerCard[tmpTurn][pos].type + this.playerCard[this.curTurn][pos].num)
-                this.curTurn = tmpTurn
-                return pos
                 // this.lastCard = this.playerCard[tmpTurn][pos]
                 // this.playerCard[tmpTurn].splice(pos, 1)
                 // return tmpTurn
               }
             } else {
               // player
+              orderList.push(tmpTurn)
             }
           }
         } else if (this.lastCard.type === 'wan') {
+          console.log('检测wan')
           if (wanArr[this.lastCard.num] === 3) {
             if (tmpTurn !== 0) {
               // ai
@@ -609,10 +687,28 @@ export default {
               }
               this.handOut(tmpTurn)
               console.log('ai' + tmpTurn + ' 杠' + this.lastCard.type + this.lastCard.num)
-              this.curTurn = tmpTurn + 1
+              this.curTurn = (tmpTurn + 1) % 4
               return -2
             } else {
               // player
+              await this.$confirm('是否杠', '提示', {
+                confirmButtonText: '确定',
+                cancelButtonText: '取消',
+                type: 'warning'
+              }).then(() => {
+                let cnt = this.playerCard[tmpTurn].length - 1
+                while (cnt--) {
+                  if (this.playerCard[tmpTurn][cnt].type === this.lastCard.type && this.playerCard[tmpTurn][cnt].num === this.lastCard.num) {
+                    this.playerCard[tmpTurn].splice(cnt, 1)
+                  }
+                }
+                this.handOut(tmpTurn)
+                console.log('ai' + tmpTurn + ' 杠' + this.lastCard.type + this.lastCard.num)
+                this.curTurn = (tmpTurn + 1) % 4
+                return -2
+              }).catch(() => {
+                console.log('不杠')
+              });
             }
           } else if (wanArr[this.lastCard.num] === 2) {
             if (tmpTurn !== 0) {
@@ -634,6 +730,7 @@ export default {
               preMa = Math.max(preMa, (bing3N + tiao3N2 + wan3N + other3N))
               preMa = Math.max(preMa, (bing3N + tiao3N + wan3N2 + other3N))
               preMa = Math.max(preMa, (bing3N + tiao3N + wan3N + other3N2))
+              console.log('检测得分preMa', preMa)
               //删除这两个
               let cnt = tmpArr.length - 1
               while (cnt--) {
@@ -652,6 +749,7 @@ export default {
               other3N = 0
               other3N2 = 0
               let ma = 0, pos = 0
+              console.log('开始计算删除后ma')
               for (let i = 0; i < tmpArr.length; i++) {
                 let tmp = tmpArr[i]
                 if (tmp.type === 'bing') {
@@ -704,26 +802,32 @@ export default {
                   otherArr[7]++
                 }
               }
+              console.log('计算ma完成',ma)
               if (preMa <= ma) {
                 console.log('ai' + tmpTurn + ' 碰' + this.lastCard.type + this.lastCard.num)
-                let cnt = this.playerCard[tmpTurn].length - 1
-                while (cnt--) {
-                  if (this.playerCard[tmpTurn][cnt].type === this.lastCard.type && this.playerCard[tmpTurn][cnt].num === this.lastCard.num) {
-                    this.playerCard[tmpTurn].splice(cnt, 1)
+                if (orderList.length > 0 && orderList[orderList.length - 1] === 0) {
+                  orderList.push(tmpTurn)
+                } else {
+                  let cnt = this.playerCard[tmpTurn].length - 1
+                  while (cnt--) {
+                    if (this.playerCard[tmpTurn][cnt].type === this.lastCard.type && this.playerCard[tmpTurn][cnt].num === this.lastCard.num) {
+                      this.playerCard[tmpTurn].splice(cnt, 1)
+                    }
                   }
+                  this.curTurn = tmpTurn
+                  return pos
                 }
-                // console.log('ai card', this.playerCard[tmpTurn][pos].type + this.playerCard[this.curTurn][pos].num)
-                this.curTurn = tmpTurn
-                return pos
                 // this.lastCard = this.playerCard[tmpTurn][pos]
                 // this.playerCard[tmpTurn].splice(pos, 1)
                 // return tmpTurn
               }
             } else {
               // player
+              orderList.push(tmpTurn)
             }
           }
         } else if (this.lastCard.type === 'afeng' || this.lastCard.type === 'abai' || this.lastCard.type === 'acai' || this.lastCard.type === 'azhong' ) {
+          console.log('检测other')
           let mapPos = 0
           if (this.lastCard.type === 'afeng') {
             mapPos = this.lastCard.num
@@ -744,10 +848,28 @@ export default {
                 }
               }
               this.handOut(tmpTurn)
-              this.curTurn = tmpTurn + 1
+              this.curTurn = (tmpTurn + 1) % 4
               return -2
             } else {
               // player
+              await this.$confirm('是否杠', '提示', {
+                confirmButtonText: '确定',
+                cancelButtonText: '取消',
+                type: 'warning'
+              }).then(() => {
+                let cnt = this.playerCard[tmpTurn].length - 1
+                while (cnt--) {
+                  if (this.playerCard[tmpTurn][cnt].type === this.lastCard.type && this.playerCard[tmpTurn][cnt].num === this.lastCard.num) {
+                    this.playerCard[tmpTurn].splice(cnt, 1)
+                  }
+                }
+                this.handOut(tmpTurn)
+                console.log('ai' + tmpTurn + ' 杠' + this.lastCard.type + this.lastCard.num)
+                this.curTurn = (tmpTurn + 1) % 4
+                return -2
+              }).catch(() => {
+                console.log('不杠')
+              });
             }
           } else if (otherArr[mapPos] === 2) {
             if (tmpTurn !== 0) {
@@ -840,21 +962,26 @@ export default {
                 }
               }
               if (preMa <= ma) {
-                let cnt = this.playerCard[tmpTurn].length - 1
-                while (cnt--) {
-                  if (this.playerCard[tmpTurn][cnt].type === this.lastCard.type && this.playerCard[tmpTurn][cnt].num === this.lastCard.num) {
-                    this.playerCard[tmpTurn].splice(cnt, 1)
+                console.log('ai' + tmpTurn + ' 碰' + this.lastCard.type + this.lastCard.num)
+                if (orderList.length > 0 && orderList[orderList.length - 1] === 0) {
+                  orderList.push(tmpTurn)
+                } else {
+                  let cnt = this.playerCard[tmpTurn].length - 1
+                  while (cnt--) {
+                    if (this.playerCard[tmpTurn][cnt].type === this.lastCard.type && this.playerCard[tmpTurn][cnt].num === this.lastCard.num) {
+                      this.playerCard[tmpTurn].splice(cnt, 1)
+                    }
                   }
+                  this.curTurn = tmpTurn
+                  return pos
                 }
-                // console.log('ai card', this.playerCard[tmpTurn][pos].type + this.playerCard[this.curTurn][pos].num)
-                this.curTurn = tmpTurn
-                return pos
                 // this.lastCard = this.playerCard[tmpTurn][pos]
                 // this.playerCard[tmpTurn].splice(pos, 1)
                 // return tmpTurn
               }
             } else {
               // player
+              orderList.push(tmpTurn)
             }
           }
         }
@@ -862,17 +989,77 @@ export default {
 
 
       }
-
-      return -1
+      if (orderList.length) {
+        if (orderList[0] === 0) {
+          console.log('判断player是否碰！！！！')
+          const h = this.$createElement;
+          let cardClass = this.lastCard.type + this.lastCard.num
+          if (this.lastCard.type === 'abai') {
+            cardClass = bai
+          } else if (this.lastCard.type === 'acai') {
+            cardClass = cai
+          } else if (this.lastCard.type === 'afeng') {
+            cardClass = 'feng' + this.lastCard.num
+          } else if (this.lastCard.type === 'azhong') {
+            cardClass = 'zhong'
+          }
+          await this.$msgbox({
+            title: '消息',
+            message: h('div', { class: 'card' }, [
+              h('div', { class: 'card-pattern ' + cardClass }),
+              h('span', null, '是否碰 ' + cardClass + this.lastCard.num),
+            ]),
+            showCancelButton: true,
+            confirmButtonText: '确定',
+            cancelButtonText: '取消',
+            // beforeClose: (action, instance, done) => {
+            //   if (action === 'confirm') {
+            //     instance.confirmButtonLoading = true;
+            //     instance.confirmButtonText = '执行中...';
+            //     setTimeout(() => {
+            //       done();
+            //       setTimeout(() => {
+            //         instance.confirmButtonLoading = false;
+            //       }, 300);
+            //     }, 3000);
+            //   } else {
+            //     done();
+            //   }
+            // }
+          }).then(action => {
+            console.log('player 碰')
+            let cnt = this.playerCard[0].length - 1
+            while (cnt--) {
+              if (this.playerCard[0][cnt].type === this.lastCard.type && this.playerCard[0][cnt].num === this.lastCard.num) {
+                this.playerCard[0].splice(cnt, 1)
+              }
+            }
+            this.curTurn = 0
+          }).catch(() => {
+            console.log('取消')
+            return -1
+          });
+        }
+      } else {
+        return -1
+      }
     },
     judgeSelf () {
       // 判断自己能否赢或杠
     },
-    turnControl () {
+    async turnControl () {
       console.log('当前', this.curTurn)
-      let nxt = this.judgeBreak()
+      let nxt = await this.judgeBreak()
+      console.log('判断结束', nxt)
       if (nxt === -1) {
         // 正常流程
+        console.log('lastCard/////////////////////////////', this.lastCard)
+        this.cardList.forEach(cur => {
+          if (cur.id === this.lastCard.id) {
+            cur.canHandOut = true
+          }
+          // console.log(cur.id, cur.type, cur.num, cur.canHandOut)
+        })
         this.curTurn = (this.curTurn + 1) % 4
         console.log('正常流程', this.curTurn)
         setTimeout(() => {
@@ -885,7 +1072,20 @@ export default {
       } else if (nxt !== -2) {
         // 有人碰
         console.log('打断', this.curTurn)
-        this.aiTurn(nxt)
+        if (this.curTurn === 0) {
+          this.canOpt = true
+        } else {
+          this.aiTurn(nxt)
+        }
+      } else {
+        // 有人杠
+        setTimeout(() => {
+          if (this.curTurn === 0) {
+            this.playerTurn()
+          } else {
+            this.aiTurn()
+          }
+        }, 1)
       }
     },
     aiTurn (assignPos = -1) {
@@ -1088,16 +1288,15 @@ export default {
           if (i === 9) {
             return false
           }
-          if (tmp[i + 1] === 0) {
-            return false
+          if (tmp[i + 1] > 0) {
+            tmp[i + 1] -= 1
+            tmp[i] = 0
+            if (this.judge3N(tmp)) {
+              return true
+            }
+            tmp[i + 1] += 1
+            tmp[i] = 1
           }
-          tmp[i + 1] -= 1
-          tmp[i] = 0
-          if (this.judge3N(tmp)) {
-            return true
-          }
-          tmp[i + 1] += 1
-          tmp[i] = 1
           i++
         } else if (tmp[i] >= 2) {
           if (i < 9 && tmp[i + 1] > 0) {
