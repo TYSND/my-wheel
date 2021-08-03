@@ -125,10 +125,48 @@
 export default {
   name: "GoMahJong",
   data () {
+    const cardMap = {
+      'bing1': '一饼',
+      'bing2': '二饼',
+      'bing3': '三饼',
+      'bing4': '四饼',
+      'bing5': '五饼',
+      'bing6': '六饼',
+      'bing7': '七饼',
+      'bing8': '八饼',
+      'bing9': '九饼',
+      'tiao1': '一条',
+      'tiao2': '二条',
+      'tiao3': '三条',
+      'tiao4': '四条',
+      'tiao5': '五条',
+      'tiao6': '六条',
+      'tiao7': '七条',
+      'tiao8': '八条',
+      'tiao9': '九条',
+      'wan1': '一万',
+      'wan2': '二万',
+      'wan3': '三万',
+      'wan4': '四万',
+      'wan5': '五万',
+      'wan6': '六万',
+      'wan7': '七万',
+      'wan8': '八万',
+      'wan9': '九万',
+      'afeng1': '东风',
+      'afeng2': '西风',
+      'afeng3': '南风',
+      'afeng4': '北风',
+      'abai1': '白皮',
+      'acai1': '发财',
+      'azhong1': '红中'
+    }
     return {
+      cardMap: cardMap,
       cardList: [],
       playerCard: [[], [], [], []],
       curTurn: 0,
+      preTurn: -1,
       curCardPos: 0,
       canOpt: false,
       curSelectId: 0,
@@ -224,15 +262,20 @@ export default {
       for (let t = 0; t < 3; t++) {
         for (let i = 0, j = this.curTurn; i < 16; j = (j + 1)%4) {
           // console.log(16 *  t + i)
+          this.cardList[16 * t + i].canHandOut = false
           this.playerCard[j].push(this.cardList[16 * t + i])
           i++
           this.curCardPos++
         }
       }
+      this.cardList[this.curCardPos].canHandOut = false
       this.playerCard[this.curTurn].push(this.cardList[this.curCardPos++])
+      this.cardList[this.curCardPos].canHandOut = false
       this.playerCard[(this.curTurn + 1)%4].push(this.cardList[this.curCardPos++])
+      this.cardList[this.curCardPos].canHandOut = false
       // this.playerCard[this.curTurn].push(this.cardList[this.curCardPos++])
       this.playerCard[(this.curTurn + 2)%4].push(this.cardList[this.curCardPos++])
+      this.cardList[this.curCardPos].canHandOut = false
       this.playerCard[(this.curTurn + 3)%4].push(this.cardList[this.curCardPos++])
       for (let i = 0; i < 4; i++) {
         this.playerCard[i].sort(function (a, b) {
@@ -275,6 +318,7 @@ export default {
       })
     },
     judgeHu (arr) {
+      console.log('判断胡',arr)
       // 首先将bing tiao wan 都映射到计数数组上
       let bing3N = false, bing3N2 = false
       let tiao3N = false, tiao3N2 = false
@@ -310,7 +354,9 @@ export default {
       wan3N2 = this.judge3N2(wanArr)
       other3N = this.judgeO3N(otherArr)
       other3N2 = this.judgeO3N2(otherArr)
-      if ((bing3N2 && tiao3N && wan3N && other3N)
+      console.log('judge 胡', bing3N, bing3N2, tiao3N, tiao3N2, wan3N, wan3N2, other3N, other3N2)
+      if ((bing3N && tiao3N && wan3N && other3N)
+          || (bing3N2 && tiao3N && wan3N && other3N)
           || (bing3N && tiao3N2 && wan3N && other3N)
           || (bing3N && tiao3N && wan3N2 && other3N)
           || (bing3N && tiao3N && wan3N && other3N2)) {
@@ -379,13 +425,17 @@ export default {
                   this.playerCard[tmpTurn].splice(cnt, 1)
                 }
               }
-              this.handOut(tmpTurn)
+              // this.handOut(tmpTurn)
+              // this.curTurn = tmpTurn
+              this.curTurn = tmpTurn
               console.log('ai' + tmpTurn + ' 杠' + this.lastCard.type + this.lastCard.num)
-              this.curTurn = (tmpTurn + 1) % 4
+              // this.preTurn = this.curTurn
+              // this.curTurn = (tmpTurn + 1) % 4
               return -2
             } else {
               // player
-              await this.$confirm('是否杠', '提示', {
+              let tmpRes = 0
+              await this.$confirm('是否杠' + this.cardMap[this.lastCard.type + this.lastCard.num], '提示', {
                 confirmButtonText: '确定',
                 cancelButtonText: '取消',
                 type: 'warning'
@@ -396,13 +446,18 @@ export default {
                     this.playerCard[tmpTurn].splice(cnt, 1)
                   }
                 }
-                this.handOut(tmpTurn)
-                console.log('ai' + tmpTurn + ' 杠' + this.lastCard.type + this.lastCard.num)
-                this.curTurn = (tmpTurn + 1) % 4
+                this.curTurn = tmpTurn
+                console.log('player 杠' + this.lastCard.type + this.lastCard.num)
+                // this.preTurn = this.curTurn
+                // this.curTurn = (tmpTurn + 1) % 4
+                tmpRes = -2
                 return -2
               }).catch(() => {
                 console.log('不杠')
               });
+              if (tmpRes === -2) {
+                return -2
+              }
             }
           } else if (bingArr[this.lastCard.num] === 2) {
             console.log('检测碰', this.lastCard.type + this.lastCard.num)
@@ -428,10 +483,11 @@ export default {
               console.log('检测得分preMa', preMa)
               //删除这两个
               let cnt = tmpArr.length - 1
-              while (cnt--) {
+              while (cnt >= 0) {
                 if (tmpArr[cnt].type === this.lastCard.type && this.playerCard[tmpTurn][cnt].num === this.lastCard.num) {
                   tmpArr.splice(cnt, 1)
                 }
+                cnt--
               }
               bingArr[this.lastCard.num] -= 2
 
@@ -463,13 +519,22 @@ export default {
                   otherArr[7]--
                 }
                 bing3N = this.get3NChance(bingArr)
+                console.log('bing3N', bing3N)
                 bing3N2 = this.get3N2Chance(bingArr)
+                console.log('bing3N2', bing3N2)
                 tiao3N = this.get3NChance(tiaoArr)
+                console.log('tiao3N', tiao3N)
                 tiao3N2 = this.get3N2Chance(tiaoArr)
+                console.log('tiao3N2', tiao3N2)
                 wan3N = this.get3NChance(wanArr)
+                console.log('wan3N', wan3N)
+                console.log(wanArr)
                 wan3N2 = this.get3N2Chance(wanArr)
+                console.log('wan3N2', wan3N2)
                 other3N = this.getO3NChance(otherArr)
+                console.log('other3N', other3N)
                 other3N2 = this.getO3N2Chance(otherArr)
+                console.log('other3N2', other3N2)
                 let tmpMa = bing3N2 + tiao3N + wan3N + other3N
                 tmpMa = Math.max(tmpMa, (bing3N + tiao3N2 + wan3N + other3N))
                 tmpMa = Math.max(tmpMa, (bing3N + tiao3N + wan3N2 + other3N))
@@ -509,6 +574,7 @@ export default {
                       this.playerCard[tmpTurn].splice(cnt, 1)
                     }
                   }
+                  this.preTurn = this.curTurn
                   this.curTurn = tmpTurn
                   return pos
                 }
@@ -533,13 +599,16 @@ export default {
                   this.playerCard[tmpTurn].splice(cnt, 1)
                 }
               }
-              this.handOut(tmpTurn)
+              // this.handOut(tmpTurn)
+              this.curTurn = tmpTurn
               console.log('ai' + tmpTurn + ' 杠' + this.lastCard.type + this.lastCard.num)
-              this.curTurn = (tmpTurn + 1) % 4
+              // this.preTurn = this.curTurn
+              // this.curTurn = (tmpTurn + 1) % 4
               return -2
             } else {
               // player
-              await this.$confirm('是否杠', '提示', {
+              let tmpRes = -1
+              await this.$confirm('是否杠' + this.cardMap[this.lastCard.type + this.lastCard.num], '提示', {
                 confirmButtonText: '确定',
                 cancelButtonText: '取消',
                 type: 'warning'
@@ -550,13 +619,20 @@ export default {
                     this.playerCard[tmpTurn].splice(cnt, 1)
                   }
                 }
-                this.handOut(tmpTurn)
-                console.log('ai' + tmpTurn + ' 杠' + this.lastCard.type + this.lastCard.num)
-                this.curTurn = (tmpTurn + 1) % 4
+                // this.handOut(tmpTurn)
+                this.curTurn = tmpTurn
+                console.log('player 杠' + this.lastCard.type + this.lastCard.num)
+                // this.preTurn = this.curTurn
+                // this.curTurn = (tmpTurn + 1) % 4
+                tmpRes = -2
                 return -2
               }).catch(() => {
                 console.log('不杠')
+                tmpRes = -1
               });
+              if (tmpRes === -2) {
+                return -2
+              }
             }
           } else if (tiaoArr[this.lastCard.num] === 2) {
             if (tmpTurn !== 0) {
@@ -581,10 +657,11 @@ export default {
               console.log('检测得分preMa', preMa)
               //删除这两个
               let cnt = tmpArr.length - 1
-              while (cnt--) {
+              while (cnt >= 0) {
                 if (tmpArr[cnt].type === this.lastCard.type && this.playerCard[tmpTurn][cnt].num === this.lastCard.num) {
                   tmpArr.splice(cnt, 1)
                 }
+                cnt--
               }
               tiaoArr[this.lastCard.num] -= 2
 
@@ -662,6 +739,7 @@ export default {
                       this.playerCard[tmpTurn].splice(cnt, 1)
                     }
                   }
+                  this.preTurn = this.curTurn
                   this.curTurn = tmpTurn
                   return pos
                 }
@@ -685,13 +763,16 @@ export default {
                   this.playerCard[tmpTurn].splice(cnt, 1)
                 }
               }
-              this.handOut(tmpTurn)
+              // this.handOut(tmpTurn)
+              this.curTurn = tmpTurn
               console.log('ai' + tmpTurn + ' 杠' + this.lastCard.type + this.lastCard.num)
-              this.curTurn = (tmpTurn + 1) % 4
+              // this.preTurn = this.curTurn
+              // this.curTurn = (tmpTurn + 1) % 4
               return -2
             } else {
               // player
-              await this.$confirm('是否杠', '提示', {
+              let tmpRes = 0
+              await this.$confirm('是否杠' + this.cardMap[this.lastCard.type + this.lastCard.num], '提示', {
                 confirmButtonText: '确定',
                 cancelButtonText: '取消',
                 type: 'warning'
@@ -702,13 +783,19 @@ export default {
                     this.playerCard[tmpTurn].splice(cnt, 1)
                   }
                 }
-                this.handOut(tmpTurn)
-                console.log('ai' + tmpTurn + ' 杠' + this.lastCard.type + this.lastCard.num)
-                this.curTurn = (tmpTurn + 1) % 4
+                // this.handOut(tmpTurn)
+                this.curTurn = tmpTurn
+                console.log('player 杠' + this.lastCard.type + this.lastCard.num)
+                // this.preTurn = this.curTurn
+                // this.curTurn = (tmpTurn + 1) % 4
+                tmpRes = -2
                 return -2
               }).catch(() => {
                 console.log('不杠')
               });
+              if (tmpRes === -2) {
+                return -2
+              }
             }
           } else if (wanArr[this.lastCard.num] === 2) {
             if (tmpTurn !== 0) {
@@ -733,10 +820,11 @@ export default {
               console.log('检测得分preMa', preMa)
               //删除这两个
               let cnt = tmpArr.length - 1
-              while (cnt--) {
+              while (cnt >= 0) {
                 if (tmpArr[cnt].type === this.lastCard.type && this.playerCard[tmpTurn][cnt].num === this.lastCard.num) {
                   tmpArr.splice(cnt, 1)
                 }
+                cnt--
               }
               wanArr[this.lastCard.num] -= 2
 
@@ -750,8 +838,13 @@ export default {
               other3N2 = 0
               let ma = 0, pos = 0
               console.log('开始计算删除后ma')
+              // for (let i = 0; i < tmpArr.length; i++) {
+              //   console.log('牌', tmpArr[i].type, tmpArr[i].num)
+              // }
               for (let i = 0; i < tmpArr.length; i++) {
+                console.log('判断每一张', i)
                 let tmp = tmpArr[i]
+                console.log('该牌', tmp.type, tmp.num)
                 if (tmp.type === 'bing') {
                   bingArr[tmp.num]--
                 } else if (tmp.type === 'tiao') {
@@ -768,13 +861,22 @@ export default {
                   otherArr[7]--
                 }
                 bing3N = this.get3NChance(bingArr)
+                console.log('bing3N', bing3N)
                 bing3N2 = this.get3N2Chance(bingArr)
+                console.log('bing3N2', bing3N2)
                 tiao3N = this.get3NChance(tiaoArr)
+                console.log('tiao3N', tiao3N)
                 tiao3N2 = this.get3N2Chance(tiaoArr)
+                console.log('tiao3N2', tiao3N2)
                 wan3N = this.get3NChance(wanArr)
+                console.log('wan3N', wan3N)
+                console.log(wanArr)
                 wan3N2 = this.get3N2Chance(wanArr)
+                console.log('wan3N2', wan3N2)
                 other3N = this.getO3NChance(otherArr)
+                console.log('other3N', other3N)
                 other3N2 = this.getO3N2Chance(otherArr)
+                console.log('other3N2', other3N2)
                 let tmpMa = bing3N2 + tiao3N + wan3N + other3N
                 tmpMa = Math.max(tmpMa, (bing3N + tiao3N2 + wan3N + other3N))
                 tmpMa = Math.max(tmpMa, (bing3N + tiao3N + wan3N2 + other3N))
@@ -814,6 +916,7 @@ export default {
                       this.playerCard[tmpTurn].splice(cnt, 1)
                     }
                   }
+                  this.preTurn = this.curTurn
                   this.curTurn = tmpTurn
                   return pos
                 }
@@ -847,12 +950,15 @@ export default {
                   this.playerCard[tmpTurn].splice(cnt, 1)
                 }
               }
-              this.handOut(tmpTurn)
-              this.curTurn = (tmpTurn + 1) % 4
+              // this.handOut(tmpTurn)
+              this.curTurn = tmpTurn
+              // this.preTurn = this.curTurn
+              // this.curTurn = (tmpTurn + 1) % 4
               return -2
             } else {
               // player
-              await this.$confirm('是否杠', '提示', {
+              let tmpRes = 0
+              await this.$confirm('是否杠' + this.cardMap[this.lastCard.type + this.lastCard.num], '提示', {
                 confirmButtonText: '确定',
                 cancelButtonText: '取消',
                 type: 'warning'
@@ -863,13 +969,19 @@ export default {
                     this.playerCard[tmpTurn].splice(cnt, 1)
                   }
                 }
-                this.handOut(tmpTurn)
-                console.log('ai' + tmpTurn + ' 杠' + this.lastCard.type + this.lastCard.num)
-                this.curTurn = (tmpTurn + 1) % 4
+                // this.handOut(tmpTurn)
+                this.curTurn = tmpTurn
+                console.log('player 杠' + this.lastCard.type + this.lastCard.num)
+                // this.preTurn = this.curTurn
+                // this.curTurn = (tmpTurn + 1) % 4
+                tmpRes = -2
                 return -2
               }).catch(() => {
                 console.log('不杠')
               });
+              if (tmpRes === -2) {
+                return -2
+              }
             }
           } else if (otherArr[mapPos] === 2) {
             if (tmpTurn !== 0) {
@@ -893,10 +1005,11 @@ export default {
               preMa = Math.max(preMa, (bing3N + tiao3N + wan3N + other3N2))
               //删除这两个
               let cnt = tmpArr.length - 1
-              while (cnt--) {
+              while (cnt >= 0) {
                 if (tmpArr[cnt].type === this.lastCard.type && this.playerCard[tmpTurn][cnt].num === this.lastCard.num) {
                   tmpArr.splice(cnt, 1)
                 }
+                cnt--
               }
               otherArr[mapPos] -= 2
 
@@ -972,6 +1085,7 @@ export default {
                       this.playerCard[tmpTurn].splice(cnt, 1)
                     }
                   }
+                  this.preTurn = this.curTurn
                   this.curTurn = tmpTurn
                   return pos
                 }
@@ -995,9 +1109,9 @@ export default {
           const h = this.$createElement;
           let cardClass = this.lastCard.type + this.lastCard.num
           if (this.lastCard.type === 'abai') {
-            cardClass = bai
+            cardClass = 'bai'
           } else if (this.lastCard.type === 'acai') {
-            cardClass = cai
+            cardClass = 'cai'
           } else if (this.lastCard.type === 'afeng') {
             cardClass = 'feng' + this.lastCard.num
           } else if (this.lastCard.type === 'azhong') {
@@ -1007,7 +1121,7 @@ export default {
             title: '消息',
             message: h('div', { class: 'card' }, [
               h('div', { class: 'card-pattern ' + cardClass }),
-              h('span', null, '是否碰 ' + cardClass + this.lastCard.num),
+              h('span', null, '是否碰 ' + this.cardMap[this.lastCard.type + this.lastCard.num]),
             ]),
             showCancelButton: true,
             confirmButtonText: '确定',
@@ -1034,6 +1148,7 @@ export default {
                 this.playerCard[0].splice(cnt, 1)
               }
             }
+            this.preTurn = this.curTurn
             this.curTurn = 0
           }).catch(() => {
             console.log('取消')
@@ -1044,8 +1159,77 @@ export default {
         return -1
       }
     },
-    judgeSelf () {
-      // 判断自己能否赢或杠
+    async judgeSelf () {
+      let tmpArr = this.playerCard[this.curTurn]
+      // 判断自己能否赢或杠或吃
+      if (this.judgeHu(tmpArr)) {
+        alert('you win!')
+        this.gameOver = true
+        return 1
+      }
+      // 判断杠
+      for (let i = 0; i < tmpArr.length; i++) {
+        let j = 1
+        while (i + j < tmpArr.length && tmpArr[i].type === tmpArr[i + j].type && tmpArr[i].num === tmpArr[i + j].num) {
+          j++
+        }
+        j--
+        if (j === 3) {
+          // 可以杠
+          if (this.curTurn === 0) {
+            // player
+            await this.$confirm('是否杠' + this.cardMap[this.lastCard.type + this.lastCard.num], '提示', {
+              confirmButtonText: '确定',
+              cancelButtonText: '取消',
+              type: 'warning'
+            }).then(() => {
+              let cnt = this.playerCard[this.curTurn].length - 1
+              this.playerCard[this.curTurn].splice(i, 4)
+              this.handOut()
+              console.log('ai' + this.curTurn + ' 杠' + this.lastCard.type + this.lastCard.num)
+              // return 2
+              this.canOpt = true
+              return 2
+            }).catch(() => {
+              console.log('不杠')
+            });
+          } else {
+            // ai
+            this.playerCard[this.curTurn].splice(i, 4)
+            // this.handOut()
+            this.aiTurn()
+            return 2
+          }
+        }
+      }
+      // 判断吃
+      if (this.preTurn !== -1 && this.curTurn === (this.preTurn + 1) % 4) {
+        // 检测吃
+        // 首先将bing tiao wan 都映射到计数数组上
+        let bingArr = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+        let tiaoArr = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+        let wanArr = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+        let otherArr = [0, 0, 0, 0, 0, 0, 0, 0]
+        for (let i = 0; i < tmpArr.length; i++) {
+          let tmp = tmpArr[i]
+          if (tmp.type === 'bing') {
+            bingArr[tmp.num]++
+          } else if (tmp.type === 'tiao') {
+            tiaoArr[tmp.num]++
+          } else if (tmp.type === 'wan') {
+            wanArr[tmp.num]++
+          } else if (tmp.type === 'afeng') {
+            otherArr[tmp.num]++
+          } else if (tmp.type === 'abai') {
+            otherArr[5]++
+          } else if (tmp.type === 'acai') {
+            otherArr[6]++
+          } else if (tmp.type === 'azhong') {
+            otherArr[7]++
+          }
+        }
+
+      }
     },
     async turnControl () {
       console.log('当前', this.curTurn)
@@ -1060,6 +1244,7 @@ export default {
           }
           // console.log(cur.id, cur.type, cur.num, cur.canHandOut)
         })
+        this.preTurn = this.curTurn
         this.curTurn = (this.curTurn + 1) % 4
         console.log('正常流程', this.curTurn)
         setTimeout(() => {
@@ -1088,11 +1273,26 @@ export default {
         }, 1)
       }
     },
-    aiTurn (assignPos = -1) {
+    async aiTurn (assignPos = -1) {
+      // if (this.judgeHu(this.playerCard[this.curTurn])) {
+      //   alert('ai' + this.curTurn + ' win!')
+      //   this.gameOver = true
+      //   return
+      // }
       if (assignPos === -1) {
         this.handOut()
         // 判断自己能否赢或杠
-        this.judgeSelf()
+        let selfRes = await this.judgeSelf()
+        if (selfRes === 1) {
+          alert('ai' + this.curTurn + ' win!')
+          this.gameOver = true
+          return
+        } else if (selfRes === 2) {
+          // this.curTurn = (this.curTurn + 1) % 4
+          // 杠
+          this.turnControl()
+          return
+        }
         // 出牌
         // 首先将bing tiao wan 都映射到计数数组上
         let bing3N = 0, bing3N2 = 0
@@ -1183,11 +1383,20 @@ export default {
       }
       this.turnControl()
     },
-    playerTurn () {
+    async playerTurn () {
       console.log('player turn')
       this.handOut()
       // 判断自己能否赢或杠
-      this.judgeSelf()
+      let selfRes = await this.judgeSelf()
+      if (selfRes === 1) {
+        alert('ai' + this.curTurn + ' win!')
+        this.gameOver = true
+        return
+      } else if (selfRes === 2) {
+        // this.curTurn = (this.curTurn + 1) % 4
+        this.turnControl()
+        return
+      }
       // 出牌
       this.canOpt = true
     },
@@ -1488,6 +1697,7 @@ export default {
   created() {
     // console.log('card', this.cardList())
     this.cardList = this.generateCards()
+    this.preTurn = -1
     this.curTurn = this.randomInteger(0, 3)
     // this.curTurn = 0
     console.log(this.curTurn)
