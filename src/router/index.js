@@ -18,6 +18,7 @@ const FbxModel = () => import('@/view/FbxModel.vue')
 const WxJump = () => import('@/view/WxJump.vue')
 const CssPaint = () => import('@/view/CssPaint.vue')
 const GoMahJong = () => import('@/view/GoMahJong.vue')
+const CnChess = () => import('@/view/CnChess.vue')
 
 Vue.use(VueRouter)
 
@@ -89,6 +90,10 @@ const routes = [
     {
         path: '/go-mah-jong',
         component: GoMahJong
+    },
+    {
+        path: '/cn-chess',
+        component: CnChess
     }
 ]
 

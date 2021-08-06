@@ -74,6 +74,10 @@ export default {
           title: '麻将',
           route: '/go-mah-jong'
         },
+        {
+          title: 'cn-chess',
+          route: 'cn-chess'
+        }
       ]
     }
   }
