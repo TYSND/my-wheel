@@ -152,6 +152,18 @@ export default {
         ['0', '0', '0', '0', '0', '0', '0', '0', '0'],
         ['5', '4', '3', '2', '1', '2', '3', '4', '5']
     ]
+    // const chessMap = [
+    //   ['-5', '-4', '-3', '-2', '-1', '-2', '-3', '-4', '-5'],
+    //   ['0', '0', '0', '0', '0', '0', '0', '0', '0'],
+    //   ['0', '-6', '0', '0', '-6', '0', '0', '0', '0'],
+    //   ['-7', '0', '-7', '0', '-7', '0', '-7', '0', '0'],
+    //   ['0', '0', '0', '0', '0', '0', '0', '0', '-7'],
+    //   ['0', '0', '0', '0', '6', '0', '0', '0', '0'],
+    //   ['7', '0', '7', '0', '7', '0', '7', '0', '7'],
+    //   ['0', '6', '0', '0', '0', '0', '0', '0', '0'],
+    //   ['0', '0', '0', '0', '0', '0', '0', '0', '0'],
+    //   ['5', '4', '3', '2', '1', '2', '3', '4', '5']
+    // ]
     const canMove = [
       ['0', '0', '0', '0', '0', '0', '0', '0', '0'],
       ['0', '0', '0', '0', '0', '0', '0', '0', '0'],
@@ -248,13 +260,12 @@ export default {
         [0, 1, 2, 2, 2, 2, 2, 1, 0],
         [1, 0, 4, 3, 5, 3, 4, 0, 1],
         [0, 0, 0, 0, 0, 0, 0, 0, 0],
-        [-2, 0, -2, 0, 6, 0, -2, 0, -2],
-        [3, 0, 4, 0, 7, 0, 4, 0, 3],
-        [10, 18, 22, 35, 40, 35, 22, 18, 10],
-        [20, 27, 30, 40, 42, 40, 30, 27, 20],
-        [20, 30, 45, 55, 55, 55, 45, 30, 20],
-        [20, 30, 50, 65, 70, 65, 50, 30, 20],
-        [0, 0, 0, 2, 4, 2, 0, 0, 0]
+        [-1, 0, 3, 0, 4, 0, 3, 0, -1],
+        [0, 0, 0, 0, 4, 0, 0, 0, 0],
+        [0, 3, 3, 2, 4, 2, 3, 3, 0],
+        [1, 1, 0, -5, -4, -5, 0, 1, 1],
+        [2, 2, 0, -4, -7, -4, 0, 2, 2],
+        [4, 4, 0, -5, -6, -5, 0, 4, 4]
       ],
       '-7': [
         [0, 0, 0, 0, 0, 0, 0, 0, 0],
@@ -264,6 +275,7 @@ export default {
         [3, 0, 4, 0, 7, 0, 4, 0, 3],
         [10, 18, 22, 35, 40, 35, 22, 18, 10],
         [20, 27, 30, 40, 42, 40, 30, 27, 20],
+        [20, 30, 45, 55, 55, 55, 45, 30, 20],
         [20, 30, 50, 65, 70, 65, 50, 30, 20],
         [0, 0, 0, 2, 4, 2, 0, 0, 0]
       ],
@@ -329,13 +341,12 @@ export default {
         [-6, 6, 4, 12, 0, 12, 4, 6, -6],
       ],
       '6': [
-        [0, 0, 0, 2, 4, 2, 0, 0, 0],
-        [20, 30, 50, 65, 70, 65, 50, 30, 20],
-        [20, 30, 45, 55, 55, 55, 45, 30, 20],
-        [20, 27, 30, 40, 42, 40, 30, 27, 20],
-        [10, 18, 22, 35, 40, 35, 22, 18, 10],
-        [3, 0, 4, 0, 7, 0, 4, 0, 3],
-        [-2, 0, -2, 0, 6, 0, -2, 0, -2],
+        [4, 4, 0, -5, -6, -5, 0, 4, 4],
+        [2, 2, 0, -4, -7, -4, 0, 2, 2],
+        [1, 1, 0, -5, -4, -5, 0, 1, 1],
+        [0, 3, 3, 2, 4, 2, 3, 3, 0],
+        [0, 0, 0, 0, 4, 0, 0, 0, 0],
+        [-1, 0, 3, 0, 4, 0, 3, 0, -1],
         [0, 0, 0, 0, 0, 0, 0, 0, 0],
         [1, 0, 4, 3, 5, 3, 4, 0, 1],
         [0, 1, 2, 2, 2, 2, 2, 1, 0],
@@ -344,6 +355,7 @@ export default {
       '7': [
         [0, 0, 0, 2, 4, 2, 0, 0, 0],
         [20, 30, 50, 65, 70, 65, 50, 30, 20],
+        [20, 30, 45, 55, 55, 55, 45, 30, 20],
         [20, 27, 30, 40, 42, 40, 30, 27, 20],
         [10, 18, 22, 35, 40, 35, 22, 18, 10],
         [3, 0, 4, 0, 7, 0, 4, 0, 3],
@@ -393,9 +405,11 @@ export default {
           this.chessMap[rowId][colId] = this.chessMap[this.curRowId][this.curColId]
           this.chessMap[this.curRowId][this.curColId] = '0'
           this.$forceUpdate()
-          console.log(this.judgeCheckMate(this.chessMap, false))
+          // console.log('checkmate', this.judgeCheckMate(this.chessMap, false))
           this.canOpt = false
-          this.aiTurn()
+          setTimeout(() => {
+            this.aiTurn()
+          }, 1)
         } else if (this.chessMap[rowId][colId] !== '0' && this.canMove[rowId][colId] === '1') {
           // 取消选择
           this.canMove[rowId][colId] = '0'
@@ -792,12 +806,16 @@ export default {
       for (let i = 0; i < this.chessMap.length; i++) {
         for (let j = 0; j < this.chessMap[0].length; j++) {
           tmpMap[i][j] = this.chessMap[i][j]
+          // console.log(this.chessMap[i][j], tmpMap[i][j])
         }
       }
       this.alphaBeta(tmpMap, 0, true, -1000000, 1000000)
+      // console.log('tmpMap', tmpMap.join(','))
       console.log('res')
+      console.log('chessMap', this.chessMap)
       console.log(this.aiRowId, this.aiColId)
       console.log(this.aiNewRowId, this.aiNewColId)
+      console.log(this.chessInfo[this.chessMap[this.aiRowId][this.aiColId]])
       console.log(this.chessMap[this.aiRowId][this.aiColId], this.chessMap[this.aiNewRowId][this.aiNewColId])
       console.log(this.isEnemy(this.chessMap[this.aiRowId][this.aiColId], this.chessMap[this.aiNewRowId][this.aiNewColId]))
       this.chessMap[this.aiNewRowId][this.aiNewColId] = this.chessMap[this.aiRowId][this.aiColId]
@@ -806,6 +824,7 @@ export default {
       this.canOpt = true
     },
     judgeCheckMate (curMap, isAI) {
+      // console.log('judgeCheckMate', curMap)
       if (isAI) {
         // 判断AI是否将军
         for (let i = 0; i < curMap.length; i++) {
@@ -914,7 +933,7 @@ export default {
                   break
                 }
               }
-              for (let i = rowId + 1; i < this.canMove.length; i++) {
+              for (let i = rowId + 1; i < curMap.length; i++) {
                 if (curMap[i][colId] === '0') {
                   if (curMap[i][colId] === '1') {
                     return true
@@ -975,7 +994,7 @@ export default {
                 }
               }
               flag = false
-              for (let i = rowId + 1; i < this.canMove.length; i++) {
+              for (let i = rowId + 1; i < curMap.length; i++) {
                 if (flag === false && curMap[i][colId] === '0') {
                   if (curMap[i][colId] === '1') {
                     return true
@@ -1056,76 +1075,76 @@ export default {
         for (let i = 0; i < curMap.length; i++) {
           for (let j = 0; j < curMap[0].length; j++) {
             let rowId = i, colId = j
-            if (this.chessMap[rowId][colId] === '1') {
+            if (curMap[rowId][colId] === '1') {
               // 帅
-              if (rowId - 1 >= this.canMove.length - 3 && (this.chessMap[rowId - 1][colId] === '0' || this.isEnemy(this.chessMap[rowId][colId], this.chessMap[rowId - 1][colId]))) {
+              if (rowId - 1 >= curMap.length - 3 && (curMap[rowId - 1][colId] === '0' || this.isEnemy(curMap[rowId][colId], curMap[rowId - 1][colId]))) {
                 if (curMap[rowId - 1][colId] === '-1') {
                   return true
                 }
               }
-              if (rowId + 1 < this.canMove.length && (this.chessMap[rowId + 1][colId] === '0' || this.isEnemy(this.chessMap[rowId][colId], this.chessMap[rowId + 1][colId]))) {
+              if (rowId + 1 < curMap.length && (curMap[rowId + 1][colId] === '0' || this.isEnemy(curMap[rowId][colId], curMap[rowId + 1][colId]))) {
                 if (curMap[rowId + 1][colId] === '-1') {
                   return true
                 }
               }
-              if (colId - 1 >= 3 && (this.chessMap[rowId][colId - 1] === '0' || this.isEnemy(this.chessMap[rowId][colId], this.chessMap[rowId][colId - 1]))) {
+              if (colId - 1 >= 3 && (curMap[rowId][colId - 1] === '0' || this.isEnemy(curMap[rowId][colId], curMap[rowId][colId - 1]))) {
                 if (curMap[rowId][colId - 1] === '-1') {
                   return true
                 }
               }
-              if (colId + 1 <= 5 && (this.chessMap[rowId][colId + 1] === '0' || this.isEnemy(this.chessMap[rowId][colId], this.chessMap[rowId][colId + 1]))) {
+              if (colId + 1 <= 5 && (curMap[rowId][colId + 1] === '0' || this.isEnemy(curMap[rowId][colId], curMap[rowId][colId + 1]))) {
                 if (curMap[rowId][colId + 1] === '-1') {
                   return true
                 }
               }
             }
-            if (this.chessMap[rowId][colId] === '2') {
+            if (curMap[rowId][colId] === '2') {
               // 士
-              if (rowId - 1 >= this.canMove.length - 3 && colId - 1 >= 3 && (this.chessMap[rowId - 1][colId - 1] === '0' || this.isEnemy(this.chessMap[rowId][colId], this.chessMap[rowId - 1][colId - 1]))) {
+              if (rowId - 1 >= curMap.length - 3 && colId - 1 >= 3 && (curMap[rowId - 1][colId - 1] === '0' || this.isEnemy(curMap[rowId][colId], curMap[rowId - 1][colId - 1]))) {
                 if (curMap[rowId - 1][colId - 1] === '-1') {
                   return true
                 }
               }
-              if (rowId - 1 >= this.canMove.length - 3 && colId + 1 <= 5 && (this.chessMap[rowId - 1][colId + 1] === '0' || this.isEnemy(this.chessMap[rowId][colId], this.chessMap[rowId - 1][colId + 1]))) {
+              if (rowId - 1 >= curMap.length - 3 && colId + 1 <= 5 && (curMap[rowId - 1][colId + 1] === '0' || this.isEnemy(curMap[rowId][colId], curMap[rowId - 1][colId + 1]))) {
                 if (curMap[rowId - 1][colId + 1] === '-1') {
                   return true
                 }
               }
-              if (rowId + 1 < this.canMove.length && colId - 1 >= 3 && (this.chessMap[rowId + 1][colId - 1] === '0' || this.isEnemy(this.chessMap[rowId][colId], this.chessMap[rowId + 1][colId - 1]))) {
+              if (rowId + 1 < curMap.length && colId - 1 >= 3 && (curMap[rowId + 1][colId - 1] === '0' || this.isEnemy(curMap[rowId][colId], curMap[rowId + 1][colId - 1]))) {
                 if (curMap[rowId + 1][colId - 1] === '-1') {
                   return true
                 }
               }
-              if (rowId + 1 < this.canMove.length && colId + 1 <= 5 && (this.chessMap[rowId + 1][colId + 1] === '0' || this.isEnemy(this.chessMap[rowId][colId], this.chessMap[rowId + 1][colId + 1]))) {
+              if (rowId + 1 < curMap.length && colId + 1 <= 5 && (curMap[rowId + 1][colId + 1] === '0' || this.isEnemy(curMap[rowId][colId], curMap[rowId + 1][colId + 1]))) {
                 if (curMap[rowId + 1][colId + 1] === '-1') {
                   return true
                 }
               }
             }
-            if (this.chessMap[rowId][colId] === '3') {
+            if (curMap[rowId][colId] === '3') {
               // 相
-              if (rowId - 2 >= 5 && colId - 2 >= 0 && (this.chessMap[rowId - 2][colId - 2] === '0' || this.isEnemy(this.chessMap[rowId][colId], this.chessMap[rowId - 2][colId - 2])) && this.chessMap[rowId - 1][colId - 1] === '0') {
+              if (rowId - 2 >= 5 && colId - 2 >= 0 && (curMap[rowId - 2][colId - 2] === '0' || this.isEnemy(curMap[rowId][colId], curMap[rowId - 2][colId - 2])) && curMap[rowId - 1][colId - 1] === '0') {
                 if (curMap[rowId - 2][colId - 2] === '-1') {
                   return true
                 }
               }
-              if (rowId - 2 >= 5 && colId + 2 < this.chessMap[0].length && (this.chessMap[rowId - 2][colId + 2] === '0' || this.isEnemy(this.chessMap[rowId][colId], this.chessMap[rowId - 2][colId + 2])) && this.chessMap[rowId - 1][colId + 1] === '0') {
+              if (rowId - 2 >= 5 && colId + 2 < curMap[0].length && (curMap[rowId - 2][colId + 2] === '0' || this.isEnemy(curMap[rowId][colId], curMap[rowId - 2][colId + 2])) && curMap[rowId - 1][colId + 1] === '0') {
                 if (curMap[rowId - 2][colId + 2] === '-1') {
                   return true
                 }
               }
-              if (rowId + 2 < this.canMove.length && colId - 2 >= 0 && (this.chessMap[rowId + 2][colId - 2] === '0' || this.isEnemy(this.chessMap[rowId][colId], this.chessMap[rowId + 2][colId - 2])) && this.chessMap[rowId + 1][colId - 1] === '0') {
+              if (rowId + 2 < curMap.length && colId - 2 >= 0 && (curMap[rowId + 2][colId - 2] === '0' || this.isEnemy(curMap[rowId][colId], curMap[rowId + 2][colId - 2])) && curMap[rowId + 1][colId - 1] === '0') {
                 if (curMap[rowId + 2][colId - 2] === '-1') {
                   return true
                 }
               }
-              if (rowId + 2 < this.canMove.length && colId + 2 < this.chessMap[0].length && (this.chessMap[rowId + 2][colId + 2] === '0' || this.isEnemy(this.chessMap[rowId][colId], this.chessMap[rowId + 2][colId + 2])) && this.chessMap[rowId + 1][colId + 1] === '0') {
+              if (rowId + 2 < curMap.length && colId + 2 < curMap[0].length && (curMap[rowId + 2][colId + 2] === '0' || this.isEnemy(curMap[rowId][colId], curMap[rowId + 2][colId + 2])) && curMap[rowId + 1][colId + 1] === '0') {
                 if (curMap[rowId + 2][colId + 2] === '-1') {
                   return true
                 }
               }
             }
-            if (this.chessMap[rowId][colId] === '4') {
+            if (curMap[rowId][colId] === '4') {
               // 马
               let dx = [-2, -2, -1, -1, 1, 1, 2, 2]
               let dy = [-1, 1, -2, 2, -2, 2, -1, 1]
@@ -1135,84 +1154,84 @@ export default {
                 let tmpr = rowId + dx[k], tmpc = colId + dy[k]
 
                 if (this.judgePos(tmpr, tmpc)
-                    && (this.chessMap[tmpr][tmpc] === '0' || this.isEnemy(this.chessMap[rowId][colId], this.chessMap[tmpr][tmpc]))
-                    && this.chessMap[rowId + rx[k]][colId + ry[k]] === '0') {
+                    && (curMap[tmpr][tmpc] === '0' || this.isEnemy(curMap[rowId][colId], curMap[tmpr][tmpc]))
+                    && curMap[rowId + rx[k]][colId + ry[k]] === '0') {
                   if (curMap[tmpr][tmpc] === '-1') {
                     return true
                   }
                 }
               }
             }
-            if (this.chessMap[rowId][colId] === '5') {
+            if (curMap[rowId][colId] === '5') {
               // 车
               for (let i = rowId - 1; i >= 0; i--) {
-                if (this.chessMap[i][colId] === '0') {
+                if (curMap[i][colId] === '0') {
                   if (curMap[i][colId] === '-1') {
                     return true
                   }
-                } else if (this.isEnemy(this.chessMap[rowId][colId], this.chessMap[i][colId])) {
+                } else if (this.isEnemy(curMap[rowId][colId], curMap[i][colId])) {
                   if (curMap[i][colId] === '-1') {
                     return true
                   }
                   break
-                } else if (this.isAlly(this.chessMap[rowId][colId], this.chessMap[i][colId])) {
+                } else if (this.isAlly(curMap[rowId][colId], curMap[i][colId])) {
                   break
                 }
               }
-              for (let i = rowId + 1; i < this.canMove.length; i++) {
-                if (this.chessMap[i][colId] === '0') {
+              for (let i = rowId + 1; i < curMap.length; i++) {
+                if (curMap[i][colId] === '0') {
                   if (curMap[i][colId] === '-1') {
                     return true
                   }
-                } else if (this.isEnemy(this.chessMap[rowId][colId], this.chessMap[i][colId])) {
+                } else if (this.isEnemy(curMap[rowId][colId], curMap[i][colId])) {
                   if (curMap[i][colId] === '-1') {
                     return true
                   }
                   break
-                } else if (this.isAlly(this.chessMap[rowId][colId], this.chessMap[i][colId])) {
+                } else if (this.isAlly(curMap[rowId][colId], curMap[i][colId])) {
                   break
                 }
               }
               for (let j = colId - 1; j >= 0; j--) {
-                if (this.chessMap[rowId][j] === '0') {
+                if (curMap[rowId][j] === '0') {
                   if (curMap[rowId][j] === '-1') {
                     return true
                   }
-                } else if (this.isEnemy(this.chessMap[rowId][colId], this.chessMap[rowId][j])) {
+                } else if (this.isEnemy(curMap[rowId][colId], curMap[rowId][j])) {
                   if (curMap[rowId][j] === '-1') {
                     return true
                   }
                   break
-                } else if (this.isAlly(this.chessMap[rowId][colId], this.chessMap[rowId][j])) {
+                } else if (this.isAlly(curMap[rowId][colId], curMap[rowId][j])) {
                   break
                 }
               }
-              for (let j = colId + 1; j < this.chessMap[rowId].length; j++) {
-                if (this.chessMap[rowId][j] === '0') {
+              for (let j = colId + 1; j < curMap[rowId].length; j++) {
+                if (curMap[rowId][j] === '0') {
                   if (curMap[rowId][j] === '-1') {
                     return true
                   }
-                } else if (this.isEnemy(this.chessMap[rowId][colId], this.chessMap[rowId][j])) {
+                } else if (this.isEnemy(curMap[rowId][colId], curMap[rowId][j])) {
                   if (curMap[rowId][j] === '-1') {
                     return true
                   }
                   break
-                } else if (this.isAlly(this.chessMap[rowId][colId], this.chessMap[rowId][j])) {
+                } else if (this.isAlly(curMap[rowId][colId], curMap[rowId][j])) {
                   break
                 }
               }
             }
-            if (this.chessMap[rowId][colId] === '6') {
+            if (curMap[rowId][colId] === '6') {
               // 炮
               let flag = false
               for (let i = rowId - 1; i >= 0; i--) {
-                if (flag === false && this.chessMap[i][colId] === '0') {
+                if (flag === false && curMap[i][colId] === '0') {
                   if (curMap[i][colId] === '-1') {
                     return true
                   }
-                } else if (this.chessMap[i][colId] !== '0' && flag === false) {
+                } else if (curMap[i][colId] !== '0' && flag === false) {
                   flag = true
-                } else if (flag === true && this.isEnemy(this.chessMap[rowId][colId], this.chessMap[i][colId])) {
+                } else if (flag === true && this.isEnemy(curMap[rowId][colId], curMap[i][colId])) {
                   if (curMap[i][colId] === '-1') {
                     return true
                   }
@@ -1220,14 +1239,14 @@ export default {
                 }
               }
               flag = false
-              for (let i = rowId + 1; i < this.canMove.length; i++) {
-                if (flag === false && this.chessMap[i][colId] === '0') {
+              for (let i = rowId + 1; i < curMap.length; i++) {
+                if (flag === false && curMap[i][colId] === '0') {
                   if (curMap[i][colId] === '-1') {
                     return true
                   }
-                } else if (this.chessMap[i][colId] !== '0' && flag === false) {
+                } else if (curMap[i][colId] !== '0' && flag === false) {
                   flag = true
-                }  else if (flag === true && this.isEnemy(this.chessMap[rowId][colId], this.chessMap[i][colId])) {
+                }  else if (flag === true && this.isEnemy(curMap[rowId][colId], curMap[i][colId])) {
                   if (curMap[i][colId] === '-1') {
                     return true
                   }
@@ -1236,13 +1255,13 @@ export default {
               }
               flag = false
               for (let j = colId - 1; j >= 0; j--) {
-                if (flag === false && this.chessMap[rowId][j] === '0') {
+                if (flag === false && curMap[rowId][j] === '0') {
                   if (curMap[rowId][j] === '-1') {
                     return true
                   }
-                } else if (this.chessMap[rowId][j] !== '0' && flag === false) {
+                } else if (curMap[rowId][j] !== '0' && flag === false) {
                   flag = true
-                }  else if (flag === true && this.isEnemy(this.chessMap[rowId][colId], this.chessMap[rowId][j])) {
+                }  else if (flag === true && this.isEnemy(curMap[rowId][colId], curMap[rowId][j])) {
                   if (curMap[rowId][j] === '-1') {
                     return true
                   }
@@ -1250,14 +1269,14 @@ export default {
                 }
               }
               flag = false
-              for (let j = colId + 1; j < this.chessMap[rowId].length; j++) {
-                if (flag === false && this.chessMap[rowId][j] === '0') {
+              for (let j = colId + 1; j < curMap[rowId].length; j++) {
+                if (flag === false && curMap[rowId][j] === '0') {
                   if (curMap[rowId][j] === '-1') {
                     return true
                   }
-                } else if (this.chessMap[rowId][j] !== '0' && flag === false) {
+                } else if (curMap[rowId][j] !== '0' && flag === false) {
                   flag = true
-                }  else if (flag === true && this.isEnemy(this.chessMap[rowId][colId], this.chessMap[rowId][j])) {
+                }  else if (flag === true && this.isEnemy(curMap[rowId][colId], curMap[rowId][j])) {
                   if (curMap[rowId][j] === '-1') {
                     return true
                   }
@@ -1265,28 +1284,28 @@ export default {
                 }
               }
             }
-            if (this.chessMap[rowId][colId] === '7') {
+            if (curMap[rowId][colId] === '7') {
               // 兵
               if (rowId >= 5) {
                 // 只能前进
-                if (this.chessMap[rowId - 1][colId] === '0' || this.isEnemy(this.chessMap[rowId][colId], this.chessMap[rowId - 1][colId])) {
+                if (curMap[rowId - 1][colId] === '0' || this.isEnemy(curMap[rowId][colId], curMap[rowId - 1][colId])) {
                   if (curMap[rowId - 1][colId] === '-1') {
                     return true
                   }
                 }
               } else if (rowId >= 0) {
                 // 前进或左右
-                if (rowId - 1 >= 0 && (this.chessMap[rowId - 1][colId] === '0' || this.isEnemy(this.chessMap[rowId][colId], this.chessMap[rowId - 1][colId]))) {
+                if (rowId - 1 >= 0 && (curMap[rowId - 1][colId] === '0' || this.isEnemy(curMap[rowId][colId], curMap[rowId - 1][colId]))) {
                   if (curMap[rowId - 1][colId] === '-1') {
                     return true
                   }
                 }
-                if (this.chessMap[rowId][colId - 1] === '0' || this.isEnemy(this.chessMap[rowId][colId], this.chessMap[rowId][colId - 1])) {
+                if (curMap[rowId][colId - 1] === '0' || this.isEnemy(curMap[rowId][colId], curMap[rowId][colId - 1])) {
                   if (curMap[rowId][colId - 1] === '-1') {
                     return true
                   }
                 }
-                if (this.chessMap[rowId][colId + 1] === '0' || this.isEnemy(this.chessMap[rowId][colId], this.chessMap[rowId][colId + 1])) {
+                if (curMap[rowId][colId + 1] === '0' || this.isEnemy(curMap[rowId][colId], curMap[rowId][colId + 1])) {
                   if (curMap[rowId][colId + 1] === '-1') {
                     return true
                   }
@@ -1300,12 +1319,21 @@ export default {
     },
     alphaBeta (curMap, depth, isAI, alpha, beta) {
       // console.log(depth, isAI, alpha, beta)
+      // for (let i = 0; i < this.chessMap.length; i++) {
+      //   for (let j = 0; j < this.chessMap[0].length; j++) {
+      //     console.log('curMap', i, j, curMap[i][j])
+      //   }
+      // }
       let chessScore = 0, chessPosScore = 0
       for (let i = 0; i < curMap.length; i++) {
         for (let j = 0; j < curMap[0].length; j++) {
           if (parseInt(curMap[i][j]) < 0) {
+            // console.log(i, j, curMap[i][j])
             chessScore += this.chessScore[curMap[i][j]]
             chessPosScore += this.chessPosScore[curMap[i][j]][i][j]
+          } else if (parseInt(curMap[i][j]) > 0) {
+            chessScore -= this.chessScore[curMap[i][j]]
+            chessPosScore -= this.chessPosScore[curMap[i][j]][i][j]
           }
         }
       }
@@ -1686,37 +1714,55 @@ export default {
           }
         }
         // console.log(nxtList)
-        nxtList.forEach(cur => {
+        for (let i = 0; i < nxtList.length; i++) {
+          let cur = nxtList[i]
           let tmp = curMap[cur.newRowId][cur.newColId]
-          let moveScore = 0
-          if (this.judgeCheckMate(curMap, !isAI)) {
-            // 被将军
-            moveScore = -999999
-          } else if (this.judgeCheckMate(curMap, isAI)) {
-            moveScore = 99999
-          }
-          moveScore += this.chessScore[tmp]
-          if (depth === 2) {
-            return chessScore + chessPosScore + moveScore
-          }
           curMap[cur.newRowId][cur.newColId] = curMap[cur.rowId][cur.colId]
           curMap[cur.rowId][cur.colId] = '0'
-          let max = this.alphaBeta(curMap, depth + 1, !isAI, alpha, beta)
-          curMap[cur.rowId][cur.colId] = curMap[cur.newRowId][cur.newColId]
-          curMap[cur.newRowId][cur.newColId] = tmp
-          if (max + chessScore + chessPosScore + moveScore > alpha) {
-            alpha = max + chessScore + chessPosScore + moveScore
-            if (depth === 0) {
-              this.aiRowId = cur.rowId
-              this.aiColId = cur.colId
-              this.aiNewRowId = cur.newRowId
-              this.aiNewColId = cur.newColId
+          let isCheckMate = this.judgeCheckMate(curMap, false)
+          // console.log('curMap', curMap.join(','))
+          // if (cur.rowId === 3 && cur.colId === 8) {
+          //   console.log('curMap', curMap.join(','))
+          //   console.log('judge', cur.rowId, cur.colId)
+          //   console.log(cur.newRowId, cur.newColId)
+          //   console.log(isCheckMate)
+          // }
+          let moveScore = 0
+          if (isCheckMate) {
+            // 被将军
+            moveScore = -19999
+            // console.log('be checkmated', this.chessMap)
+          } else if (this.judgeCheckMate(curMap, true)) {
+            moveScore = 9999
+          }
+          moveScore += this.chessScore[tmp] * 10
+          if (depth === 2) {
+            console.log('得分2', chessScore + chessPosScore + moveScore)
+            curMap[cur.rowId][cur.colId] = curMap[cur.newRowId][cur.newColId]
+            curMap[cur.newRowId][cur.newColId] = tmp
+            return chessScore + chessPosScore + moveScore
+          } else {
+            let max = this.alphaBeta(curMap, depth + 1, !isAI, alpha, beta)
+            curMap[cur.rowId][cur.colId] = curMap[cur.newRowId][cur.newColId]
+            curMap[cur.newRowId][cur.newColId] = tmp
+            console.log('得分', max + chessScore + chessPosScore + moveScore)
+            if (max + chessScore + chessPosScore + moveScore > alpha) {
+              // console.log('hehe', this.judgeCheckMate(curMap, false))
+              // console.log(moveScore)
+              alpha = max + chessScore + chessPosScore + moveScore
+              if (depth === 0) {
+                this.aiRowId = cur.rowId
+                this.aiColId = cur.colId
+                this.aiNewRowId = cur.newRowId
+                this.aiNewColId = cur.newColId
+              }
             }
           }
           if (alpha >= beta) {
             return alpha
           }
-        })
+        }
+        console.log('heheh', nxtList.length)
         return alpha
       } else {
         let nxtList = []
@@ -2095,37 +2141,44 @@ export default {
           }
         }
         // console.log(nxtList)
-        nxtList.forEach(cur => {
+        for (let i = 0; i < nxtList.length; i++) {
+          let cur = nxtList[i]
           let tmp = curMap[cur.newRowId][cur.newColId]
+          curMap[cur.newRowId][cur.newColId] = curMap[cur.rowId][cur.colId]
+          curMap[cur.rowId][cur.colId] = '0'
           let moveScore = 0
           if (this.judgeCheckMate(curMap, false)) {
             // 被将军
-            moveScore = -999999
+            moveScore = -19999
+            // console.log('be checkmated', this.chessMap)
           } else if (this.judgeCheckMate(curMap, true)) {
-            moveScore = 99999
+            moveScore = 9999
           }
-          moveScore += this.chessScore[tmp]
+          moveScore += this.chessScore[tmp] * 10
           if (depth === 2) {
+            curMap[cur.rowId][cur.colId] = curMap[cur.newRowId][cur.newColId]
+            curMap[cur.newRowId][cur.newColId] = tmp
             return chessScore + chessPosScore + moveScore
-          }
-          curMap[cur.newRowId][cur.newColId] = curMap[cur.rowId][cur.colId]
-          curMap[cur.rowId][cur.colId] = '0'
-          let min = this.alphaBeta(curMap, depth + 1, !isAI, alpha, beta)
-          curMap[cur.rowId][cur.colId] = curMap[cur.newRowId][cur.newColId]
-          curMap[cur.newRowId][cur.newColId] = tmp
-          if (min + chessScore + chessPosScore + moveScore < beta) {
-            beta = min + chessScore + chessPosScore + moveScore
-            if (depth === 0) {
-              this.aiRowId = cur.rowId
-              this.aiColId = cur.colId
-              this.aiNewRowId = cur.newRowId
-              this.aiNewColId = cur.newColId
+          } else {
+            let min = this.alphaBeta(curMap, depth + 1, !isAI, alpha, beta)
+            console.log('得分1', min)
+            console.log('得分12', min + chessScore + chessPosScore + moveScore)
+            curMap[cur.rowId][cur.colId] = curMap[cur.newRowId][cur.newColId]
+            curMap[cur.newRowId][cur.newColId] = tmp
+            if (min + chessScore + chessPosScore + moveScore < beta) {
+              beta = min + chessScore + chessPosScore + moveScore
+              if (depth === 0) {
+                this.aiRowId = cur.rowId
+                this.aiColId = cur.colId
+                this.aiNewRowId = cur.newRowId
+                this.aiNewColId = cur.newColId
+              }
             }
           }
           if (alpha >= beta) {
             return beta
           }
-        })
+        }
         return beta
       }
     }
