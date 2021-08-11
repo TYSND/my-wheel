@@ -178,14 +178,14 @@ export default {
     ]
     const chessScore = {
       '0': 0,
-      '1': 80,
+      '1': 8000,
       '2': 0,
       '3': 0,
       '4': 300,
       '5': 500,
       '6': 300,
       '7': 100,
-      '-1': 80,
+      '-1': 8000,
       '-2': 0,
       '-3': 0,
       '-4': 300,
@@ -809,7 +809,8 @@ export default {
           // console.log(this.chessMap[i][j], tmpMap[i][j])
         }
       }
-      this.alphaBeta(tmpMap, 0, true, -1000000, 1000000)
+      let isPreCheckmated = this.judgeCheckMate(tmpMap, false)
+      this.alphaBeta(tmpMap, 0, true, isPreCheckmated, -1000000, 1000000)
       // console.log('tmpMap', tmpMap.join(','))
       console.log('res')
       console.log('chessMap', this.chessMap)
@@ -1317,7 +1318,7 @@ export default {
         return false
       }
     },
-    alphaBeta (curMap, depth, isAI, alpha, beta) {
+    alphaBeta (curMap, depth, isAI, isPreCheckmated, alpha, beta) {
       // console.log(depth, isAI, alpha, beta)
       // for (let i = 0; i < this.chessMap.length; i++) {
       //   for (let j = 0; j < this.chessMap[0].length; j++) {
@@ -1714,8 +1715,14 @@ export default {
           }
         }
         // console.log(nxtList)
+        if (depth === 2 && isPreCheckmated === true && curMap[1][4] === '-1') {
+          console.log(nxtList)
+        }
         for (let i = 0; i < nxtList.length; i++) {
           let cur = nxtList[i]
+          if (depth === 2) {
+            console.log(cur.rowId, cur.colId, cur.newRowId, cur.newColId)
+          }
           let tmp = curMap[cur.newRowId][cur.newColId]
           curMap[cur.newRowId][cur.newColId] = curMap[cur.rowId][cur.colId]
           curMap[cur.rowId][cur.colId] = '0'
@@ -1737,15 +1744,44 @@ export default {
           }
           moveScore += this.chessScore[tmp] * 10
           if (depth === 2) {
-            console.log('得分2', chessScore + chessPosScore + moveScore)
+            let checkMateScore = 0
+            if (isPreCheckmated === true && isCheckMate === false) {
+              checkMateScore = 29999
+            }
+            if (cur.rowId === 1 && cur.colId === 4 && cur.newRowId === 1 && cur.newColId === 3) {
+              console.log('hehehehehwwewwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwww')
+              console.log(cur.rowId, cur.colId)
+              console.log(cur.newRowId, cur.newColId)
+              console.log(curMap.join(','))
+              console.log(chessScore, chessPosScore, moveScore, checkMateScore)
+            }
+            // if (isPreCheckmated === true && curMap[0][4] !== '-1' && curMap[5][4] === '6') {
+            //   console.log('hehehehehwwewwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwww')
+            //   console.log(cur.rowId, cur.colId)
+            //   console.log(cur.newRowId, cur.newColId)
+            //   console.log(curMap.join(','))
+            //   console.log(chessScore, chessPosScore, moveScore, checkMateScore)
+            // }
+            // console.log('得分2', chessScore + chessPosScore + moveScore + checkMateScore)
             curMap[cur.rowId][cur.colId] = curMap[cur.newRowId][cur.newColId]
             curMap[cur.newRowId][cur.newColId] = tmp
-            return chessScore + chessPosScore + moveScore
+            // return chessScore + chessPosScore + moveScore + checkMateScore
+            if (chessScore + chessPosScore + moveScore + checkMateScore > alpha) {
+              // console.log('hehe', this.judgeCheckMate(curMap, false))
+              // console.log(moveScore)
+              alpha = chessScore + chessPosScore + moveScore + checkMateScore
+              if (depth === 0) {
+                this.aiRowId = cur.rowId
+                this.aiColId = cur.colId
+                this.aiNewRowId = cur.newRowId
+                this.aiNewColId = cur.newColId
+              }
+            }
           } else {
-            let max = this.alphaBeta(curMap, depth + 1, !isAI, alpha, beta)
+            let max = this.alphaBeta(curMap, depth + 1, !isAI, isCheckMate, alpha, beta)
             curMap[cur.rowId][cur.colId] = curMap[cur.newRowId][cur.newColId]
             curMap[cur.newRowId][cur.newColId] = tmp
-            console.log('得分', max + chessScore + chessPosScore + moveScore)
+            // console.log('得分', max + chessScore + chessPosScore + moveScore)
             if (max + chessScore + chessPosScore + moveScore > alpha) {
               // console.log('hehe', this.judgeCheckMate(curMap, false))
               // console.log(moveScore)
@@ -2146,8 +2182,9 @@ export default {
           let tmp = curMap[cur.newRowId][cur.newColId]
           curMap[cur.newRowId][cur.newColId] = curMap[cur.rowId][cur.colId]
           curMap[cur.rowId][cur.colId] = '0'
+          let isCheckMate = this.judgeCheckMate(curMap, false)
           let moveScore = 0
-          if (this.judgeCheckMate(curMap, false)) {
+          if (isCheckMate) {
             // 被将军
             moveScore = -19999
             // console.log('be checkmated', this.chessMap)
@@ -2160,9 +2197,9 @@ export default {
             curMap[cur.newRowId][cur.newColId] = tmp
             return chessScore + chessPosScore + moveScore
           } else {
-            let min = this.alphaBeta(curMap, depth + 1, !isAI, alpha, beta)
-            console.log('得分1', min)
-            console.log('得分12', min + chessScore + chessPosScore + moveScore)
+            let min = this.alphaBeta(curMap, depth + 1, !isAI, isCheckMate, alpha, beta)
+            // console.log('得分1', min)
+            // console.log('得分12', min + chessScore + chessPosScore + moveScore)
             curMap[cur.rowId][cur.colId] = curMap[cur.newRowId][cur.newColId]
             curMap[cur.newRowId][cur.newColId] = tmp
             if (min + chessScore + chessPosScore + moveScore < beta) {
