@@ -117,6 +117,10 @@
         <!--        <div class="curve2"></div>-->
         <div class="curve3"></div>
       </div>
+
+      <div class="check-mate" v-show="showCheckMate">
+        将
+      </div>
     </div>
   </div>
 </template>
@@ -179,14 +183,14 @@ export default {
     ]
     const chessScore = {
       '0': 0,
-      '1': 8000,
+      '1': 80000,
       '2': 0,
       '3': 0,
       '4': 300,
       '5': 500,
       '6': 300,
       '7': 100,
-      '-1': 8000,
+      '-1': 80000,
       '-2': 0,
       '-3': 0,
       '-4': 300,
@@ -380,7 +384,9 @@ export default {
       aiNewColId: -1,
       canOpt: true,
       lastRowId: -1,
-      lastColId: -1
+      lastColId: -1,
+      win: 0,
+      showCheckMate: false
     }
   },
   methods: {
@@ -398,6 +404,13 @@ export default {
           this.$forceUpdate()
         } else if (this.canMove[rowId][colId] === '-1') {
           // 走棋
+          // if (this.judgeCheckMate(this.chessMap, true)) {
+          //   this.$notify.warning({
+          //     title: '提醒',
+          //     message: '移动后对方将军'
+          //   })
+          //   return
+          // }
           for (let i = 0; i < this.canMove.length; i++) {
             for (let j = 0; j < this.canMove[i].length; j++) {
               if (this.canMove[i][j] === '-1') {
@@ -412,9 +425,17 @@ export default {
           this.$forceUpdate()
           // console.log('checkmate', this.judgeCheckMate(this.chessMap, false))
           this.canOpt = false
-          setTimeout(() => {
-            this.aiTurn()
-          }, 1)
+          if (this.judgeCheckMate(this.chessMap, false)) {
+            this.showCheckMate = true
+            setTimeout(() => {
+              this.showCheckMate = false
+              this.aiTurn()
+            }, 500)
+          } else {
+            setTimeout(() => {
+              this.aiTurn()
+            }, 1)
+          }
         } else if (this.chessMap[rowId][colId] !== '0' && this.canMove[rowId][colId] === '1') {
           // 取消选择
           this.canMove[rowId][colId] = '0'
@@ -444,59 +465,145 @@ export default {
       if (this.chessMap[rowId][colId] === '0') {
         return
       }
+      let curMap = [
+        ['0', '0', '0', '0', '0', '0', '0', '0', '0'],
+        ['0', '0', '0', '0', '0', '0', '0', '0', '0'],
+        ['0', '0', '0', '0', '0', '0', '0', '0', '0'],
+        ['0', '0', '0', '0', '0', '0', '0', '0', '0'],
+        ['0', '0', '0', '0', '0', '0', '0', '0', '0'],
+        ['0', '0', '0', '0', '0', '0', '0', '0', '0'],
+        ['0', '0', '0', '0', '0', '0', '0', '0', '0'],
+        ['0', '0', '0', '0', '0', '0', '0', '0', '0'],
+        ['0', '0', '0', '0', '0', '0', '0', '0', '0'],
+        ['0', '0', '0', '0', '0', '0', '0', '0', '0']
+      ]
       for (let i = 0; i < this.canMove.length; i++) {
         for (let j = 0; j < this.canMove[i].length; j++) {
+          curMap[i][j] = this.chessMap[i][j]
           if (this.canMove[i][j] === '-1') {
             this.canMove[i][j] = '0'
           }
         }
       }
-      if (this.chessMap[rowId][colId] === '1') {
+      let nxtList = []
+      if (curMap[rowId][colId] === '1') {
         // 帅
-        if (rowId - 1 >= this.canMove.length - 3 && (this.chessMap[rowId - 1][colId] === '0' || this.isEnemy(this.chessMap[rowId][colId], this.chessMap[rowId - 1][colId]))) {
-          this.canMove[rowId - 1][colId] = '-1'
+        if (rowId - 1 >= this.canMove.length - 3 && (curMap[rowId - 1][colId] === '0' || this.isEnemy(curMap[rowId][colId], curMap[rowId - 1][colId]))) {
+          // this.canMove[rowId - 1][colId] = '-1'
+          nxtList.push({
+            rowId: rowId,
+            colId: colId,
+            newRowId: rowId - 1,
+            newColId: colId
+          })
         }
-        if (rowId + 1 < this.canMove.length && (this.chessMap[rowId + 1][colId] === '0' || this.isEnemy(this.chessMap[rowId][colId], this.chessMap[rowId + 1][colId]))) {
-          this.canMove[rowId + 1][colId] = '-1'
+        if (rowId + 1 < this.canMove.length && (curMap[rowId + 1][colId] === '0' || this.isEnemy(curMap[rowId][colId], curMap[rowId + 1][colId]))) {
+          // this.canMove[rowId + 1][colId] = '-1'
+          nxtList.push({
+            rowId: rowId,
+            colId: colId,
+            newRowId: rowId + 1,
+            newColId: colId
+          })
         }
-        if (colId - 1 >= 3 && (this.chessMap[rowId][colId - 1] === '0' || this.isEnemy(this.chessMap[rowId][colId], this.chessMap[rowId][colId - 1]))) {
-          this.canMove[rowId][colId - 1] = '-1'
+        if (colId - 1 >= 3 && (curMap[rowId][colId - 1] === '0' || this.isEnemy(curMap[rowId][colId], curMap[rowId][colId - 1]))) {
+          // this.canMove[rowId][colId - 1] = '-1'
+          nxtList.push({
+            rowId: rowId,
+            colId: colId,
+            newRowId: rowId,
+            newColId: colId - 1
+          })
         }
-        if (colId + 1 <= 5 && (this.chessMap[rowId][colId + 1] === '0' || this.isEnemy(this.chessMap[rowId][colId], this.chessMap[rowId][colId + 1]))) {
-          this.canMove[rowId][colId + 1] = '-1'
+        if (colId + 1 <= 5 && (curMap[rowId][colId + 1] === '0' || this.isEnemy(curMap[rowId][colId], curMap[rowId][colId + 1]))) {
+          // this.canMove[rowId][colId + 1] = '-1'
+          nxtList.push({
+            rowId: rowId,
+            colId: colId,
+            newRowId: rowId,
+            newColId: colId + 1
+          })
         }
       }
-      if (this.chessMap[rowId][colId] === '2') {
+      if (curMap[rowId][colId] === '2') {
         // 士
-        if (rowId - 1 >= this.canMove.length - 3 && colId - 1 >= 3 && (this.chessMap[rowId - 1][colId - 1] === '0' || this.isEnemy(this.chessMap[rowId][colId], this.chessMap[rowId - 1][colId - 1]))) {
-          this.canMove[rowId - 1][colId - 1] = '-1'
+        if (rowId - 1 >= this.canMove.length - 3 && colId - 1 >= 3 && (curMap[rowId - 1][colId - 1] === '0' || this.isEnemy(curMap[rowId][colId], curMap[rowId - 1][colId - 1]))) {
+          // this.canMove[rowId - 1][colId - 1] = '-1'
+          nxtList.push({
+            rowId: rowId,
+            colId: colId,
+            newRowId: rowId - 1,
+            newColId: colId - 1
+          })
         }
-        if (rowId - 1 >= this.canMove.length - 3 && colId + 1 <= 5 && (this.chessMap[rowId - 1][colId + 1] === '0' || this.isEnemy(this.chessMap[rowId][colId], this.chessMap[rowId - 1][colId + 1]))) {
-          this.canMove[rowId - 1][colId + 1] = '-1'
+        if (rowId - 1 >= this.canMove.length - 3 && colId + 1 <= 5 && (curMap[rowId - 1][colId + 1] === '0' || this.isEnemy(curMap[rowId][colId], curMap[rowId - 1][colId + 1]))) {
+          // this.canMove[rowId - 1][colId + 1] = '-1'
+          nxtList.push({
+            rowId: rowId,
+            colId: colId,
+            newRowId: rowId - 1,
+            newColId: colId + 1
+          })
         }
-        if (rowId + 1 < this.canMove.length && colId - 1 >= 3 && (this.chessMap[rowId + 1][colId - 1] === '0' || this.isEnemy(this.chessMap[rowId][colId], this.chessMap[rowId + 1][colId - 1]))) {
-          this.canMove[rowId + 1][colId - 1] = '-1'
+        if (rowId + 1 < this.canMove.length && colId - 1 >= 3 && (curMap[rowId + 1][colId - 1] === '0' || this.isEnemy(curMap[rowId][colId], curMap[rowId + 1][colId - 1]))) {
+          // this.canMove[rowId + 1][colId - 1] = '-1'
+          nxtList.push({
+            rowId: rowId,
+            colId: colId,
+            newRowId: rowId + 1,
+            newColId: colId - 1
+          })
         }
-        if (rowId + 1 < this.canMove.length && colId + 1 <= 5 && (this.chessMap[rowId + 1][colId + 1] === '0' || this.isEnemy(this.chessMap[rowId][colId], this.chessMap[rowId + 1][colId + 1]))) {
-          this.canMove[rowId + 1][colId + 1] = '-1'
+        if (rowId + 1 < this.canMove.length && colId + 1 <= 5 && (curMap[rowId + 1][colId + 1] === '0' || this.isEnemy(curMap[rowId][colId], curMap[rowId + 1][colId + 1]))) {
+          // this.canMove[rowId + 1][colId + 1] = '-1'
+          nxtList.push({
+            rowId: rowId,
+            colId: colId,
+            newRowId: rowId + 1,
+            newColId: colId + 1
+          })
         }
       }
-      if (this.chessMap[rowId][colId] === '3') {
+      if (curMap[rowId][colId] === '3') {
         // 相
-        if (rowId - 2 >= 5 && colId - 2 >= 0 && (this.chessMap[rowId - 2][colId - 2] === '0' || this.isEnemy(this.chessMap[rowId][colId], this.chessMap[rowId - 2][colId - 2])) && this.chessMap[rowId - 1][colId - 1] === '0') {
-          this.canMove[rowId - 2][colId - 2] = '-1'
+        if (rowId - 2 >= 5 && colId - 2 >= 0 && (curMap[rowId - 2][colId - 2] === '0' || this.isEnemy(curMap[rowId][colId], curMap[rowId - 2][colId - 2])) && curMap[rowId - 1][colId - 1] === '0') {
+          // this.canMove[rowId - 2][colId - 2] = '-1'
+          nxtList.push({
+            rowId: rowId,
+            colId: colId,
+            newRowId: rowId - 2,
+            newColId: colId - 2
+          })
         }
-        if (rowId - 2 >= 5 && colId + 2 < this.chessMap[0].length && (this.chessMap[rowId - 2][colId + 2] === '0' || this.isEnemy(this.chessMap[rowId][colId], this.chessMap[rowId - 2][colId + 2])) && this.chessMap[rowId - 1][colId + 1] === '0') {
-          this.canMove[rowId - 2][colId + 2] = '-1'
+        if (rowId - 2 >= 5 && colId + 2 < curMap[0].length && (curMap[rowId - 2][colId + 2] === '0' || this.isEnemy(curMap[rowId][colId], curMap[rowId - 2][colId + 2])) && curMap[rowId - 1][colId + 1] === '0') {
+          // this.canMove[rowId - 2][colId + 2] = '-1'
+          nxtList.push({
+            rowId: rowId,
+            colId: colId,
+            newRowId: rowId - 2,
+            newColId: colId + 2
+          })
         }
-        if (rowId + 2 < this.canMove.length && colId - 2 >= 0 && (this.chessMap[rowId + 2][colId - 2] === '0' || this.isEnemy(this.chessMap[rowId][colId], this.chessMap[rowId + 2][colId - 2])) && this.chessMap[rowId + 1][colId - 1] === '0') {
-          this.canMove[rowId + 2][colId - 2] = '-1'
+        if (rowId + 2 < this.canMove.length && colId - 2 >= 0 && (curMap[rowId + 2][colId - 2] === '0' || this.isEnemy(curMap[rowId][colId], curMap[rowId + 2][colId - 2])) && curMap[rowId + 1][colId - 1] === '0') {
+          // this.canMove[rowId + 2][colId - 2] = '-1'
+          nxtList.push({
+            rowId: rowId,
+            colId: colId,
+            newRowId: rowId + 2,
+            newColId: colId - 2
+          })
         }
-        if (rowId + 2 < this.canMove.length && colId + 2 < this.chessMap[0].length && (this.chessMap[rowId + 2][colId + 2] === '0' || this.isEnemy(this.chessMap[rowId][colId], this.chessMap[rowId + 2][colId + 2])) && this.chessMap[rowId + 1][colId + 1] === '0') {
-          this.canMove[rowId + 2][colId + 2] = '-1'
+        if (rowId + 2 < this.canMove.length && colId + 2 < curMap[0].length && (curMap[rowId + 2][colId + 2] === '0' || this.isEnemy(curMap[rowId][colId], curMap[rowId + 2][colId + 2])) && curMap[rowId + 1][colId + 1] === '0') {
+          // this.canMove[rowId + 2][colId + 2] = '-1'
+          nxtList.push({
+            rowId: rowId,
+            colId: colId,
+            newRowId: rowId + 2,
+            newColId: colId + 2
+          })
         }
       }
-      if (this.chessMap[rowId][colId] === '4') {
+      if (curMap[rowId][colId] === '4') {
         // 马
         let dx = [-2, -2, -1, -1, 1, 1, 2, 2]
         let dy = [-1, 1, -2, 2, -2, 2, -1, 1]
@@ -506,122 +613,432 @@ export default {
           let tmpr = rowId + dx[k], tmpc = colId + dy[k]
 
           if (this.judgePos(tmpr, tmpc)
-              && (this.chessMap[tmpr][tmpc] === '0' || this.isEnemy(this.chessMap[rowId][colId], this.chessMap[tmpr][tmpc]))
-              && this.chessMap[rowId + rx[k]][colId + ry[k]] === '0') {
-            this.canMove[tmpr][tmpc] = '-1'
+              && (curMap[tmpr][tmpc] === '0' || this.isEnemy(curMap[rowId][colId], curMap[tmpr][tmpc]))
+              && curMap[rowId + rx[k]][colId + ry[k]] === '0') {
+            // this.canMove[tmpr][tmpc] = '-1'
+            nxtList.push({
+              rowId: rowId,
+              colId: colId,
+              newRowId: tmpr,
+              newColId: tmpc
+            })
           }
         }
       }
-      if (this.chessMap[rowId][colId] === '5') {
+      if (curMap[rowId][colId] === '5') {
         // 车
         for (let i = rowId - 1; i >= 0; i--) {
-          if (this.chessMap[i][colId] === '0') {
-            this.canMove[i][colId] = '-1'
-          } else if (this.isEnemy(this.chessMap[rowId][colId], this.chessMap[i][colId])) {
-            this.canMove[i][colId] = '-1'
+          if (curMap[i][colId] === '0') {
+            // this.canMove[i][colId] = '-1'
+            nxtList.push({
+              rowId: rowId,
+              colId: colId,
+              newRowId: i,
+              newColId: colId
+            })
+          } else if (this.isEnemy(curMap[rowId][colId], curMap[i][colId])) {
+            // this.canMove[i][colId] = '-1'
+            nxtList.push({
+              rowId: rowId,
+              colId: colId,
+              newRowId: i,
+              newColId: colId
+            })
             break
-          } else if (this.isAlly(this.chessMap[rowId][colId], this.chessMap[i][colId])) {
+          } else if (this.isAlly(curMap[rowId][colId], curMap[i][colId])) {
             break
           }
         }
         for (let i = rowId + 1; i < this.canMove.length; i++) {
-          if (this.chessMap[i][colId] === '0') {
-            this.canMove[i][colId] = '-1'
-          } else if (this.isEnemy(this.chessMap[rowId][colId], this.chessMap[i][colId])) {
-            this.canMove[i][colId] = '-1'
+          if (curMap[i][colId] === '0') {
+            // this.canMove[i][colId] = '-1'
+            nxtList.push({
+              rowId: rowId,
+              colId: colId,
+              newRowId: i,
+              newColId: colId
+            })
+          } else if (this.isEnemy(curMap[rowId][colId], curMap[i][colId])) {
+            // this.canMove[i][colId] = '-1'
+            nxtList.push({
+              rowId: rowId,
+              colId: colId,
+              newRowId: i,
+              newColId: colId
+            })
             break
-          } else if (this.isAlly(this.chessMap[rowId][colId], this.chessMap[i][colId])) {
+          } else if (this.isAlly(curMap[rowId][colId], curMap[i][colId])) {
             break
           }
         }
         for (let j = colId - 1; j >= 0; j--) {
-          if (this.chessMap[rowId][j] === '0') {
-            this.canMove[rowId][j] = '-1'
-          } else if (this.isEnemy(this.chessMap[rowId][colId], this.chessMap[rowId][j])) {
-            this.canMove[rowId][j] = '-1'
+          if (curMap[rowId][j] === '0') {
+            // this.canMove[rowId][j] = '-1'
+            nxtList.push({
+              rowId: rowId,
+              colId: colId,
+              newRowId: rowId,
+              newColId: j
+            })
+          } else if (this.isEnemy(curMap[rowId][colId], curMap[rowId][j])) {
+            // this.canMove[rowId][j] = '-1'
+            nxtList.push({
+              rowId: rowId,
+              colId: colId,
+              newRowId: rowId,
+              newColId: j
+            })
             break
-          } else if (this.isAlly(this.chessMap[rowId][colId], this.chessMap[rowId][j])) {
+          } else if (this.isAlly(curMap[rowId][colId], curMap[rowId][j])) {
             break
           }
         }
-        for (let j = colId + 1; j < this.chessMap[rowId].length; j++) {
-          if (this.chessMap[rowId][j] === '0') {
-            this.canMove[rowId][j] = '-1'
-          } else if (this.isEnemy(this.chessMap[rowId][colId], this.chessMap[rowId][j])) {
-            this.canMove[rowId][j] = '-1'
+        for (let j = colId + 1; j < curMap[rowId].length; j++) {
+          if (curMap[rowId][j] === '0') {
+            // this.canMove[rowId][j] = '-1'
+            nxtList.push({
+              rowId: rowId,
+              colId: colId,
+              newRowId: rowId,
+              newColId: j
+            })
+          } else if (this.isEnemy(curMap[rowId][colId], curMap[rowId][j])) {
+            // this.canMove[rowId][j] = '-1'
+            nxtList.push({
+              rowId: rowId,
+              colId: colId,
+              newRowId: rowId,
+              newColId: j
+            })
             break
-          } else if (this.isAlly(this.chessMap[rowId][colId], this.chessMap[rowId][j])) {
+          } else if (this.isAlly(curMap[rowId][colId], curMap[rowId][j])) {
             break
           }
         }
       }
-      if (this.chessMap[rowId][colId] === '6') {
+      if (curMap[rowId][colId] === '6') {
         // 炮
         let flag = false
         for (let i = rowId - 1; i >= 0; i--) {
-          if (flag === false && this.chessMap[i][colId] === '0') {
-            this.canMove[i][colId] = '-1'
-          } else if (this.chessMap[i][colId] !== '0' && flag === false) {
+          if (flag === false && curMap[i][colId] === '0') {
+            // this.canMove[i][colId] = '-1'
+            nxtList.push({
+              rowId: rowId,
+              colId: colId,
+              newRowId: i,
+              newColId: colId
+            })
+          } else if (curMap[i][colId] !== '0' && flag === false) {
             flag = true
-          } else if (flag === true && this.isEnemy(this.chessMap[rowId][colId], this.chessMap[i][colId])) {
-            this.canMove[i][colId] = '-1'
+          } else if (flag === true && this.isEnemy(curMap[rowId][colId], curMap[i][colId])) {
+            // this.canMove[i][colId] = '-1'
+            nxtList.push({
+              rowId: rowId,
+              colId: colId,
+              newRowId: i,
+              newColId: colId
+            })
             break
           }
         }
         flag = false
         for (let i = rowId + 1; i < this.canMove.length; i++) {
-          if (flag === false && this.chessMap[i][colId] === '0') {
-            this.canMove[i][colId] = '-1'
-          } else if (this.chessMap[i][colId] !== '0' && flag === false) {
+          if (flag === false && curMap[i][colId] === '0') {
+            // this.canMove[i][colId] = '-1'
+            nxtList.push({
+              rowId: rowId,
+              colId: colId,
+              newRowId: i,
+              newColId: colId
+            })
+          } else if (curMap[i][colId] !== '0' && flag === false) {
             flag = true
-          }  else if (flag === true && this.isEnemy(this.chessMap[rowId][colId], this.chessMap[i][colId])) {
-            this.canMove[i][colId] = '-1'
+          }  else if (flag === true && this.isEnemy(curMap[rowId][colId], curMap[i][colId])) {
+            // this.canMove[i][colId] = '-1'
+            nxtList.push({
+              rowId: rowId,
+              colId: colId,
+              newRowId: i,
+              newColId: colId
+            })
             break
           }
         }
         flag = false
         for (let j = colId - 1; j >= 0; j--) {
-          if (flag === false && this.chessMap[rowId][j] === '0') {
-            this.canMove[rowId][j] = '-1'
-          } else if (this.chessMap[rowId][j] !== '0' && flag === false) {
+          if (flag === false && curMap[rowId][j] === '0') {
+            // this.canMove[rowId][j] = '-1'
+            nxtList.push({
+              rowId: rowId,
+              colId: colId,
+              newRowId: rowId,
+              newColId: j
+            })
+          } else if (curMap[rowId][j] !== '0' && flag === false) {
             flag = true
-          }  else if (flag === true && this.isEnemy(this.chessMap[rowId][colId], this.chessMap[rowId][j])) {
-            this.canMove[rowId][j] = '-1'
+          }  else if (flag === true && this.isEnemy(curMap[rowId][colId], curMap[rowId][j])) {
+            // this.canMove[rowId][j] = '-1'
+            nxtList.push({
+              rowId: rowId,
+              colId: colId,
+              newRowId: rowId,
+              newColId: j
+            })
             break
           }
         }
         flag = false
-        for (let j = colId + 1; j < this.chessMap[rowId].length; j++) {
-          if (flag === false && this.chessMap[rowId][j] === '0') {
-            this.canMove[rowId][j] = '-1'
-          } else if (this.chessMap[rowId][j] !== '0' && flag === false) {
+        for (let j = colId + 1; j < curMap[rowId].length; j++) {
+          if (flag === false && curMap[rowId][j] === '0') {
+            // this.canMove[rowId][j] = '-1'
+            nxtList.push({
+              rowId: rowId,
+              colId: colId,
+              newRowId: rowId,
+              newColId: j
+            })
+          } else if (curMap[rowId][j] !== '0' && flag === false) {
             flag = true
-          }  else if (flag === true && this.isEnemy(this.chessMap[rowId][colId], this.chessMap[rowId][j])) {
-            this.canMove[rowId][j] = '-1'
+          }  else if (flag === true && this.isEnemy(curMap[rowId][colId], curMap[rowId][j])) {
+            // this.canMove[rowId][j] = '-1'
+            nxtList.push({
+              rowId: rowId,
+              colId: colId,
+              newRowId: rowId,
+              newColId: j
+            })
             break
           }
         }
       }
-      if (this.chessMap[rowId][colId] === '7') {
+      if (curMap[rowId][colId] === '7') {
         // 兵
         if (rowId >= 5) {
           // 只能前进
-          if (this.chessMap[rowId - 1][colId] === '0' || this.isEnemy(this.chessMap[rowId][colId], this.chessMap[rowId - 1][colId])) {
-            this.canMove[rowId - 1][colId] = '-1'
+          if (curMap[rowId - 1][colId] === '0' || this.isEnemy(curMap[rowId][colId], curMap[rowId - 1][colId])) {
+            // this.canMove[rowId - 1][colId] = '-1'
+            nxtList.push({
+              rowId: rowId,
+              colId: colId,
+              newRowId: rowId - 1,
+              newColId: colId
+            })
           }
         } else if (rowId >= 0) {
           // 前进或左右
-          if (rowId - 1 >= 0 && (this.chessMap[rowId - 1][colId] === '0' || this.isEnemy(this.chessMap[rowId][colId], this.chessMap[rowId - 1][colId]))) {
-            this.canMove[rowId - 1][colId] = '-1'
+          if (rowId - 1 >= 0 && (curMap[rowId - 1][colId] === '0' || this.isEnemy(curMap[rowId][colId], curMap[rowId - 1][colId]))) {
+            // this.canMove[rowId - 1][colId] = '-1'
+            nxtList.push({
+              rowId: rowId,
+              colId: colId,
+              newRowId: rowId - 1,
+              newColId: colId
+            })
           }
-          if (this.chessMap[rowId][colId - 1] === '0' || this.isEnemy(this.chessMap[rowId][colId], this.chessMap[rowId][colId - 1])) {
-            this.canMove[rowId][colId - 1] = '-1'
+          if (curMap[rowId][colId - 1] === '0' || this.isEnemy(curMap[rowId][colId], curMap[rowId][colId - 1])) {
+            // this.canMove[rowId][colId - 1] = '-1'
+            nxtList.push({
+              rowId: rowId,
+              colId: colId,
+              newRowId: rowId,
+              newColId: colId - 1
+            })
           }
-          if (this.chessMap[rowId][colId + 1] === '0' || this.isEnemy(this.chessMap[rowId][colId], this.chessMap[rowId][colId + 1])) {
-            this.canMove[rowId][colId + 1] = '-1'
+          if (curMap[rowId][colId + 1] === '0' || this.isEnemy(curMap[rowId][colId], curMap[rowId][colId + 1])) {
+            // this.canMove[rowId][colId + 1] = '-1'
+            nxtList.push({
+              rowId: rowId,
+              colId: colId,
+              newRowId: rowId,
+              newColId: colId + 1
+            })
           }
         }
       }
+      // console.log('nxtList', nxtList)
+      for (let i = 0; i < nxtList.length; i++) {
+        let cur = nxtList[i]
+        let tmp = curMap[cur.newRowId][cur.newColId]
+        curMap[cur.newRowId][cur.newColId] = curMap[cur.rowId][cur.colId]
+        curMap[cur.rowId][cur.colId] = '0'
+        console.log(this.judgeCounter(curMap, false))
+        if (this.judgeCounter(curMap, false) === false) {
+          this.canMove[cur.newRowId][cur.newColId] = '-1'
+        }
+        curMap[cur.rowId][cur.colId] = curMap[cur.newRowId][cur.newColId]
+        curMap[cur.newRowId][cur.newColId] = tmp
+      }
+      // if (this.chessMap[rowId][colId] === '1') {
+      //   // 帅
+      //   if (rowId - 1 >= this.canMove.length - 3 && (this.chessMap[rowId - 1][colId] === '0' || this.isEnemy(this.chessMap[rowId][colId], this.chessMap[rowId - 1][colId]))) {
+      //     this.canMove[rowId - 1][colId] = '-1'
+      //   }
+      //   if (rowId + 1 < this.canMove.length && (this.chessMap[rowId + 1][colId] === '0' || this.isEnemy(this.chessMap[rowId][colId], this.chessMap[rowId + 1][colId]))) {
+      //     this.canMove[rowId + 1][colId] = '-1'
+      //   }
+      //   if (colId - 1 >= 3 && (this.chessMap[rowId][colId - 1] === '0' || this.isEnemy(this.chessMap[rowId][colId], this.chessMap[rowId][colId - 1]))) {
+      //     this.canMove[rowId][colId - 1] = '-1'
+      //   }
+      //   if (colId + 1 <= 5 && (this.chessMap[rowId][colId + 1] === '0' || this.isEnemy(this.chessMap[rowId][colId], this.chessMap[rowId][colId + 1]))) {
+      //     this.canMove[rowId][colId + 1] = '-1'
+      //   }
+      // }
+      // if (this.chessMap[rowId][colId] === '2') {
+      //   // 士
+      //   if (rowId - 1 >= this.canMove.length - 3 && colId - 1 >= 3 && (this.chessMap[rowId - 1][colId - 1] === '0' || this.isEnemy(this.chessMap[rowId][colId], this.chessMap[rowId - 1][colId - 1]))) {
+      //     this.canMove[rowId - 1][colId - 1] = '-1'
+      //   }
+      //   if (rowId - 1 >= this.canMove.length - 3 && colId + 1 <= 5 && (this.chessMap[rowId - 1][colId + 1] === '0' || this.isEnemy(this.chessMap[rowId][colId], this.chessMap[rowId - 1][colId + 1]))) {
+      //     this.canMove[rowId - 1][colId + 1] = '-1'
+      //   }
+      //   if (rowId + 1 < this.canMove.length && colId - 1 >= 3 && (this.chessMap[rowId + 1][colId - 1] === '0' || this.isEnemy(this.chessMap[rowId][colId], this.chessMap[rowId + 1][colId - 1]))) {
+      //     this.canMove[rowId + 1][colId - 1] = '-1'
+      //   }
+      //   if (rowId + 1 < this.canMove.length && colId + 1 <= 5 && (this.chessMap[rowId + 1][colId + 1] === '0' || this.isEnemy(this.chessMap[rowId][colId], this.chessMap[rowId + 1][colId + 1]))) {
+      //     this.canMove[rowId + 1][colId + 1] = '-1'
+      //   }
+      // }
+      // if (this.chessMap[rowId][colId] === '3') {
+      //   // 相
+      //   if (rowId - 2 >= 5 && colId - 2 >= 0 && (this.chessMap[rowId - 2][colId - 2] === '0' || this.isEnemy(this.chessMap[rowId][colId], this.chessMap[rowId - 2][colId - 2])) && this.chessMap[rowId - 1][colId - 1] === '0') {
+      //     this.canMove[rowId - 2][colId - 2] = '-1'
+      //   }
+      //   if (rowId - 2 >= 5 && colId + 2 < this.chessMap[0].length && (this.chessMap[rowId - 2][colId + 2] === '0' || this.isEnemy(this.chessMap[rowId][colId], this.chessMap[rowId - 2][colId + 2])) && this.chessMap[rowId - 1][colId + 1] === '0') {
+      //     this.canMove[rowId - 2][colId + 2] = '-1'
+      //   }
+      //   if (rowId + 2 < this.canMove.length && colId - 2 >= 0 && (this.chessMap[rowId + 2][colId - 2] === '0' || this.isEnemy(this.chessMap[rowId][colId], this.chessMap[rowId + 2][colId - 2])) && this.chessMap[rowId + 1][colId - 1] === '0') {
+      //     this.canMove[rowId + 2][colId - 2] = '-1'
+      //   }
+      //   if (rowId + 2 < this.canMove.length && colId + 2 < this.chessMap[0].length && (this.chessMap[rowId + 2][colId + 2] === '0' || this.isEnemy(this.chessMap[rowId][colId], this.chessMap[rowId + 2][colId + 2])) && this.chessMap[rowId + 1][colId + 1] === '0') {
+      //     this.canMove[rowId + 2][colId + 2] = '-1'
+      //   }
+      // }
+      // if (this.chessMap[rowId][colId] === '4') {
+      //   // 马
+      //   let dx = [-2, -2, -1, -1, 1, 1, 2, 2]
+      //   let dy = [-1, 1, -2, 2, -2, 2, -1, 1]
+      //   let rx = [-1, -1, 0, 0, 0, 0, 1, 1]
+      //   let ry = [0, 0, -1, 1, -1, 1, 0, 0]
+      //   for (let k = 0; k < 8; k++) {
+      //     let tmpr = rowId + dx[k], tmpc = colId + dy[k]
+      //
+      //     if (this.judgePos(tmpr, tmpc)
+      //         && (this.chessMap[tmpr][tmpc] === '0' || this.isEnemy(this.chessMap[rowId][colId], this.chessMap[tmpr][tmpc]))
+      //         && this.chessMap[rowId + rx[k]][colId + ry[k]] === '0') {
+      //       this.canMove[tmpr][tmpc] = '-1'
+      //     }
+      //   }
+      // }
+      // if (this.chessMap[rowId][colId] === '5') {
+      //   // 车
+      //   for (let i = rowId - 1; i >= 0; i--) {
+      //     if (this.chessMap[i][colId] === '0') {
+      //       this.canMove[i][colId] = '-1'
+      //     } else if (this.isEnemy(this.chessMap[rowId][colId], this.chessMap[i][colId])) {
+      //       this.canMove[i][colId] = '-1'
+      //       break
+      //     } else if (this.isAlly(this.chessMap[rowId][colId], this.chessMap[i][colId])) {
+      //       break
+      //     }
+      //   }
+      //   for (let i = rowId + 1; i < this.canMove.length; i++) {
+      //     if (this.chessMap[i][colId] === '0') {
+      //       this.canMove[i][colId] = '-1'
+      //     } else if (this.isEnemy(this.chessMap[rowId][colId], this.chessMap[i][colId])) {
+      //       this.canMove[i][colId] = '-1'
+      //       break
+      //     } else if (this.isAlly(this.chessMap[rowId][colId], this.chessMap[i][colId])) {
+      //       break
+      //     }
+      //   }
+      //   for (let j = colId - 1; j >= 0; j--) {
+      //     if (this.chessMap[rowId][j] === '0') {
+      //       this.canMove[rowId][j] = '-1'
+      //     } else if (this.isEnemy(this.chessMap[rowId][colId], this.chessMap[rowId][j])) {
+      //       this.canMove[rowId][j] = '-1'
+      //       break
+      //     } else if (this.isAlly(this.chessMap[rowId][colId], this.chessMap[rowId][j])) {
+      //       break
+      //     }
+      //   }
+      //   for (let j = colId + 1; j < this.chessMap[rowId].length; j++) {
+      //     if (this.chessMap[rowId][j] === '0') {
+      //       this.canMove[rowId][j] = '-1'
+      //     } else if (this.isEnemy(this.chessMap[rowId][colId], this.chessMap[rowId][j])) {
+      //       this.canMove[rowId][j] = '-1'
+      //       break
+      //     } else if (this.isAlly(this.chessMap[rowId][colId], this.chessMap[rowId][j])) {
+      //       break
+      //     }
+      //   }
+      // }
+      // if (this.chessMap[rowId][colId] === '6') {
+      //   // 炮
+      //   let flag = false
+      //   for (let i = rowId - 1; i >= 0; i--) {
+      //     if (flag === false && this.chessMap[i][colId] === '0') {
+      //       this.canMove[i][colId] = '-1'
+      //     } else if (this.chessMap[i][colId] !== '0' && flag === false) {
+      //       flag = true
+      //     } else if (flag === true && this.isEnemy(this.chessMap[rowId][colId], this.chessMap[i][colId])) {
+      //       this.canMove[i][colId] = '-1'
+      //       break
+      //     }
+      //   }
+      //   flag = false
+      //   for (let i = rowId + 1; i < this.canMove.length; i++) {
+      //     if (flag === false && this.chessMap[i][colId] === '0') {
+      //       this.canMove[i][colId] = '-1'
+      //     } else if (this.chessMap[i][colId] !== '0' && flag === false) {
+      //       flag = true
+      //     }  else if (flag === true && this.isEnemy(this.chessMap[rowId][colId], this.chessMap[i][colId])) {
+      //       this.canMove[i][colId] = '-1'
+      //       break
+      //     }
+      //   }
+      //   flag = false
+      //   for (let j = colId - 1; j >= 0; j--) {
+      //     if (flag === false && this.chessMap[rowId][j] === '0') {
+      //       this.canMove[rowId][j] = '-1'
+      //     } else if (this.chessMap[rowId][j] !== '0' && flag === false) {
+      //       flag = true
+      //     }  else if (flag === true && this.isEnemy(this.chessMap[rowId][colId], this.chessMap[rowId][j])) {
+      //       this.canMove[rowId][j] = '-1'
+      //       break
+      //     }
+      //   }
+      //   flag = false
+      //   for (let j = colId + 1; j < this.chessMap[rowId].length; j++) {
+      //     if (flag === false && this.chessMap[rowId][j] === '0') {
+      //       this.canMove[rowId][j] = '-1'
+      //     } else if (this.chessMap[rowId][j] !== '0' && flag === false) {
+      //       flag = true
+      //     }  else if (flag === true && this.isEnemy(this.chessMap[rowId][colId], this.chessMap[rowId][j])) {
+      //       this.canMove[rowId][j] = '-1'
+      //       break
+      //     }
+      //   }
+      // }
+      // if (this.chessMap[rowId][colId] === '7') {
+      //   // 兵
+      //   if (rowId >= 5) {
+      //     // 只能前进
+      //     if (this.chessMap[rowId - 1][colId] === '0' || this.isEnemy(this.chessMap[rowId][colId], this.chessMap[rowId - 1][colId])) {
+      //       this.canMove[rowId - 1][colId] = '-1'
+      //     }
+      //   } else if (rowId >= 0) {
+      //     // 前进或左右
+      //     if (rowId - 1 >= 0 && (this.chessMap[rowId - 1][colId] === '0' || this.isEnemy(this.chessMap[rowId][colId], this.chessMap[rowId - 1][colId]))) {
+      //       this.canMove[rowId - 1][colId] = '-1'
+      //     }
+      //     if (this.chessMap[rowId][colId - 1] === '0' || this.isEnemy(this.chessMap[rowId][colId], this.chessMap[rowId][colId - 1])) {
+      //       this.canMove[rowId][colId - 1] = '-1'
+      //     }
+      //     if (this.chessMap[rowId][colId + 1] === '0' || this.isEnemy(this.chessMap[rowId][colId], this.chessMap[rowId][colId + 1])) {
+      //       this.canMove[rowId][colId + 1] = '-1'
+      //     }
+      //   }
+      // }
 
       // if (this.chessMap[rowId][colId] === '-1') {
       //   // 帅
@@ -814,7 +1231,7 @@ export default {
           // console.log(this.chessMap[i][j], tmpMap[i][j])
         }
       }
-      let isPreCheckmated = this.judgeCheckMate(tmpMap, false, false)
+      let isPreCheckmated = this.judgeCheckMate(tmpMap, false)
       this.alphaBeta(tmpMap, 0, true, isPreCheckmated, -1000000, 1000000)
       // console.log('tmpMap', tmpMap.join(','))
       // console.log('res')
@@ -824,17 +1241,40 @@ export default {
       // console.log(this.chessInfo[this.chessMap[this.aiRowId][this.aiColId]])
       // console.log(this.chessMap[this.aiRowId][this.aiColId], this.chessMap[this.aiNewRowId][this.aiNewColId])
       // console.log(this.isEnemy(this.chessMap[this.aiRowId][this.aiColId], this.chessMap[this.aiNewRowId][this.aiNewColId]))
+      if (this.aiNewRowId === -1 || this.aiNewColId === -1) {
+        // ai找不到位置走棋，玩家获胜
+        this.win = 1
+        alert('player win!')
+        return
+      }
+      // console.log(this.aiRowId, this.aiColId)
+      // console.log(this.aiNewRowId, this.aiNewColId)
+      let preChess = this.chessMap[this.aiNewRowId][this.aiNewColId]
       this.chessMap[this.aiNewRowId][this.aiNewColId] = this.chessMap[this.aiRowId][this.aiColId]
       this.chessMap[this.aiRowId][this.aiColId] = '0'
       this.lastRowId = this.aiNewRowId
       this.lastColId = this.aiNewColId
       this.$forceUpdate()
-      this.canOpt = true
+      if (preChess === '1') {
+        this.win = -1
+        alert('ai win!')
+        return
+      }
+      console.log(this.chessMap)
+      console.log('ai checkmate', this.judgeCheckMate(this.chessMap, true))
+      if (this.judgeCheckMate(this.chessMap, true)) {
+        this.showCheckMate = true
+        setTimeout(() => {
+          this.showCheckMate = false
+          this.canOpt = true
+        }, 500)
+      } else {
+        this.canOpt = true
+      }
     },
-    judgeCheckMate (curMap, isAI, isAIJ = true) {
-      // console.log('judgeCheckMate', curMap)
+    judgeCounter (curMap, isAI) {
+      // 判断对将
       if (isAI) {
-        // 判断AI是否将军
         for (let i = 0; i < curMap.length; i++) {
           for (let j = 0; j < curMap[0].length; j++) {
             let rowId = i, colId = j
@@ -842,19 +1282,43 @@ export default {
               // 帅
               for (let t = rowId + 1; t < curMap.length; t++) {
                 if (curMap[t][colId] !== '0') {
-                  if (curMap[t][colId] !== '1') {
-                    return false
+                  if (curMap[t][colId] === '1') {
+                    return true
                   } else {
-                    if (isAIJ) {
-                      // 是AI移动将
-                      return false
-                    } else {
-                      return true
-                    }
+                    return false
                   }
                 }
               }
             }
+          }
+        }
+        return false
+      } else {
+        for (let i = 0; i < curMap.length; i++) {
+          for (let j = 0; j < curMap[0].length; j++) {
+            let rowId = i, colId = j
+            if (curMap[rowId][colId] === '1') {
+              // 帅
+              for (let t = rowId - 1; t >= 0; t--) {
+                if (curMap[t][colId] === '-1') {
+                  return true
+                } else {
+                  return false
+                }
+              }
+            }
+          }
+        }
+        return false
+      }
+    },
+    judgeCheckMate (curMap, isAI) {
+      // console.log('judgeCheckMate', curMap)
+      if (isAI) {
+        // 判断AI是否将军
+        for (let i = 0; i < curMap.length; i++) {
+          for (let j = 0; j < curMap[0].length; j++) {
+            let rowId = i, colId = j
             if (curMap[rowId][colId] === '-2') {
               // 士
               if (rowId - 1 >= 0 && colId - 1 >= 3 && (curMap[rowId - 1][colId - 1] === '0' || this.isEnemy(curMap[rowId][colId], curMap[rowId - 1][colId - 1]))) {
@@ -978,9 +1442,9 @@ export default {
                   if (curMap[i][colId] === '1') {
                     return true
                   }
-                } else if (curMap[i][colId] !== '0' && flag === false) {
+                } else if (flag === false && curMap[i][colId] !== '0') {
                   flag = true
-                }  else if (flag === true && this.isEnemy(curMap[rowId][colId], curMap[i][colId])) {
+                } else if (flag === true && this.isEnemy(curMap[rowId][colId], curMap[i][colId])) {
                   if (curMap[i][colId] === '1') {
                     return true
                   }
@@ -1054,23 +1518,6 @@ export default {
         for (let i = 0; i < curMap.length; i++) {
           for (let j = 0; j < curMap[0].length; j++) {
             let rowId = i, colId = j
-            if (curMap[rowId][colId] === '1') {
-              // 帅
-              for (let t = rowId - 1; t >= 0; t--) {
-                if (curMap[t][colId] !== '0') {
-                  if (curMap[t][colId] !== '-1') {
-                    return false
-                  } else {
-                    if (isAIJ) {
-                      // 是AI移动将
-                      return true
-                    } else {
-                      return false
-                    }
-                  }
-                }
-              }
-            }
             if (curMap[rowId][colId] === '2') {
               // 士
               if (rowId - 1 >= curMap.length - 3 && colId - 1 >= 3 && (curMap[rowId - 1][colId - 1] === '0' || this.isEnemy(curMap[rowId][colId], curMap[rowId - 1][colId - 1]))) {
@@ -1289,9 +1736,9 @@ export default {
       }
       if (isAI) {
         let nxtList = []
-        for (let i = 0; i < curMap.length; i++) {
-          for (let j = 0; j < curMap[0].length; j++) {
-            let rowId = i, colId = j
+        for (let io = 0; io < curMap.length; io++) {
+          for (let jo = 0; jo < curMap[0].length; jo++) {
+            let rowId = io, colId = jo
             if (curMap[rowId][colId] === '-1') {
               // 帅
               if (rowId - 1 >= 0 && (curMap[rowId - 1][colId] === '0' || this.isEnemy(curMap[rowId][colId], curMap[rowId - 1][colId]))) {
@@ -1675,7 +2122,18 @@ export default {
           let tmp = curMap[cur.newRowId][cur.newColId]
           curMap[cur.newRowId][cur.newColId] = curMap[cur.rowId][cur.colId]
           curMap[cur.rowId][cur.colId] = '0'
-          let isCheckMate = this.judgeCheckMate(curMap, false, curMap[cur.newRowId][cur.newColId] === -1)
+          if (depth === 0 && tmp === '1') {
+            // 将军状态
+            this.aiRowId = cur.rowId
+            this.aiColId = cur.colId
+            this.aiNewRowId = cur.newRowId
+            this.aiNewColId = cur.newColId
+            this.win = -1
+            return
+          }
+
+
+          let isCheckMate = this.judgeCheckMate(curMap, false)
           // if (cur.rowId === 3 && cur.colId === 8) {
           //   console.log('curMap', curMap.join(','))
           //   console.log('judge', cur.rowId, cur.colId)
@@ -1683,13 +2141,13 @@ export default {
           //   console.log(isCheckMate)
           // }
           let moveScore = 0
-          if (isCheckMate) {
+          if (isCheckMate || this.judgeCounter(curMap, true)) {
             // 被将军
-            let hehe = []
-            curMap.forEach(c => {
-              hehe.push(c.join(','))
-            })
-            console.log(hehe)
+            // let hehe = []
+            // curMap.forEach(c => {
+            //   hehe.push(c.join(','))
+            // })
+            // console.log(hehe)
             curMap[cur.rowId][cur.colId] = curMap[cur.newRowId][cur.newColId]
             curMap[cur.newRowId][cur.newColId] = tmp
             continue
@@ -1700,7 +2158,7 @@ export default {
             //   continue
             // }
             // console.log('be checkmated', this.chessMap)
-          } else if (this.judgeCheckMate(curMap, true, curMap[cur.newRowId][cur.newColId] === -1)) {
+          } else if (this.judgeCheckMate(curMap, true)) {
             moveScore = 9999
           }
           moveScore += this.chessScore[tmp]
@@ -1731,12 +2189,12 @@ export default {
               // console.log('hehe', this.judgeCheckMate(curMap, false))
               // console.log(moveScore)
               alpha = chessScore + chessPosScore + moveScore + checkMateScore
-              if (depth === 0) {
-                this.aiRowId = cur.rowId
-                this.aiColId = cur.colId
-                this.aiNewRowId = cur.newRowId
-                this.aiNewColId = cur.newColId
-              }
+              // if (depth === 0) {
+              //   this.aiRowId = cur.rowId
+              //   this.aiColId = cur.colId
+              //   this.aiNewRowId = cur.newRowId
+              //   this.aiNewColId = cur.newColId
+              // }
             }
           } else {
             let max = this.alphaBeta(curMap, depth + 1, !isAI, isCheckMate, alpha, beta)
@@ -1763,9 +2221,9 @@ export default {
         return alpha
       } else {
         let nxtList = []
-        for (let i = 0; i < curMap.length; i++) {
-          for (let j = 0; j < curMap[0].length; j++) {
-            let rowId = i, colId = j
+        for (let io = 0; io < curMap.length; io++) {
+          for (let jo = 0; jo < curMap[0].length; jo++) {
+            let rowId = io, colId = jo
             if (curMap[rowId][colId] === '1') {
               // 帅
               if (rowId - 1 >= this.canMove.length - 3 && (curMap[rowId - 1][colId] === '0' || this.isEnemy(curMap[rowId][colId], curMap[rowId - 1][colId]))) {
@@ -2143,13 +2601,13 @@ export default {
           let tmp = curMap[cur.newRowId][cur.newColId]
           curMap[cur.newRowId][cur.newColId] = curMap[cur.rowId][cur.colId]
           curMap[cur.rowId][cur.colId] = '0'
-          let isCheckMate = this.judgeCheckMate(curMap, false, false)
+          let isCheckMate = this.judgeCheckMate(curMap, false)
           let moveScore = 0
           if (isCheckMate) {
             // 被将军
             moveScore = -29999
             // console.log('be checkmated', this.chessMap)
-          } else if (this.judgeCheckMate(curMap, true, false)) {
+          } else if (this.judgeCheckMate(curMap, true) || this.judgeCounter(curMap, false)) {
             moveScore = 9999
           }
           moveScore -= this.chessScore[tmp] * 2
@@ -2239,7 +2697,7 @@ export default {
             color: #bb0f0f;
           }
           .pre-chess-eat {
-            border: 3px solid #5bbd5b;
+            border: 3px solid #5bbd5b !important;
           }
           .last-move-chess {
             border: 3px solid #d98333;
@@ -2388,6 +2846,11 @@ export default {
     .mark13 {
       bottom: 248px;
       right: -12px;
+    }
+    .check-mate {
+      position: absolute;
+      z-index: 99999;
+      font-size: 100px;
     }
   }
 }
