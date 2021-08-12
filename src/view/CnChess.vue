@@ -27,6 +27,9 @@
             }"></div>
           </div>
         </div>
+        <div class="check-mate" v-show="showCheckMate">
+          将
+        </div>
       </div>
       <div class="river"></div>
       <div class="b-side line-tl-br"></div>
@@ -116,10 +119,6 @@
         <!--        <div class="curve1"></div>-->
         <!--        <div class="curve2"></div>-->
         <div class="curve3"></div>
-      </div>
-
-      <div class="check-mate" v-show="showCheckMate">
-        将
       </div>
     </div>
   </div>
@@ -2716,6 +2715,18 @@ export default {
           }
         }
       }
+      .check-mate {
+        position: absolute;
+        z-index: 99999;
+        font-size: 100px;
+        font-family: KaiTi;
+        width: 100%;
+        height: 100%;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        background-color: rgba(208, 208, 208, 0.3);
+      }
     }
     .river {
       width: calc(100% - 10px);
@@ -2846,11 +2857,6 @@ export default {
     .mark13 {
       bottom: 248px;
       right: -12px;
-    }
-    .check-mate {
-      position: absolute;
-      z-index: 99999;
-      font-size: 100px;
     }
   }
 }
