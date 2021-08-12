@@ -17,7 +17,8 @@
               'chess': true,
               'red-side': parseInt(col) > 0,
               'black-side': parseInt(col) < 0,
-              'pre-chess-eat': canMove[rowId][colId] === '-1'
+              'pre-chess-eat': canMove[rowId][colId] === '-1',
+              'last-move-chess': rowId === lastRowId && colId === lastColId
             }" v-if="col !== '0'">
               {{chessInfo[col]}}
             </div>
@@ -377,7 +378,9 @@ export default {
       aiColId: -1,
       aiNewRowId: -1,
       aiNewColId: -1,
-      canOpt: true
+      canOpt: true,
+      lastRowId: -1,
+      lastColId: -1
     }
   },
   methods: {
@@ -404,6 +407,8 @@ export default {
           }
           this.chessMap[rowId][colId] = this.chessMap[this.curRowId][this.curColId]
           this.chessMap[this.curRowId][this.curColId] = '0'
+          this.lastRowId = rowId
+          this.lastColId = colId
           this.$forceUpdate()
           // console.log('checkmate', this.judgeCheckMate(this.chessMap, false))
           this.canOpt = false
@@ -809,22 +814,24 @@ export default {
           // console.log(this.chessMap[i][j], tmpMap[i][j])
         }
       }
-      let isPreCheckmated = this.judgeCheckMate(tmpMap, false)
+      let isPreCheckmated = this.judgeCheckMate(tmpMap, false, false)
       this.alphaBeta(tmpMap, 0, true, isPreCheckmated, -1000000, 1000000)
       // console.log('tmpMap', tmpMap.join(','))
-      console.log('res')
-      console.log('chessMap', this.chessMap)
-      console.log(this.aiRowId, this.aiColId)
-      console.log(this.aiNewRowId, this.aiNewColId)
-      console.log(this.chessInfo[this.chessMap[this.aiRowId][this.aiColId]])
-      console.log(this.chessMap[this.aiRowId][this.aiColId], this.chessMap[this.aiNewRowId][this.aiNewColId])
-      console.log(this.isEnemy(this.chessMap[this.aiRowId][this.aiColId], this.chessMap[this.aiNewRowId][this.aiNewColId]))
+      // console.log('res')
+      // console.log('chessMap', this.chessMap)
+      // console.log(this.aiRowId, this.aiColId)
+      // console.log(this.aiNewRowId, this.aiNewColId)
+      // console.log(this.chessInfo[this.chessMap[this.aiRowId][this.aiColId]])
+      // console.log(this.chessMap[this.aiRowId][this.aiColId], this.chessMap[this.aiNewRowId][this.aiNewColId])
+      // console.log(this.isEnemy(this.chessMap[this.aiRowId][this.aiColId], this.chessMap[this.aiNewRowId][this.aiNewColId]))
       this.chessMap[this.aiNewRowId][this.aiNewColId] = this.chessMap[this.aiRowId][this.aiColId]
       this.chessMap[this.aiRowId][this.aiColId] = '0'
+      this.lastRowId = this.aiNewRowId
+      this.lastColId = this.aiNewColId
       this.$forceUpdate()
       this.canOpt = true
     },
-    judgeCheckMate (curMap, isAI) {
+    judgeCheckMate (curMap, isAI, isAIJ = true) {
       // console.log('judgeCheckMate', curMap)
       if (isAI) {
         // 判断AI是否将军
@@ -833,24 +840,18 @@ export default {
             let rowId = i, colId = j
             if (curMap[rowId][colId] === '-1') {
               // 帅
-              if (rowId - 1 >= 0 && (curMap[rowId - 1][colId] === '0' || this.isEnemy(curMap[rowId][colId], curMap[rowId - 1][colId]))) {
-                if (curMap[rowId - 1][colId] === '1') {
-                  return true
-                }
-              }
-              if (rowId + 1 < 3 && (curMap[rowId + 1][colId] === '0' || this.isEnemy(curMap[rowId][colId], curMap[rowId + 1][colId]))) {
-                if (curMap[rowId + 1][colId] === '1') {
-                  return true
-                }
-              }
-              if (colId - 1 >= 3 && (curMap[rowId][colId - 1] === '0' || this.isEnemy(curMap[rowId][colId], curMap[rowId][colId - 1]))) {
-                if (curMap[rowId][colId - 1] === '1') {
-                  return true
-                }
-              }
-              if (colId + 1 <= 5 && (curMap[rowId][colId + 1] === '0' || this.isEnemy(curMap[rowId][colId], curMap[rowId][colId + 1]))) {
-                if (curMap[rowId][colId + 1] === '1') {
-                  return true
+              for (let t = rowId + 1; t < curMap.length; t++) {
+                if (curMap[t][colId] !== '0') {
+                  if (curMap[t][colId] !== '1') {
+                    return false
+                  } else {
+                    if (isAIJ) {
+                      // 是AI移动将
+                      return false
+                    } else {
+                      return true
+                    }
+                  }
                 }
               }
             }
@@ -873,29 +874,6 @@ export default {
               }
               if (rowId + 1 < 3 && colId + 1 <= 5 && (curMap[rowId + 1][colId + 1] === '0' || this.isEnemy(curMap[rowId][colId], curMap[rowId + 1][colId + 1]))) {
                 if (curMap[rowId + 1][colId + 1] === '1') {
-                  return true
-                }
-              }
-            }
-            if (curMap[rowId][colId] === '-3') {
-              // 相
-              if (rowId - 2 >= 0 && colId - 2 >= 0 && (curMap[rowId - 2][colId - 2] === '0' || this.isEnemy(curMap[rowId][colId], curMap[rowId - 2][colId - 2])) && curMap[rowId - 1][colId - 1] === '0') {
-                if (curMap[rowId - 2][colId - 2] === '1') {
-                  return true
-                }
-              }
-              if (rowId - 2 >= 0 && colId + 2 < curMap[0].length && (curMap[rowId - 2][colId + 2] === '0' || this.isEnemy(curMap[rowId][colId], curMap[rowId - 2][colId + 2])) && curMap[rowId - 1][colId + 1] === '0') {
-                if (curMap[rowId - 2][colId + 2] === '1') {
-                  return true
-                }
-              }
-              if (rowId + 2 <= 4 && colId - 2 >= 0 && (curMap[rowId + 2][colId - 2] === '0' || this.isEnemy(curMap[rowId][colId], curMap[rowId + 2][colId - 2])) && curMap[rowId + 1][colId - 1] === '0') {
-                if (curMap[rowId + 2][colId - 2] === '1') {
-                  return true
-                }
-              }
-              if (rowId + 2 <= 4 && colId + 2 < curMap[0].length && (curMap[rowId + 2][colId + 2] === '0' || this.isEnemy(curMap[rowId][colId], curMap[rowId + 2][colId + 2])) && curMap[rowId + 1][colId + 1] === '0') {
-                if (curMap[rowId + 2][colId + 2] === '1') {
                   return true
                 }
               }
@@ -1078,24 +1056,18 @@ export default {
             let rowId = i, colId = j
             if (curMap[rowId][colId] === '1') {
               // 帅
-              if (rowId - 1 >= curMap.length - 3 && (curMap[rowId - 1][colId] === '0' || this.isEnemy(curMap[rowId][colId], curMap[rowId - 1][colId]))) {
-                if (curMap[rowId - 1][colId] === '-1') {
-                  return true
-                }
-              }
-              if (rowId + 1 < curMap.length && (curMap[rowId + 1][colId] === '0' || this.isEnemy(curMap[rowId][colId], curMap[rowId + 1][colId]))) {
-                if (curMap[rowId + 1][colId] === '-1') {
-                  return true
-                }
-              }
-              if (colId - 1 >= 3 && (curMap[rowId][colId - 1] === '0' || this.isEnemy(curMap[rowId][colId], curMap[rowId][colId - 1]))) {
-                if (curMap[rowId][colId - 1] === '-1') {
-                  return true
-                }
-              }
-              if (colId + 1 <= 5 && (curMap[rowId][colId + 1] === '0' || this.isEnemy(curMap[rowId][colId], curMap[rowId][colId + 1]))) {
-                if (curMap[rowId][colId + 1] === '-1') {
-                  return true
+              for (let t = rowId - 1; t >= 0; t--) {
+                if (curMap[t][colId] !== '0') {
+                  if (curMap[t][colId] !== '-1') {
+                    return false
+                  } else {
+                    if (isAIJ) {
+                      // 是AI移动将
+                      return true
+                    } else {
+                      return false
+                    }
+                  }
                 }
               }
             }
@@ -1118,29 +1090,6 @@ export default {
               }
               if (rowId + 1 < curMap.length && colId + 1 <= 5 && (curMap[rowId + 1][colId + 1] === '0' || this.isEnemy(curMap[rowId][colId], curMap[rowId + 1][colId + 1]))) {
                 if (curMap[rowId + 1][colId + 1] === '-1') {
-                  return true
-                }
-              }
-            }
-            if (curMap[rowId][colId] === '3') {
-              // 相
-              if (rowId - 2 >= 5 && colId - 2 >= 0 && (curMap[rowId - 2][colId - 2] === '0' || this.isEnemy(curMap[rowId][colId], curMap[rowId - 2][colId - 2])) && curMap[rowId - 1][colId - 1] === '0') {
-                if (curMap[rowId - 2][colId - 2] === '-1') {
-                  return true
-                }
-              }
-              if (rowId - 2 >= 5 && colId + 2 < curMap[0].length && (curMap[rowId - 2][colId + 2] === '0' || this.isEnemy(curMap[rowId][colId], curMap[rowId - 2][colId + 2])) && curMap[rowId - 1][colId + 1] === '0') {
-                if (curMap[rowId - 2][colId + 2] === '-1') {
-                  return true
-                }
-              }
-              if (rowId + 2 < curMap.length && colId - 2 >= 0 && (curMap[rowId + 2][colId - 2] === '0' || this.isEnemy(curMap[rowId][colId], curMap[rowId + 2][colId - 2])) && curMap[rowId + 1][colId - 1] === '0') {
-                if (curMap[rowId + 2][colId - 2] === '-1') {
-                  return true
-                }
-              }
-              if (rowId + 2 < curMap.length && colId + 2 < curMap[0].length && (curMap[rowId + 2][colId + 2] === '0' || this.isEnemy(curMap[rowId][colId], curMap[rowId + 2][colId + 2])) && curMap[rowId + 1][colId + 1] === '0') {
-                if (curMap[rowId + 2][colId + 2] === '-1') {
                   return true
                 }
               }
@@ -1715,19 +1664,18 @@ export default {
           }
         }
         // console.log(nxtList)
-        if (depth === 2 && isPreCheckmated === true && curMap[1][4] === '-1') {
-          console.log(nxtList)
-        }
+        // if (depth === 2 && isPreCheckmated === true && curMap[1][4] === '-1') {
+        //   console.log(nxtList)
+        // }
         for (let i = 0; i < nxtList.length; i++) {
           let cur = nxtList[i]
-          if (depth === 2) {
-            console.log(cur.rowId, cur.colId, cur.newRowId, cur.newColId)
-          }
+          // if (depth === 2) {
+          //   console.log(cur.rowId, cur.colId, cur.newRowId, cur.newColId)
+          // }
           let tmp = curMap[cur.newRowId][cur.newColId]
           curMap[cur.newRowId][cur.newColId] = curMap[cur.rowId][cur.colId]
           curMap[cur.rowId][cur.colId] = '0'
-          let isCheckMate = this.judgeCheckMate(curMap, false)
-          // console.log('curMap', curMap.join(','))
+          let isCheckMate = this.judgeCheckMate(curMap, false, curMap[cur.newRowId][cur.newColId] === -1)
           // if (cur.rowId === 3 && cur.colId === 8) {
           //   console.log('curMap', curMap.join(','))
           //   console.log('judge', cur.rowId, cur.colId)
@@ -1737,24 +1685,37 @@ export default {
           let moveScore = 0
           if (isCheckMate) {
             // 被将军
-            moveScore = -19999
+            let hehe = []
+            curMap.forEach(c => {
+              hehe.push(c.join(','))
+            })
+            console.log(hehe)
+            curMap[cur.rowId][cur.colId] = curMap[cur.newRowId][cur.newColId]
+            curMap[cur.newRowId][cur.newColId] = tmp
+            continue
+            // moveScore = -29999
+            // if (depth === 0) {
+            //   // console.log('curMap', curMap.join(','))
+            //   // console.log(isCheckMate)
+            //   continue
+            // }
             // console.log('be checkmated', this.chessMap)
-          } else if (this.judgeCheckMate(curMap, true)) {
+          } else if (this.judgeCheckMate(curMap, true, curMap[cur.newRowId][cur.newColId] === -1)) {
             moveScore = 9999
           }
-          moveScore += this.chessScore[tmp] * 10
+          moveScore += this.chessScore[tmp]
           if (depth === 2) {
             let checkMateScore = 0
             if (isPreCheckmated === true && isCheckMate === false) {
               checkMateScore = 29999
             }
-            if (cur.rowId === 1 && cur.colId === 4 && cur.newRowId === 1 && cur.newColId === 3) {
-              console.log('hehehehehwwewwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwww')
-              console.log(cur.rowId, cur.colId)
-              console.log(cur.newRowId, cur.newColId)
-              console.log(curMap.join(','))
-              console.log(chessScore, chessPosScore, moveScore, checkMateScore)
-            }
+            // if (cur.rowId === 1 && cur.colId === 4 && cur.newRowId === 1 && cur.newColId === 3) {
+            //   console.log('hehehehehwwewwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwww')
+            //   console.log(cur.rowId, cur.colId)
+            //   console.log(cur.newRowId, cur.newColId)
+            //   console.log(curMap.join(','))
+            //   console.log(chessScore, chessPosScore, moveScore, checkMateScore)
+            // }
             // if (isPreCheckmated === true && curMap[0][4] !== '-1' && curMap[5][4] === '6') {
             //   console.log('hehehehehwwewwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwww')
             //   console.log(cur.rowId, cur.colId)
@@ -1798,7 +1759,7 @@ export default {
             return alpha
           }
         }
-        console.log('heheh', nxtList.length)
+        // console.log('heheh', nxtList.length)
         return alpha
       } else {
         let nxtList = []
@@ -2182,16 +2143,16 @@ export default {
           let tmp = curMap[cur.newRowId][cur.newColId]
           curMap[cur.newRowId][cur.newColId] = curMap[cur.rowId][cur.colId]
           curMap[cur.rowId][cur.colId] = '0'
-          let isCheckMate = this.judgeCheckMate(curMap, false)
+          let isCheckMate = this.judgeCheckMate(curMap, false, false)
           let moveScore = 0
           if (isCheckMate) {
             // 被将军
-            moveScore = -19999
+            moveScore = -29999
             // console.log('be checkmated', this.chessMap)
-          } else if (this.judgeCheckMate(curMap, true)) {
+          } else if (this.judgeCheckMate(curMap, true, false)) {
             moveScore = 9999
           }
-          moveScore += this.chessScore[tmp] * 10
+          moveScore -= this.chessScore[tmp] * 2
           if (depth === 2) {
             curMap[cur.rowId][cur.colId] = curMap[cur.newRowId][cur.newColId]
             curMap[cur.newRowId][cur.newColId] = tmp
@@ -2279,6 +2240,9 @@ export default {
           }
           .pre-chess-eat {
             border: 3px solid #5bbd5b;
+          }
+          .last-move-chess {
+            border: 3px solid #d98333;
           }
         }
         .pre-go {
