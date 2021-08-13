@@ -182,14 +182,14 @@ export default {
     ]
     const chessScore = {
       '0': 0,
-      '1': 80000,
+      '1': 800,
       '2': 0,
       '3': 0,
       '4': 300,
       '5': 500,
       '6': 300,
       '7': 100,
-      '-1': 80000,
+      '-1': 800,
       '-2': 0,
       '-3': 0,
       '-4': 300,
@@ -1713,6 +1713,390 @@ export default {
         return false
       }
     },
+    judgeBeEat (curMap, r, c) {
+      let nxtList = []
+      for (let io = 0; io < curMap.length; io++) {
+        for (let jo = 0; jo < curMap[0].length; jo++) {
+          let rowId = io, colId = jo
+          if (curMap[rowId][colId] === '-1') {
+            // 帅
+            if (rowId - 1 >= 0 && (curMap[rowId - 1][colId] === '0' || this.isEnemy(curMap[rowId][colId], curMap[rowId - 1][colId]))) {
+              // this.canMove[rowId - 1][colId] = '-1'
+              nxtList.push({
+                rowId: rowId,
+                colId: colId,
+                newRowId: rowId - 1,
+                newColId: colId
+              })
+            }
+            if (rowId + 1 < 3 && (curMap[rowId + 1][colId] === '0' || this.isEnemy(curMap[rowId][colId], curMap[rowId + 1][colId]))) {
+              // this.canMove[rowId + 1][colId] = '-1'
+              nxtList.push({
+                rowId: rowId,
+                colId: colId,
+                newRowId: rowId + 1,
+                newColId: colId
+              })
+            }
+            if (colId - 1 >= 3 && (curMap[rowId][colId - 1] === '0' || this.isEnemy(curMap[rowId][colId], curMap[rowId][colId - 1]))) {
+              // this.canMove[rowId][colId - 1] = '-1'
+              nxtList.push({
+                rowId: rowId,
+                colId: colId,
+                newRowId: rowId,
+                newColId: colId - 1
+              })
+            }
+            if (colId + 1 <= 5 && (curMap[rowId][colId + 1] === '0' || this.isEnemy(curMap[rowId][colId], curMap[rowId][colId + 1]))) {
+              // this.canMove[rowId][colId + 1] = '-1'
+              nxtList.push({
+                rowId: rowId,
+                colId: colId,
+                newRowId: rowId,
+                newColId: colId + 1
+              })
+            }
+          }
+          if (curMap[rowId][colId] === '-2') {
+            // 士
+            if (rowId - 1 >= 0 && colId - 1 >= 3 && (curMap[rowId - 1][colId - 1] === '0' || this.isEnemy(curMap[rowId][colId], curMap[rowId - 1][colId - 1]))) {
+              // this.canMove[rowId - 1][colId - 1] = '-1'
+              nxtList.push({
+                rowId: rowId,
+                colId: colId,
+                newRowId: rowId - 1,
+                newColId: colId - 1
+              })
+            }
+            if (rowId - 1 >= 0 && colId + 1 <= 5 && (curMap[rowId - 1][colId + 1] === '0' || this.isEnemy(curMap[rowId][colId], curMap[rowId - 1][colId + 1]))) {
+              // this.canMove[rowId - 1][colId + 1] = '-1'
+              nxtList.push({
+                rowId: rowId,
+                colId: colId,
+                newRowId: rowId - 1,
+                newColId: colId + 1
+              })
+            }
+            if (rowId + 1 < 3 && colId - 1 >= 3 && (curMap[rowId + 1][colId - 1] === '0' || this.isEnemy(curMap[rowId][colId], curMap[rowId + 1][colId - 1]))) {
+              // this.canMove[rowId + 1][colId - 1] = '-1'
+              nxtList.push({
+                rowId: rowId,
+                colId: colId,
+                newRowId: rowId + 1,
+                newColId: colId - 1
+              })
+            }
+            if (rowId + 1 < 3 && colId + 1 <= 5 && (curMap[rowId + 1][colId + 1] === '0' || this.isEnemy(curMap[rowId][colId], curMap[rowId + 1][colId + 1]))) {
+              // this.canMove[rowId + 1][colId + 1] = '-1'
+              nxtList.push({
+                rowId: rowId,
+                colId: colId,
+                newRowId: rowId + 1,
+                newColId: colId + 1
+              })
+            }
+          }
+          if (curMap[rowId][colId] === '-3') {
+            // 相
+            if (rowId - 2 >= 0 && colId - 2 >= 0 && (curMap[rowId - 2][colId - 2] === '0' || this.isEnemy(curMap[rowId][colId], curMap[rowId - 2][colId - 2])) && curMap[rowId - 1][colId - 1] === '0') {
+              // this.canMove[rowId - 2][colId - 2] = '-1'
+              nxtList.push({
+                rowId: rowId,
+                colId: colId,
+                newRowId: rowId - 2,
+                newColId: colId - 2
+              })
+            }
+            if (rowId - 2 >= 0 && colId + 2 < curMap[0].length && (curMap[rowId - 2][colId + 2] === '0' || this.isEnemy(curMap[rowId][colId], curMap[rowId - 2][colId + 2])) && curMap[rowId - 1][colId + 1] === '0') {
+              // this.canMove[rowId - 2][colId + 2] = '-1'
+              nxtList.push({
+                rowId: rowId,
+                colId: colId,
+                newRowId: rowId - 2,
+                newColId: colId + 2
+              })
+            }
+            if (rowId + 2 <= 4 && colId - 2 >= 0 && (curMap[rowId + 2][colId - 2] === '0' || this.isEnemy(curMap[rowId][colId], curMap[rowId + 2][colId - 2])) && curMap[rowId + 1][colId - 1] === '0') {
+              // this.canMove[rowId + 2][colId - 2] = '-1'
+              nxtList.push({
+                rowId: rowId,
+                colId: colId,
+                newRowId: rowId + 2,
+                newColId: colId - 2
+              })
+            }
+            if (rowId + 2 <= 4 && colId + 2 < curMap[0].length && (curMap[rowId + 2][colId + 2] === '0' || this.isEnemy(curMap[rowId][colId], curMap[rowId + 2][colId + 2])) && curMap[rowId + 1][colId + 1] === '0') {
+              // this.canMove[rowId + 2][colId + 2] = '-1'
+              nxtList.push({
+                rowId: rowId,
+                colId: colId,
+                newRowId: rowId + 2,
+                newColId: colId + 2
+              })
+            }
+          }
+          if (curMap[rowId][colId] === '-4') {
+            // 马
+            let dx = [-2, -2, -1, -1, 1, 1, 2, 2]
+            let dy = [-1, 1, -2, 2, -2, 2, -1, 1]
+            let rx = [-1, -1, 0, 0, 0, 0, 1, 1]
+            let ry = [0, 0, -1, 1, -1, 1, 0, 0]
+            for (let k = 0; k < 8; k++) {
+              let tmpr = rowId + dx[k], tmpc = colId + dy[k]
+
+              if (this.judgePos(tmpr, tmpc)
+                  && (curMap[tmpr][tmpc] === '0' || this.isEnemy(curMap[rowId][colId], curMap[tmpr][tmpc]))
+                  && curMap[rowId + rx[k]][colId + ry[k]] === '0') {
+                // this.canMove[tmpr][tmpc] = '-1'
+                nxtList.push({
+                  rowId: rowId,
+                  colId: colId,
+                  newRowId: tmpr,
+                  newColId: tmpc
+                })
+              }
+            }
+          }
+          if (curMap[rowId][colId] === '-5') {
+            // 车
+            for (let i = rowId - 1; i >= 0; i--) {
+              if (curMap[i][colId] === '0') {
+                // this.canMove[i][colId] = '-1'
+                nxtList.push({
+                  rowId: rowId,
+                  colId: colId,
+                  newRowId: i,
+                  newColId: colId
+                })
+              } else if (this.isEnemy(curMap[rowId][colId], curMap[i][colId])) {
+                // this.canMove[i][colId] = '-1'
+                nxtList.push({
+                  rowId: rowId,
+                  colId: colId,
+                  newRowId: i,
+                  newColId: colId
+                })
+                break
+              } else if (this.isAlly(curMap[rowId][colId], curMap[i][colId])) {
+                break
+              }
+            }
+            for (let i = rowId + 1; i < this.canMove.length; i++) {
+              if (curMap[i][colId] === '0') {
+                // this.canMove[i][colId] = '-1'
+                nxtList.push({
+                  rowId: rowId,
+                  colId: colId,
+                  newRowId: i,
+                  newColId: colId
+                })
+              } else if (this.isEnemy(curMap[rowId][colId], curMap[i][colId])) {
+                // this.canMove[i][colId] = '-1'
+                nxtList.push({
+                  rowId: rowId,
+                  colId: colId,
+                  newRowId: i,
+                  newColId: colId
+                })
+                break
+              } else if (this.isAlly(curMap[rowId][colId], curMap[i][colId])) {
+                break
+              }
+            }
+            for (let j = colId - 1; j >= 0; j--) {
+              if (curMap[rowId][j] === '0') {
+                // this.canMove[rowId][j] = '-1'
+                nxtList.push({
+                  rowId: rowId,
+                  colId: colId,
+                  newRowId: rowId,
+                  newColId: j
+                })
+              } else if (this.isEnemy(curMap[rowId][colId], curMap[rowId][j])) {
+                // this.canMove[rowId][j] = '-1'
+                nxtList.push({
+                  rowId: rowId,
+                  colId: colId,
+                  newRowId: rowId,
+                  newColId: j
+                })
+                break
+              } else if (this.isAlly(curMap[rowId][colId], curMap[rowId][j])) {
+                break
+              }
+            }
+            for (let j = colId + 1; j < curMap[rowId].length; j++) {
+              if (curMap[rowId][j] === '0') {
+                // this.canMove[rowId][j] = '-1'
+                nxtList.push({
+                  rowId: rowId,
+                  colId: colId,
+                  newRowId: rowId,
+                  newColId: j
+                })
+              } else if (this.isEnemy(curMap[rowId][colId], curMap[rowId][j])) {
+                // this.canMove[rowId][j] = '-1'
+                nxtList.push({
+                  rowId: rowId,
+                  colId: colId,
+                  newRowId: rowId,
+                  newColId: j
+                })
+                break
+              } else if (this.isAlly(curMap[rowId][colId], curMap[rowId][j])) {
+                break
+              }
+            }
+          }
+          if (curMap[rowId][colId] === '-6') {
+            // 炮
+            let flag = false
+            for (let i = rowId - 1; i >= 0; i--) {
+              if (flag === false && curMap[i][colId] === '0') {
+                // this.canMove[i][colId] = '-1'
+                nxtList.push({
+                  rowId: rowId,
+                  colId: colId,
+                  newRowId: i,
+                  newColId: colId
+                })
+              } else if (curMap[i][colId] !== '0' && flag === false) {
+                flag = true
+              } else if (flag === true && this.isEnemy(curMap[rowId][colId], curMap[i][colId])) {
+                // this.canMove[i][colId] = '-1'
+                nxtList.push({
+                  rowId: rowId,
+                  colId: colId,
+                  newRowId: i,
+                  newColId: colId
+                })
+                break
+              }
+            }
+            flag = false
+            for (let i = rowId + 1; i < this.canMove.length; i++) {
+              if (flag === false && curMap[i][colId] === '0') {
+                // this.canMove[i][colId] = '-1'
+                nxtList.push({
+                  rowId: rowId,
+                  colId: colId,
+                  newRowId: i,
+                  newColId: colId
+                })
+              } else if (curMap[i][colId] !== '0' && flag === false) {
+                flag = true
+              }  else if (flag === true && this.isEnemy(curMap[rowId][colId], curMap[i][colId])) {
+                // this.canMove[i][colId] = '-1'
+                nxtList.push({
+                  rowId: rowId,
+                  colId: colId,
+                  newRowId: i,
+                  newColId: colId
+                })
+                break
+              }
+            }
+            flag = false
+            for (let j = colId - 1; j >= 0; j--) {
+              if (flag === false && curMap[rowId][j] === '0') {
+                // this.canMove[rowId][j] = '-1'
+                nxtList.push({
+                  rowId: rowId,
+                  colId: colId,
+                  newRowId: rowId,
+                  newColId: j
+                })
+              } else if (curMap[rowId][j] !== '0' && flag === false) {
+                flag = true
+              }  else if (flag === true && this.isEnemy(curMap[rowId][colId], curMap[rowId][j])) {
+                // this.canMove[rowId][j] = '-1'
+                nxtList.push({
+                  rowId: rowId,
+                  colId: colId,
+                  newRowId: rowId,
+                  newColId: j
+                })
+                break
+              }
+            }
+            flag = false
+            for (let j = colId + 1; j < curMap[rowId].length; j++) {
+              if (flag === false && curMap[rowId][j] === '0') {
+                // this.canMove[rowId][j] = '-1'
+                nxtList.push({
+                  rowId: rowId,
+                  colId: colId,
+                  newRowId: rowId,
+                  newColId: j
+                })
+              } else if (curMap[rowId][j] !== '0' && flag === false) {
+                flag = true
+              }  else if (flag === true && this.isEnemy(curMap[rowId][colId], curMap[rowId][j])) {
+                // this.canMove[rowId][j] = '-1'
+                nxtList.push({
+                  rowId: rowId,
+                  colId: colId,
+                  newRowId: rowId,
+                  newColId: j
+                })
+                break
+              }
+            }
+          }
+          if (curMap[rowId][colId] === '-7') {
+            // 兵
+            if (rowId <= 4) {
+              // 只能前进
+              if (curMap[rowId + 1][colId] === '0' || this.isEnemy(curMap[rowId][colId], curMap[rowId + 1][colId])) {
+                // this.canMove[rowId + 1][colId] = '-1'
+                nxtList.push({
+                  rowId: rowId,
+                  colId: colId,
+                  newRowId: rowId + 1,
+                  newColId: colId
+                })
+              }
+            } else if (rowId < curMap.length) {
+              // 前进或左右
+              if (rowId + 1 < curMap.length && (curMap[rowId + 1][colId] === '0' || this.isEnemy(curMap[rowId][colId], curMap[rowId + 1][colId]))) {
+                // this.canMove[rowId + 1][colId] = '-1'
+                nxtList.push({
+                  rowId: rowId,
+                  colId: colId,
+                  newRowId: rowId + 1,
+                  newColId: colId
+                })
+              }
+              if (curMap[rowId][colId - 1] === '0' || this.isEnemy(curMap[rowId][colId], curMap[rowId][colId - 1])) {
+                // this.canMove[rowId][colId - 1] = '-1'
+                nxtList.push({
+                  rowId: rowId,
+                  colId: colId,
+                  newRowId: rowId,
+                  newColId: colId - 1
+                })
+              }
+              if (curMap[rowId][colId + 1] === '0' || this.isEnemy(curMap[rowId][colId], curMap[rowId][colId + 1])) {
+                // this.canMove[rowId][colId + 1] = '-1'
+                nxtList.push({
+                  rowId: rowId,
+                  colId: colId,
+                  newRowId: rowId,
+                  newColId: colId + 1
+                })
+              }
+            }
+          }
+        }
+      }
+      for (let i = 0; i < nxtList.length; i++) {
+        let cur = nxtList[i]
+        if (cur.newRowId === r && cur.newColId === c) {
+          return true
+        }
+      }
+      return false
+    },
     alphaBeta (curMap, depth, isAI, isPreCheckmated, alpha, beta) {
       // console.log(depth, isAI, alpha, beta)
       // for (let i = 0; i < this.chessMap.length; i++) {
@@ -2157,8 +2541,8 @@ export default {
             //   continue
             // }
             // console.log('be checkmated', this.chessMap)
-          } else if (this.judgeCheckMate(curMap, true)) {
-            moveScore = 9999
+          } else if (this.judgeCheckMate(curMap, true) && !this.judgeBeEat(curMap, cur.newRowId, cur.newColId)) {
+            moveScore = 500
           }
           moveScore += this.chessScore[tmp]
           if (depth === 2) {
