@@ -491,7 +491,8 @@ export default {
       let nxtList = []
       if (curMap[rowId][colId] === '1') {
         // 帅
-        if (rowId - 1 >= this.canMove.length - 3 && (curMap[rowId - 1][colId] === '0' || this.isEnemy(curMap[rowId][colId], curMap[rowId - 1][colId]))) {
+        if (rowId - 1 >= this.canMove.length - 3
+            && (curMap[rowId - 1][colId] === '0' || this.isEnemy(curMap[rowId][colId], curMap[rowId - 1][colId]))) {
           // this.canMove[rowId - 1][colId] = '-1'
           nxtList.push({
             rowId: rowId,
@@ -500,7 +501,8 @@ export default {
             newColId: colId
           })
         }
-        if (rowId + 1 < this.canMove.length && (curMap[rowId + 1][colId] === '0' || this.isEnemy(curMap[rowId][colId], curMap[rowId + 1][colId]))) {
+        if (rowId + 1 < this.canMove.length
+            && (curMap[rowId + 1][colId] === '0' || this.isEnemy(curMap[rowId][colId], curMap[rowId + 1][colId]))) {
           // this.canMove[rowId + 1][colId] = '-1'
           nxtList.push({
             rowId: rowId,
@@ -509,7 +511,8 @@ export default {
             newColId: colId
           })
         }
-        if (colId - 1 >= 3 && (curMap[rowId][colId - 1] === '0' || this.isEnemy(curMap[rowId][colId], curMap[rowId][colId - 1]))) {
+        if (colId - 1 >= 3
+            && (curMap[rowId][colId - 1] === '0' || this.isEnemy(curMap[rowId][colId], curMap[rowId][colId - 1]))) {
           // this.canMove[rowId][colId - 1] = '-1'
           nxtList.push({
             rowId: rowId,
@@ -518,7 +521,8 @@ export default {
             newColId: colId - 1
           })
         }
-        if (colId + 1 <= 5 && (curMap[rowId][colId + 1] === '0' || this.isEnemy(curMap[rowId][colId], curMap[rowId][colId + 1]))) {
+        if (colId + 1 <= 5
+            && (curMap[rowId][colId + 1] === '0' || this.isEnemy(curMap[rowId][colId], curMap[rowId][colId + 1]))) {
           // this.canMove[rowId][colId + 1] = '-1'
           nxtList.push({
             rowId: rowId,
@@ -530,7 +534,9 @@ export default {
       }
       if (curMap[rowId][colId] === '2') {
         // 士
-        if (rowId - 1 >= this.canMove.length - 3 && colId - 1 >= 3 && (curMap[rowId - 1][colId - 1] === '0' || this.isEnemy(curMap[rowId][colId], curMap[rowId - 1][colId - 1]))) {
+        if (rowId - 1 >= this.canMove.length - 3
+            && colId - 1 >= 3
+            && (curMap[rowId - 1][colId - 1] === '0' || this.isEnemy(curMap[rowId][colId], curMap[rowId - 1][colId - 1]))) {
           // this.canMove[rowId - 1][colId - 1] = '-1'
           nxtList.push({
             rowId: rowId,
@@ -539,7 +545,9 @@ export default {
             newColId: colId - 1
           })
         }
-        if (rowId - 1 >= this.canMove.length - 3 && colId + 1 <= 5 && (curMap[rowId - 1][colId + 1] === '0' || this.isEnemy(curMap[rowId][colId], curMap[rowId - 1][colId + 1]))) {
+        if (rowId - 1 >= this.canMove.length - 3
+            && colId + 1 <= 5
+            && (curMap[rowId - 1][colId + 1] === '0' || this.isEnemy(curMap[rowId][colId], curMap[rowId - 1][colId + 1]))) {
           // this.canMove[rowId - 1][colId + 1] = '-1'
           nxtList.push({
             rowId: rowId,
@@ -548,7 +556,9 @@ export default {
             newColId: colId + 1
           })
         }
-        if (rowId + 1 < this.canMove.length && colId - 1 >= 3 && (curMap[rowId + 1][colId - 1] === '0' || this.isEnemy(curMap[rowId][colId], curMap[rowId + 1][colId - 1]))) {
+        if (rowId + 1 < this.canMove.length
+            && colId - 1 >= 3 &&
+            (curMap[rowId + 1][colId - 1] === '0' || this.isEnemy(curMap[rowId][colId], curMap[rowId + 1][colId - 1]))) {
           // this.canMove[rowId + 1][colId - 1] = '-1'
           nxtList.push({
             rowId: rowId,
@@ -557,7 +567,9 @@ export default {
             newColId: colId - 1
           })
         }
-        if (rowId + 1 < this.canMove.length && colId + 1 <= 5 && (curMap[rowId + 1][colId + 1] === '0' || this.isEnemy(curMap[rowId][colId], curMap[rowId + 1][colId + 1]))) {
+        if (rowId + 1 < this.canMove.length
+            && colId + 1 <= 5
+            && (curMap[rowId + 1][colId + 1] === '0' || this.isEnemy(curMap[rowId][colId], curMap[rowId + 1][colId + 1]))) {
           // this.canMove[rowId + 1][colId + 1] = '-1'
           nxtList.push({
             rowId: rowId,
@@ -569,7 +581,9 @@ export default {
       }
       if (curMap[rowId][colId] === '3') {
         // 相
-        if (rowId - 2 >= 5 && colId - 2 >= 0 && (curMap[rowId - 2][colId - 2] === '0' || this.isEnemy(curMap[rowId][colId], curMap[rowId - 2][colId - 2])) && curMap[rowId - 1][colId - 1] === '0') {
+        if (rowId - 2 >= 5
+            && colId - 2 >= 0
+            && (curMap[rowId - 2][colId - 2] === '0' || this.isEnemy(curMap[rowId][colId], curMap[rowId - 2][colId - 2])) && curMap[rowId - 1][colId - 1] === '0') {
           // this.canMove[rowId - 2][colId - 2] = '-1'
           nxtList.push({
             rowId: rowId,
@@ -578,7 +592,9 @@ export default {
             newColId: colId - 2
           })
         }
-        if (rowId - 2 >= 5 && colId + 2 < curMap[0].length && (curMap[rowId - 2][colId + 2] === '0' || this.isEnemy(curMap[rowId][colId], curMap[rowId - 2][colId + 2])) && curMap[rowId - 1][colId + 1] === '0') {
+        if (rowId - 2 >= 5
+            && colId + 2 < curMap[0].length
+            && (curMap[rowId - 2][colId + 2] === '0' || this.isEnemy(curMap[rowId][colId], curMap[rowId - 2][colId + 2])) && curMap[rowId - 1][colId + 1] === '0') {
           // this.canMove[rowId - 2][colId + 2] = '-1'
           nxtList.push({
             rowId: rowId,
@@ -587,7 +603,9 @@ export default {
             newColId: colId + 2
           })
         }
-        if (rowId + 2 < this.canMove.length && colId - 2 >= 0 && (curMap[rowId + 2][colId - 2] === '0' || this.isEnemy(curMap[rowId][colId], curMap[rowId + 2][colId - 2])) && curMap[rowId + 1][colId - 1] === '0') {
+        if (rowId + 2 < this.canMove.length
+            && colId - 2 >= 0
+            && (curMap[rowId + 2][colId - 2] === '0' || this.isEnemy(curMap[rowId][colId], curMap[rowId + 2][colId - 2])) && curMap[rowId + 1][colId - 1] === '0') {
           // this.canMove[rowId + 2][colId - 2] = '-1'
           nxtList.push({
             rowId: rowId,
@@ -596,7 +614,9 @@ export default {
             newColId: colId - 2
           })
         }
-        if (rowId + 2 < this.canMove.length && colId + 2 < curMap[0].length && (curMap[rowId + 2][colId + 2] === '0' || this.isEnemy(curMap[rowId][colId], curMap[rowId + 2][colId + 2])) && curMap[rowId + 1][colId + 1] === '0') {
+        if (rowId + 2 < this.canMove.length
+            && colId + 2 < curMap[0].length
+            && (curMap[rowId + 2][colId + 2] === '0' || this.isEnemy(curMap[rowId][colId], curMap[rowId + 2][colId + 2])) && curMap[rowId + 1][colId + 1] === '0') {
           // this.canMove[rowId + 2][colId + 2] = '-1'
           nxtList.push({
             rowId: rowId,
@@ -733,15 +753,19 @@ export default {
             })
           } else if (curMap[i][colId] !== '0' && flag === false) {
             flag = true
-          } else if (flag === true && this.isEnemy(curMap[rowId][colId], curMap[i][colId])) {
+          } else if (flag === true) {
             // this.canMove[i][colId] = '-1'
-            nxtList.push({
-              rowId: rowId,
-              colId: colId,
-              newRowId: i,
-              newColId: colId
-            })
-            break
+            if (this.isEnemy(curMap[rowId][colId], curMap[i][colId])) {
+              nxtList.push({
+                rowId: rowId,
+                colId: colId,
+                newRowId: i,
+                newColId: colId
+              })
+            }
+            if (curMap[i][colId] !== '0') {
+              break
+            }
           }
         }
         flag = false
@@ -756,15 +780,19 @@ export default {
             })
           } else if (curMap[i][colId] !== '0' && flag === false) {
             flag = true
-          }  else if (flag === true && this.isEnemy(curMap[rowId][colId], curMap[i][colId])) {
+          }  else if (flag === true) {
             // this.canMove[i][colId] = '-1'
-            nxtList.push({
-              rowId: rowId,
-              colId: colId,
-              newRowId: i,
-              newColId: colId
-            })
-            break
+            if (this.isEnemy(curMap[rowId][colId], curMap[i][colId])) {
+              nxtList.push({
+                rowId: rowId,
+                colId: colId,
+                newRowId: i,
+                newColId: colId
+              })
+            }
+            if (curMap[i][colId] !== '0') {
+              break
+            }
           }
         }
         flag = false
@@ -779,15 +807,19 @@ export default {
             })
           } else if (curMap[rowId][j] !== '0' && flag === false) {
             flag = true
-          }  else if (flag === true && this.isEnemy(curMap[rowId][colId], curMap[rowId][j])) {
+          }  else if (flag === true) {
             // this.canMove[rowId][j] = '-1'
-            nxtList.push({
-              rowId: rowId,
-              colId: colId,
-              newRowId: rowId,
-              newColId: j
-            })
-            break
+            if (this.isEnemy(curMap[rowId][colId], curMap[rowId][j])) {
+              nxtList.push({
+                rowId: rowId,
+                colId: colId,
+                newRowId: rowId,
+                newColId: j
+              })
+            }
+            if (curMap[rowId][j] !== '0') {
+              break
+            }
           }
         }
         flag = false
@@ -802,15 +834,19 @@ export default {
             })
           } else if (curMap[rowId][j] !== '0' && flag === false) {
             flag = true
-          }  else if (flag === true && this.isEnemy(curMap[rowId][colId], curMap[rowId][j])) {
+          }  else if (flag === true) {
             // this.canMove[rowId][j] = '-1'
-            nxtList.push({
-              rowId: rowId,
-              colId: colId,
-              newRowId: rowId,
-              newColId: j
-            })
-            break
+            if (this.isEnemy(curMap[rowId][colId], curMap[rowId][j])) {
+              nxtList.push({
+                rowId: rowId,
+                colId: colId,
+                newRowId: rowId,
+                newColId: j
+              })
+            }
+            if (curMap[rowId][j] !== '0') {
+              break
+            }
           }
         }
       }
@@ -1433,61 +1469,85 @@ export default {
               let flag = false
               for (let i = rowId - 1; i >= 0; i--) {
                 if (flag === false && curMap[i][colId] === '0') {
+                  // this.canMove[i][colId] = '-1'
                   if (curMap[i][colId] === '1') {
                     return true
                   }
                 } else if (curMap[i][colId] !== '0' && flag === false) {
                   flag = true
-                } else if (flag === true && this.isEnemy(curMap[rowId][colId], curMap[i][colId])) {
-                  if (curMap[i][colId] === '1') {
-                    return true
+                } else if (flag === true) {
+                  // this.canMove[i][colId] = '-1'
+                  if (this.isEnemy(curMap[rowId][colId], curMap[i][colId])) {
+                    if (curMap[i][colId] === '1') {
+                      return true
+                    }
                   }
-                  break
+                  if (curMap[i][colId] !== '0') {
+                    break
+                  }
                 }
               }
               flag = false
-              for (let i = rowId + 1; i < curMap.length; i++) {
+              for (let i = rowId + 1; i < this.canMove.length; i++) {
                 if (flag === false && curMap[i][colId] === '0') {
+                  // this.canMove[i][colId] = '-1'
                   if (curMap[i][colId] === '1') {
                     return true
                   }
-                } else if (flag === false && curMap[i][colId] !== '0') {
+                } else if (curMap[i][colId] !== '0' && flag === false) {
                   flag = true
-                } else if (flag === true && this.isEnemy(curMap[rowId][colId], curMap[i][colId])) {
-                  if (curMap[i][colId] === '1') {
-                    return true
+                }  else if (flag === true) {
+                  // this.canMove[i][colId] = '-1'
+                  if (this.isEnemy(curMap[rowId][colId], curMap[i][colId])) {
+                    if (curMap[i][colId] === '1') {
+                      return true
+                    }
                   }
-                  break
+                  if (curMap[i][colId] !== '0') {
+                    break
+                  }
                 }
               }
               flag = false
               for (let j = colId - 1; j >= 0; j--) {
                 if (flag === false && curMap[rowId][j] === '0') {
+                  // this.canMove[rowId][j] = '-1'
                   if (curMap[rowId][j] === '1') {
                     return true
                   }
                 } else if (curMap[rowId][j] !== '0' && flag === false) {
                   flag = true
-                }  else if (flag === true && this.isEnemy(curMap[rowId][colId], curMap[rowId][j])) {
-                  if (curMap[rowId][j] === '1') {
-                    return true
+                }  else if (flag === true) {
+                  // this.canMove[rowId][j] = '-1'
+                  if (this.isEnemy(curMap[rowId][colId], curMap[rowId][j])) {
+                    if (curMap[rowId][j] === '1') {
+                      return true
+                    }
                   }
-                  break
+                  if (curMap[rowId][j] !== '0') {
+                    break
+                  }
                 }
               }
               flag = false
               for (let j = colId + 1; j < curMap[rowId].length; j++) {
                 if (flag === false && curMap[rowId][j] === '0') {
+                  // this.canMove[rowId][j] = '-1'
                   if (curMap[rowId][j] === '1') {
                     return true
                   }
                 } else if (curMap[rowId][j] !== '0' && flag === false) {
                   flag = true
-                }  else if (flag === true && this.isEnemy(curMap[rowId][colId], curMap[rowId][j])) {
-                  if (curMap[rowId][j] === '1') {
-                    return true
+                }  else if (flag === true) {
+                  // this.canMove[rowId][j] = '-1'
+                  if (this.isEnemy(curMap[rowId][colId], curMap[rowId][j])) {
+                    if (curMap[rowId][j] === '1') {
+                      return true
+                    }
                   }
-                  break
+                  if (curMap[rowId][j] !== '0') {
+                    break
+                  }
                 }
               }
             }
@@ -1632,61 +1692,85 @@ export default {
               let flag = false
               for (let i = rowId - 1; i >= 0; i--) {
                 if (flag === false && curMap[i][colId] === '0') {
+                  // this.canMove[i][colId] = '-1'
                   if (curMap[i][colId] === '-1') {
                     return true
                   }
                 } else if (curMap[i][colId] !== '0' && flag === false) {
                   flag = true
-                } else if (flag === true && this.isEnemy(curMap[rowId][colId], curMap[i][colId])) {
-                  if (curMap[i][colId] === '-1') {
-                    return true
+                } else if (flag === true) {
+                  // this.canMove[i][colId] = '-1'
+                  if (this.isEnemy(curMap[rowId][colId], curMap[i][colId])) {
+                    if (curMap[i][colId] === '-1') {
+                      return true
+                    }
                   }
-                  break
+                  if (curMap[i][colId] !== '0') {
+                    break
+                  }
                 }
               }
               flag = false
-              for (let i = rowId + 1; i < curMap.length; i++) {
+              for (let i = rowId + 1; i < this.canMove.length; i++) {
                 if (flag === false && curMap[i][colId] === '0') {
+                  // this.canMove[i][colId] = '-1'
                   if (curMap[i][colId] === '-1') {
                     return true
                   }
                 } else if (curMap[i][colId] !== '0' && flag === false) {
                   flag = true
-                }  else if (flag === true && this.isEnemy(curMap[rowId][colId], curMap[i][colId])) {
-                  if (curMap[i][colId] === '-1') {
-                    return true
+                }  else if (flag === true) {
+                  // this.canMove[i][colId] = '-1'
+                  if (this.isEnemy(curMap[rowId][colId], curMap[i][colId])) {
+                    if (curMap[i][colId] === '-1') {
+                      return true
+                    }
                   }
-                  break
+                  if (curMap[i][colId] !== '0') {
+                    break
+                  }
                 }
               }
               flag = false
               for (let j = colId - 1; j >= 0; j--) {
                 if (flag === false && curMap[rowId][j] === '0') {
+                  // this.canMove[rowId][j] = '-1'
                   if (curMap[rowId][j] === '-1') {
                     return true
                   }
                 } else if (curMap[rowId][j] !== '0' && flag === false) {
                   flag = true
-                }  else if (flag === true && this.isEnemy(curMap[rowId][colId], curMap[rowId][j])) {
-                  if (curMap[rowId][j] === '-1') {
-                    return true
+                }  else if (flag === true) {
+                  // this.canMove[rowId][j] = '-1'
+                  if (this.isEnemy(curMap[rowId][colId], curMap[rowId][j])) {
+                    if (curMap[rowId][j] === '-1') {
+                      return true
+                    }
                   }
-                  break
+                  if (curMap[rowId][j] !== '0') {
+                    break
+                  }
                 }
               }
               flag = false
               for (let j = colId + 1; j < curMap[rowId].length; j++) {
                 if (flag === false && curMap[rowId][j] === '0') {
+                  // this.canMove[rowId][j] = '-1'
                   if (curMap[rowId][j] === '-1') {
                     return true
                   }
                 } else if (curMap[rowId][j] !== '0' && flag === false) {
                   flag = true
-                }  else if (flag === true && this.isEnemy(curMap[rowId][colId], curMap[rowId][j])) {
-                  if (curMap[rowId][j] === '-1') {
-                    return true
+                }  else if (flag === true) {
+                  // this.canMove[rowId][j] = '-1'
+                  if (this.isEnemy(curMap[rowId][colId], curMap[rowId][j])) {
+                    if (curMap[rowId][j] === '-1') {
+                      return true
+                    }
                   }
-                  break
+                  if (curMap[rowId][j] !== '0') {
+                    break
+                  }
                 }
               }
             }
@@ -1972,15 +2056,19 @@ export default {
                 })
               } else if (curMap[i][colId] !== '0' && flag === false) {
                 flag = true
-              } else if (flag === true && this.isEnemy(curMap[rowId][colId], curMap[i][colId])) {
+              } else if (flag === true) {
                 // this.canMove[i][colId] = '-1'
-                nxtList.push({
-                  rowId: rowId,
-                  colId: colId,
-                  newRowId: i,
-                  newColId: colId
-                })
-                break
+                if (this.isEnemy(curMap[rowId][colId], curMap[i][colId])) {
+                  nxtList.push({
+                    rowId: rowId,
+                    colId: colId,
+                    newRowId: i,
+                    newColId: colId
+                  })
+                }
+                if (curMap[i][colId] !== '0') {
+                  break
+                }
               }
             }
             flag = false
@@ -1995,15 +2083,19 @@ export default {
                 })
               } else if (curMap[i][colId] !== '0' && flag === false) {
                 flag = true
-              }  else if (flag === true && this.isEnemy(curMap[rowId][colId], curMap[i][colId])) {
+              }  else if (flag === true) {
                 // this.canMove[i][colId] = '-1'
-                nxtList.push({
-                  rowId: rowId,
-                  colId: colId,
-                  newRowId: i,
-                  newColId: colId
-                })
-                break
+                if (this.isEnemy(curMap[rowId][colId], curMap[i][colId])) {
+                  nxtList.push({
+                    rowId: rowId,
+                    colId: colId,
+                    newRowId: i,
+                    newColId: colId
+                  })
+                }
+                if (curMap[i][colId] !== '0') {
+                  break
+                }
               }
             }
             flag = false
@@ -2018,15 +2110,19 @@ export default {
                 })
               } else if (curMap[rowId][j] !== '0' && flag === false) {
                 flag = true
-              }  else if (flag === true && this.isEnemy(curMap[rowId][colId], curMap[rowId][j])) {
+              }  else if (flag === true) {
                 // this.canMove[rowId][j] = '-1'
-                nxtList.push({
-                  rowId: rowId,
-                  colId: colId,
-                  newRowId: rowId,
-                  newColId: j
-                })
-                break
+                if (this.isEnemy(curMap[rowId][colId], curMap[rowId][j])) {
+                  nxtList.push({
+                    rowId: rowId,
+                    colId: colId,
+                    newRowId: rowId,
+                    newColId: j
+                  })
+                }
+                if (curMap[rowId][j] !== '0') {
+                  break
+                }
               }
             }
             flag = false
@@ -2041,15 +2137,19 @@ export default {
                 })
               } else if (curMap[rowId][j] !== '0' && flag === false) {
                 flag = true
-              }  else if (flag === true && this.isEnemy(curMap[rowId][colId], curMap[rowId][j])) {
+              }  else if (flag === true) {
                 // this.canMove[rowId][j] = '-1'
-                nxtList.push({
-                  rowId: rowId,
-                  colId: colId,
-                  newRowId: rowId,
-                  newColId: j
-                })
-                break
+                if (this.isEnemy(curMap[rowId][colId], curMap[rowId][j])) {
+                  nxtList.push({
+                    rowId: rowId,
+                    colId: colId,
+                    newRowId: rowId,
+                    newColId: j
+                  })
+                }
+                if (curMap[rowId][j] !== '0') {
+                  break
+                }
               }
             }
           }
@@ -2374,7 +2474,7 @@ export default {
                     newRowId: i,
                     newColId: colId
                   })
-                } else if (flag === false && curMap[i][colId] !== '0') {
+                } else if (curMap[i][colId] !== '0' && flag === false) {
                   flag = true
                 } else if (flag === true) {
                   // this.canMove[i][colId] = '-1'
@@ -2386,7 +2486,9 @@ export default {
                       newColId: colId
                     })
                   }
-                  break
+                  if (curMap[i][colId] !== '0') {
+                    break
+                  }
                 }
               }
               flag = false
@@ -2411,7 +2513,9 @@ export default {
                       newColId: colId
                     })
                   }
-                  break
+                  if (curMap[i][colId] !== '0') {
+                    break
+                  }
                 }
               }
               flag = false
@@ -2426,7 +2530,7 @@ export default {
                   })
                 } else if (curMap[rowId][j] !== '0' && flag === false) {
                   flag = true
-                } else if (flag === true) {
+                }  else if (flag === true) {
                   // this.canMove[rowId][j] = '-1'
                   if (this.isEnemy(curMap[rowId][colId], curMap[rowId][j])) {
                     nxtList.push({
@@ -2436,7 +2540,9 @@ export default {
                       newColId: j
                     })
                   }
-                  break
+                  if (curMap[rowId][j] !== '0') {
+                    break
+                  }
                 }
               }
               flag = false
@@ -2461,7 +2567,9 @@ export default {
                       newColId: j
                     })
                   }
-                  break
+                  if (curMap[rowId][j] !== '0') {
+                    break
+                  }
                 }
               }
             }
@@ -2864,15 +2972,19 @@ export default {
                   })
                 } else if (curMap[i][colId] !== '0' && flag === false) {
                   flag = true
-                } else if (flag === true && this.isEnemy(curMap[rowId][colId], curMap[i][colId])) {
+                } else if (flag === true) {
                   // this.canMove[i][colId] = '-1'
-                  nxtList.push({
-                    rowId: rowId,
-                    colId: colId,
-                    newRowId: i,
-                    newColId: colId
-                  })
-                  break
+                  if (this.isEnemy(curMap[rowId][colId], curMap[i][colId])) {
+                    nxtList.push({
+                      rowId: rowId,
+                      colId: colId,
+                      newRowId: i,
+                      newColId: colId
+                    })
+                  }
+                  if (curMap[i][colId] !== '0') {
+                    break
+                  }
                 }
               }
               flag = false
@@ -2887,15 +2999,19 @@ export default {
                   })
                 } else if (curMap[i][colId] !== '0' && flag === false) {
                   flag = true
-                }  else if (flag === true && this.isEnemy(curMap[rowId][colId], curMap[i][colId])) {
+                }  else if (flag === true) {
                   // this.canMove[i][colId] = '-1'
-                  nxtList.push({
-                    rowId: rowId,
-                    colId: colId,
-                    newRowId: i,
-                    newColId: colId
-                  })
-                  break
+                  if (this.isEnemy(curMap[rowId][colId], curMap[i][colId])) {
+                    nxtList.push({
+                      rowId: rowId,
+                      colId: colId,
+                      newRowId: i,
+                      newColId: colId
+                    })
+                  }
+                  if (curMap[i][colId] !== '0') {
+                    break
+                  }
                 }
               }
               flag = false
@@ -2910,15 +3026,19 @@ export default {
                   })
                 } else if (curMap[rowId][j] !== '0' && flag === false) {
                   flag = true
-                }  else if (flag === true && this.isEnemy(curMap[rowId][colId], curMap[rowId][j])) {
+                }  else if (flag === true) {
                   // this.canMove[rowId][j] = '-1'
-                  nxtList.push({
-                    rowId: rowId,
-                    colId: colId,
-                    newRowId: rowId,
-                    newColId: j
-                  })
-                  break
+                  if (this.isEnemy(curMap[rowId][colId], curMap[rowId][j])) {
+                    nxtList.push({
+                      rowId: rowId,
+                      colId: colId,
+                      newRowId: rowId,
+                      newColId: j
+                    })
+                  }
+                  if (curMap[rowId][j] !== '0') {
+                    break
+                  }
                 }
               }
               flag = false
@@ -2933,15 +3053,19 @@ export default {
                   })
                 } else if (curMap[rowId][j] !== '0' && flag === false) {
                   flag = true
-                }  else if (flag === true && this.isEnemy(curMap[rowId][colId], curMap[rowId][j])) {
+                }  else if (flag === true) {
                   // this.canMove[rowId][j] = '-1'
-                  nxtList.push({
-                    rowId: rowId,
-                    colId: colId,
-                    newRowId: rowId,
-                    newColId: j
-                  })
-                  break
+                  if (this.isEnemy(curMap[rowId][colId], curMap[rowId][j])) {
+                    nxtList.push({
+                      rowId: rowId,
+                      colId: colId,
+                      newRowId: rowId,
+                      newColId: j
+                    })
+                  }
+                  if (curMap[rowId][j] !== '0') {
+                    break
+                  }
                 }
               }
             }
