@@ -77,6 +77,10 @@ export default {
         {
           title: 'cn-chess',
           route: 'cn-chess'
+        },
+        {
+          title: '滑动验证',
+          route: 'login-puzzle'
         }
       ]
     }

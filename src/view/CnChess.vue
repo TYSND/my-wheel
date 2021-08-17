@@ -27,7 +27,10 @@
             }"></div>
           </div>
         </div>
-        <div class="check-mate" v-show="showCheckMate">
+        <div class="red-check-mate" v-show="showCheckMateRed">
+          将
+        </div>
+        <div class="black-check-mate" v-show="showCheckMateBlack">
           将
         </div>
       </div>
@@ -385,7 +388,8 @@ export default {
       lastRowId: -1,
       lastColId: -1,
       win: 0,
-      showCheckMate: false
+      showCheckMateRed: false,
+      showCheckMateBlack: false
     }
   },
   methods: {
@@ -429,9 +433,9 @@ export default {
           // console.log('checkmate', this.judgeCheckMate(this.chessMap, false))
           this.canOpt = false
           if (this.judgeCheckMate(this.chessMap, false)) {
-            this.showCheckMate = true
+            this.showCheckMateRed = true
             setTimeout(() => {
-              this.showCheckMate = false
+              this.showCheckMateRed = false
               this.aiTurn()
             }, 500)
           } else {
@@ -1308,9 +1312,9 @@ export default {
       // console.log(this.chessMap)
       // console.log('ai checkmate', this.judgeCheckMate(this.chessMap, true))
       if (this.judgeCheckMate(this.chessMap, true)) {
-        this.showCheckMate = true
+        this.showCheckMateBlack = true
         setTimeout(() => {
-          this.showCheckMate = false
+          this.showCheckMateBlack = false
           this.canOpt = true
         }, 500)
       } else {
@@ -3236,7 +3240,20 @@ export default {
           }
         }
       }
-      .check-mate {
+      .red-check-mate {
+        position: absolute;
+        z-index: 99999;
+        font-size: 100px;
+        font-family: KaiTi;
+        width: 100%;
+        height: 100%;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        color: #bb0f0f;
+        background-color: rgba(208, 208, 208, 0.3);
+      }
+      .black-check-mate {
         position: absolute;
         z-index: 99999;
         font-size: 100px;

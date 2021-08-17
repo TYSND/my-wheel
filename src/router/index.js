@@ -19,6 +19,7 @@ const WxJump = () => import('@/view/WxJump.vue')
 const CssPaint = () => import('@/view/CssPaint.vue')
 const GoMahJong = () => import('@/view/GoMahJong.vue')
 const CnChess = () => import('@/view/CnChess.vue')
+const LoginPuzzle = () => import('@/view/LoginPuzzle.vue')
 
 Vue.use(VueRouter)
 
@@ -94,6 +95,10 @@ const routes = [
     {
         path: '/cn-chess',
         component: CnChess
+    },
+    {
+        path: '/login-puzzle',
+        component: LoginPuzzle
     }
 ]
 
