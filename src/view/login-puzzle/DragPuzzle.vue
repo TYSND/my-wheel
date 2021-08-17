@@ -1,5 +1,5 @@
 <template>
-  <div class="drag-puzzle" @click.self="close">
+  <div class="drag-puzzle" @click.self="fail">
     <div class="verify-outer">
       <div class="bg-img">
         <div class="target"></div>
