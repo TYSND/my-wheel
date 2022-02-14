@@ -81,6 +81,14 @@ export default {
         {
           title: '滑动验证',
           route: 'login-puzzle'
+        },
+        {
+          title: 'SpiderCard',
+          route: 'spider-card'
+        },
+        {
+          title: 'StudyThree',
+          route: 'study-three'
         }
       ]
     }

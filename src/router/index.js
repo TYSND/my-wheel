@@ -20,6 +20,8 @@ const CssPaint = () => import('@/view/CssPaint.vue')
 const GoMahJong = () => import('@/view/GoMahJong.vue')
 const CnChess = () => import('@/view/CnChess.vue')
 const LoginPuzzle = () => import('@/view/LoginPuzzle.vue')
+const SpiderCard = () => import('@/view/SpiderCard.vue')
+const StudyThree = () => import('@/view/StudyThree.vue')
 
 Vue.use(VueRouter)
 
@@ -99,6 +101,18 @@ const routes = [
     {
         path: '/login-puzzle',
         component: LoginPuzzle
+    },
+    {
+        path: '/login-puzzle',
+        component: LoginPuzzle
+    },
+    {
+        path: '/spider-card',
+        component: SpiderCard
+    },
+    {
+        path: '/study-three',
+        component: StudyThree
     }
 ]
 
